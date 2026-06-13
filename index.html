@@ -216,7 +216,7 @@
   .pcard .ph { display: flex; justify-content: space-between; align-items: flex-start; }
   .pcard .nm { font-size: 16px; font-weight: 600; }
   .pcard .ds { font-size: 12.5px; color: #8a97ab; margin-top: 5px; line-height: 1.5; max-width: 90%; }
-  .pcard .big { font-size: 22px; font-weight: 650; color: #34d399; letter-spacing: -0.02em; }
+  .pcard .big { font-size: 22px; font-weight: 650; color: #34d399; letter-spacing: -0.02em; margin: 10px 0 4px; }
   .pcard .arrow { color: #6b7891; font-size: 18px; }
   .ptitle { font-size: 26px; font-weight: 680; letter-spacing: -0.03em; margin: 18px 2px 4px; }
   .psub { font-size: 13.5px; color: #8a97ab; margin: 0 2px 22px; line-height: 1.5; }
@@ -235,11 +235,200 @@
     display: inline-flex; align-items: center; gap: 8px; width: 100%;
     background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.07);
     border-radius: 16px; padding: 15px 16px; margin-bottom: 10px; font-size: 14px; cursor: pointer;
-    transition: background .2s; text-align: left;
+    transition: background .2s; text-align: left; color: #e8eef6; font-family: inherit; font-weight: 500;
   }
   .chip:hover { background: rgba(255,255,255,0.09); }
   .chip .s { color: #67e8f9; font-size: 16px; }
   .chip .x { margin-left: auto; color: #6b7891; }
+
+  /* orb with + badge + image upload */
+  .orb-wrap { position: relative; width: 84px; height: 84px; margin: 0 auto 14px; cursor: pointer; }
+  .orb-wrap .orb { width: 84px; height: 84px; margin: 0; background-size: cover; background-position: center; }
+  .orb-plus {
+    position: absolute; right: -2px; bottom: -2px; width: 28px; height: 28px; border-radius: 50%;
+    background: #0a1220; border: 2px solid #22d3ee; color: #67e8f9;
+    display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; line-height: 1;
+  }
+  /* editable agent name */
+  .agent-name {
+    display: block; width: 100%; text-align: center; background: transparent; border: none;
+    color: #e8eef6; font-family: inherit; font-size: 22px; font-weight: 680; letter-spacing: -0.02em;
+    outline: none;
+  }
+  .agent-name::placeholder { color: #5a6781; font-weight: 600; }
+
+  /* ask box */
+  .ask-box {
+    display: flex; align-items: center; gap: 10px; margin: 18px 0 4px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(34,211,238,0.22);
+    border-radius: 16px; padding: 4px 6px 4px 16px;
+  }
+  .ask-input {
+    flex: 1; background: transparent; border: none; outline: none; color: #e8eef6;
+    font-family: inherit; font-size: 14px; padding: 12px 0;
+  }
+  .ask-input::placeholder { color: #8a97ab; }
+  .ask-send {
+    width: 38px; height: 38px; border-radius: 12px; flex-shrink: 0;
+    background: linear-gradient(160deg, #22d3ee, #34d399); color: #06121f;
+    display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; cursor: pointer;
+  }
+
+  /* help screen */
+  .help-top { display: flex; align-items: center; gap: 12px; margin: 16px 0 18px; }
+  .back-btn { font-size: 22px; color: #cdd6e3; cursor: pointer; line-height: 1; }
+  .help-title { font-size: 20px; font-weight: 680; letter-spacing: -0.02em; }
+  .contact {
+    display: flex; align-items: center; gap: 14px; padding: 15px 16px; margin-bottom: 10px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px; text-decoration: none; color: #e8eef6; transition: background .2s;
+  }
+  .contact:hover { background: rgba(255,255,255,0.09); }
+  .contact .ci { font-size: 19px; }
+  .contact .mid { flex: 1; }
+  .contact .mid .nm { font-size: 14.5px; font-weight: 600; }
+  .contact .mid .mt { font-size: 12px; color: #8a97ab; margin-top: 2px; }
+  .contact .arrow { color: #6b7891; font-size: 16px; }
+
+  /* settings screen */
+  .set-id { text-align: center; margin: 8px 0 6px; }
+  .set-avatar {
+    width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 12px;
+    background: linear-gradient(160deg, #22d3ee, #34d399); color: #06121f;
+    display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 700;
+  }
+  .set-name { font-size: 19px; font-weight: 680; letter-spacing: -0.02em; }
+  .set-sub { font-size: 13px; color: #8a97ab; margin-top: 3px; }
+
+  .set-group {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 18px; padding: 4px 16px; margin-bottom: 6px;
+  }
+  .set-field {
+    display: block; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .set-group .set-field:last-child, .set-row3 .set-field { border-bottom: none; }
+  .set-field .fl { display: block; font-size: 11.5px; color: #8a97ab; font-weight: 550; margin-bottom: 5px; }
+  .set-field .fi {
+    width: 100%; background: transparent; border: none; outline: none; color: #e8eef6;
+    font-family: inherit; font-size: 15px; font-weight: 500; padding: 0;
+  }
+  .verified { color: #34d399; font-size: 10.5px; font-weight: 600; margin-left: 4px; }
+  .set-row3 { display: flex; gap: 14px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .set-row3 .set-field { flex: 1; }
+
+  .set-static { display: flex; align-items: center; justify-content: space-between; }
+  .fi-static { font-size: 15px; color: #e8eef6; letter-spacing: 2px; }
+  .mini-btn {
+    background: rgba(34,211,238,0.12); border: 1px solid rgba(34,211,238,0.28); color: #67e8f9;
+    font-family: inherit; font-size: 12.5px; font-weight: 600; padding: 7px 14px; border-radius: 10px; cursor: pointer;
+  }
+  .set-toggle {
+    display: flex; align-items: center; justify-content: space-between; padding: 13px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .set-toggle:last-child { border-bottom: none; }
+  .tg-t { font-size: 14.5px; font-weight: 550; }
+  .tg-s { font-size: 12px; color: #8a97ab; margin-top: 2px; }
+  .switch {
+    width: 44px; height: 26px; border-radius: 999px; background: rgba(255,255,255,0.12);
+    position: relative; cursor: pointer; transition: background .2s; flex-shrink: 0;
+  }
+  .switch::after {
+    content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%;
+    background: #fff; transition: transform .2s;
+  }
+  .switch.on { background: #34d399; }
+  .switch.on::after { transform: translateX(18px); }
+
+  .save-btn {
+    display: block; width: 100%; margin: 16px 0 10px; padding: 15px;
+    background: linear-gradient(160deg, #22d3ee, #34d399); color: #06121f; border: none;
+    border-radius: 14px; font-family: inherit; font-size: 14px; font-weight: 700; cursor: pointer;
+  }
+  .signout-btn {
+    display: block; width: 100%; padding: 14px; background: transparent;
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 14px;
+    color: #cdd6e3; font-family: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer;
+  }
+  .danger-zone { margin-top: 24px; padding-top: 18px; border-top: 1px solid rgba(252,165,165,0.18); }
+  .delete-btn {
+    display: block; width: 100%; padding: 14px; background: rgba(248,113,113,0.10);
+    border: 1px solid rgba(248,113,113,0.35); border-radius: 14px;
+    color: #fca5a5; font-family: inherit; font-size: 13.5px; font-weight: 700; cursor: pointer; transition: background .2s;
+  }
+  .delete-btn:hover { background: rgba(248,113,113,0.18); }
+  .delete-note { font-size: 11.5px; color: #6b7891; text-align: center; margin-top: 10px; line-height: 1.5; }
+
+  /* buy $YLDS projected panel */
+  .proj { margin: 18px 0 4px; }
+  .proj-row {
+    display: flex; justify-content: space-between; align-items: center; padding: 12px 2px;
+    border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13.5px; color: #8a97ab;
+  }
+  .proj-row:last-child { border-bottom: none; }
+  .proj-row span:last-child { color: #e8eef6; font-weight: 550; }
+  .proj-amt { color: #6ee7b7 !important; font-weight: 680 !important; font-variant-numeric: tabular-nums; }
+  .disclosure { font-size: 11px; color: #6b7891; line-height: 1.5; margin-top: 12px; text-align: center; }
+
+  /* earn risk tags */
+  .risk { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+  .risk.low { color: #6ee7b7; background: rgba(52,211,153,0.12); }
+  .risk.mod { color: #67e8f9; background: rgba(34,211,238,0.12); }
+  .risk.high { color: #fbbf24; background: rgba(251,191,36,0.14); }
+  .risk.var { color: #a5b0c2; background: rgba(255,255,255,0.08); }
+
+  /* send screen */
+  .dd-block { display: block; }
+  .dd-full { width: 100%; font-size: 15px; padding: 12px 30px 12px 14px; border-radius: 12px; }
+  .send-amt-row { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
+  .send-cur { font-size: 30px; font-weight: 650; color: #8a97ab; }
+  .send-amt {
+    flex: 1; background: transparent; border: none; outline: none; color: #e8eef6;
+    font-family: inherit; font-size: 34px; font-weight: 680; letter-spacing: -0.02em; padding: 0; min-width: 0;
+  }
+  .send-amt::placeholder { color: #3f4a60; }
+  .max-btn {
+    background: rgba(34,211,238,0.12); border: 1px solid rgba(34,211,238,0.28); color: #67e8f9;
+    font-family: inherit; font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 9px; cursor: pointer;
+  }
+  .avail { font-size: 12.5px; color: #8a97ab; margin-top: 10px; }
+  .field-inset { padding: 0; }
+  .send-fields { padding: 0; }
+  .to-box {
+    width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px; padding: 16px; color: #e8eef6; font-family: inherit; font-size: 15px;
+    outline: none; transition: border-color .2s;
+  }
+  .to-box:focus { border-color: rgba(34,211,238,0.35); }
+
+  .recents-label { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #6b7891; margin: 18px 2px 12px; font-weight: 600; }
+  .recents { display: flex; gap: 16px; margin-bottom: 4px; }
+  .recent { display: flex; flex-direction: column; align-items: center; gap: 7px; cursor: pointer; }
+  .r-av {
+    width: 48px; height: 48px; border-radius: 50%; background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600; color: #cdd6e3;
+  }
+  .r-nm { font-size: 11.5px; color: #8a97ab; }
+
+  /* skills market button */
+  .market-btn {
+    display: block; width: 100%; margin: 6px 0 0; padding: 15px;
+    background: linear-gradient(160deg, rgba(34,211,238,0.14), rgba(52,211,153,0.10));
+    border: 1px solid rgba(34,211,238,0.28); border-radius: 16px;
+    color: #67e8f9; font-family: inherit; font-size: 14px; font-weight: 650; cursor: pointer; transition: background .2s;
+  }
+  .market-btn:hover { background: linear-gradient(160deg, rgba(34,211,238,0.22), rgba(52,211,153,0.16)); }
+
+  /* set your rails — long narrow button */
+  .rails-btn {
+    display: block; width: 100%; margin: 22px 0 4px; padding: 15px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(34,211,238,0.30);
+    border-radius: 14px; color: #67e8f9; font-family: inherit;
+    font-size: 13px; font-weight: 700; letter-spacing: .08em; cursor: pointer; transition: background .2s;
+  }
+  .rails-btn:hover { background: rgba(34,211,238,0.12); }
 
   /* bottom nav */
   .nav {
@@ -278,8 +467,8 @@
           <div class="topbar">
             <div class="greet">Good afternoon, Mike</div>
             <div class="tb-icons">
-              <span class="tb-ic" title="Settings">⚙</span>
-              <span class="tb-ic" title="Help">?</span>
+              <span class="tb-ic" id="settingsBtn" title="Settings">⚙</span>
+              <span class="tb-ic" id="helpBtn" title="Help">?</span>
             </div>
           </div>
 
@@ -300,9 +489,9 @@
           </div>
 
           <div class="actions">
-            <div class="action"><div class="ic">↑</div><div class="t">Send</div></div>
-            <div class="action"><div class="ic">↓</div><div class="t">Add</div></div>
-            <div class="action"><div class="ic">↗</div><div class="t">Earn</div></div>
+            <div class="action" id="sendAction"><div class="ic">↑</div><div class="t">Send</div></div>
+            <div class="action" id="addAction"><div class="ic">↓</div><div class="t">Add</div></div>
+            <div class="action" id="earnAction"><div class="ic">↗</div><div class="t">Earn</div></div>
           </div>
 
           <div class="refer">
@@ -310,12 +499,17 @@
             <span class="refer-arrow">→</span>
           </div>
 
-          <div class="subtabs">
-            <button class="subtab active" data-sub="history">History</button>
-            <button class="subtab" data-sub="holdings">Holdings</button>
+          <div class="ask-box" style="margin:14px 0 4px;">
+            <input class="ask-input" placeholder="What would you like to do today?">
+            <span class="ask-send">↑</span>
           </div>
 
-          <div class="subpane active" id="sub-history">
+          <div class="subtabs">
+            <button class="subtab active" data-sub="holdings">Holdings</button>
+            <button class="subtab" data-sub="history">History</button>
+          </div>
+
+          <div class="subpane" id="sub-history">
             <div class="list">
               <div class="item"><div class="avatar">🏢</div><div class="mid"><div class="nm">Payroll · Acme Inc</div><div class="mt">Direct deposit · today</div></div><div class="amt pos">+$4,200.00</div></div>
               <div class="item"><div class="avatar">📈</div><div class="mid"><div class="nm">Yield accrued</div><div class="mt">YLDS · this week</div></div><div class="amt pos">+$41.18</div></div>
@@ -324,7 +518,7 @@
             </div>
           </div>
 
-          <div class="subpane" id="sub-holdings">
+          <div class="subpane active" id="sub-holdings">
             <div class="hdr">Assets</div>
             <div class="list">
               <div class="hrow"><div class="avatar">🟢</div><div class="mid"><div class="nm">$YLDS</div><div class="mt">3.68% APY</div></div><div class="amt">$57,500.00</div></div>
@@ -337,6 +531,15 @@
             </div>
           </div>
 
+        </section>
+
+        <!-- BANK -->
+        <section class="pane" id="bank">
+          <div class="ptitle">Bank</div>
+          <div class="psub">Full-service banking — direct deposit, P2P, card, bill pay & wires.</div>
+          <div class="ycard">
+            <div class="sub" style="margin:0">This page is next on our list — you'll guide the layout and features. Placeholder for now.</div>
+          </div>
         </section>
 
         <!-- BORROW -->
@@ -386,27 +589,305 @@
         <!-- AGENT -->
         <section class="pane" id="agent">
           <div class="agent-hero">
-            <div class="orb"></div>
-            <h2>Your agent</h2>
-            <p>Works within rails you set. Tell it a goal —<br>it stays inside your boundaries.</p>
+            <div class="orb-wrap" id="orbWrap" title="Name your agent & add a picture">
+              <div class="orb" id="orb"></div>
+              <div class="orb-plus" id="orbPlus">+</div>
+            </div>
+            <input type="file" id="orbFile" accept="image/*" hidden>
+            <input class="agent-name" id="agentName" placeholder="Name your agent" maxlength="24">
           </div>
+
+          <div class="ask-box">
+            <input class="ask-input" placeholder="Ask your agent anything">
+            <span class="ask-send">↑</span>
+          </div>
+
           <div class="sec">Try a skill</div>
-          <button class="chip"><span class="s">★</span> Maximize my yield, risk-aware <span class="x">→</span></button>
-          <button class="chip"><span class="s">★</span> Harvest tax losses this quarter <span class="x">→</span></button>
-          <button class="chip"><span class="s">★</span> Generate my 1099s <span class="x">→</span></button>
-          <button class="chip"><span class="s">★</span> Pay my bills & subscriptions <span class="x">→</span></button>
-          <div class="sec">Your rails</div>
-          <div class="ycard">
-            <div class="sub" style="margin:0">Transaction limits · approval workflows · counterparty allow-lists · risk thresholds</div>
+          <button class="chip"><span class="s">★</span> Produce a 1099 <span class="x">→</span></button>
+          <button class="chip"><span class="s">★</span> Find the best DeFi yield <span class="x">→</span></button>
+          <button class="chip"><span class="s">★</span> Show me how I've spent my money <span class="x">→</span></button>
+
+          <button class="market-btn">⊞ Skills Market</button>
+
+          <button class="rails-btn">SET YOUR RAILS</button>
+        </section>
+
+        <!-- HELP -->
+        <section class="pane" id="help">
+          <div class="help-top">
+            <span class="back-btn" id="helpBack">←</span>
+            <span class="help-title">Help</span>
           </div>
+
+          <div class="ask-box" style="margin:6px 0 4px;">
+            <input class="ask-input" placeholder="Ask me anything">
+            <span class="ask-send">↑</span>
+          </div>
+
+          <div class="sec">Contact Us</div>
+          <a class="contact" href="sms:+18008675309"><span class="ci">💬</span><div class="mid"><div class="nm">Text us</div><div class="mt">SMS</div></div><span class="arrow">→</span></a>
+          <a class="contact" href="https://t.me/walletco"><span class="ci">✈️</span><div class="mid"><div class="nm">Telegram</div><div class="mt">@walletco</div></div><span class="arrow">→</span></a>
+          <a class="contact" href="tel:+18008675309"><span class="ci">📞</span><div class="mid"><div class="nm">Call us</div><div class="mt">1-800-867-5309</div></div><span class="arrow">→</span></a>
+        </section>
+
+        <!-- SETTINGS -->
+        <section class="pane" id="settings">
+          <div class="help-top">
+            <span class="back-btn" id="settingsBack">←</span>
+            <span class="help-title">Settings</span>
+          </div>
+
+          <div class="set-id">
+            <div class="set-avatar">MC</div>
+            <div class="set-name">Mike Cagney</div>
+            <div class="set-sub">mcagney@gmail.com</div>
+          </div>
+
+          <div class="sec">Personal Information</div>
+          <div class="set-group">
+            <label class="set-field">
+              <span class="fl">Full name</span>
+              <input class="fi" type="text" value="Mike Cagney">
+            </label>
+            <label class="set-field">
+              <span class="fl">Email <span class="verified">✓ Verified</span></span>
+              <input class="fi" type="email" value="mcagney@gmail.com">
+            </label>
+            <label class="set-field">
+              <span class="fl">Phone</span>
+              <input class="fi" type="tel" value="415-308-8055">
+            </label>
+            <label class="set-field">
+              <span class="fl">Street address</span>
+              <input class="fi" type="text" value="10911 Discovery Peak Ct">
+            </label>
+            <div class="set-row3">
+              <label class="set-field"><span class="fl">City</span><input class="fi" type="text" value="Las Vegas"></label>
+              <label class="set-field" style="max-width:74px"><span class="fl">State</span><input class="fi" type="text" value="NV"></label>
+              <label class="set-field" style="max-width:96px"><span class="fl">ZIP</span><input class="fi" type="text" inputmode="numeric" value="89135"></label>
+            </div>
+          </div>
+
+          <div class="sec">Security</div>
+          <div class="set-group">
+            <div class="set-field set-static">
+              <div><span class="fl">Password</span><div class="fi-static">••••••••••</div></div>
+              <button class="mini-btn">Change</button>
+            </div>
+            <div class="set-toggle">
+              <div><div class="tg-t">Two-factor authentication</div><div class="tg-s">Extra security at sign-in</div></div>
+              <span class="switch on" data-on="1"></span>
+            </div>
+            <div class="set-toggle">
+              <div><div class="tg-t">Face ID login</div><div class="tg-s">Unlock with biometrics</div></div>
+              <span class="switch on" data-on="1"></span>
+            </div>
+          </div>
+
+          <button class="save-btn">Save changes</button>
+          <button class="signout-btn">Sign out</button>
+
+          <div class="danger-zone">
+            <button class="delete-btn">Delete account</button>
+            <div class="delete-note">Permanently closes your account and erases your data. This can't be undone.</div>
+          </div>
+        </section>
+
+        <!-- SEND -->
+        <section class="pane" id="send">
+          <div class="help-top">
+            <span class="back-btn" id="sendBack">←</span>
+            <span class="help-title">Send</span>
+          </div>
+
+          <div class="sec">Send what?</div>
+          <div class="send-fields">
+            <div class="dd-wrap dd-block">
+              <select class="dd dd-full" id="sendAsset">
+                <option value="usd">USD · US Dollars</option>
+                <option value="ylds">$YLDS</option>
+                <option value="fgrs">$FGRS</option>
+              </select>
+            </div>
+            <div class="send-amt-row">
+              <span class="send-cur" id="sendCur">$</span>
+              <input class="send-amt" id="sendAmt" inputmode="decimal" placeholder="0.00">
+              <button class="max-btn">Max</button>
+            </div>
+            <div class="avail" id="sendAvail">Available: $12,840.00</div>
+          </div>
+
+          <div class="sec">To who?</div>
+          <div class="field-inset">
+            <input class="to-box" id="sendTo" type="text">
+          </div>
+
+          <div class="recents-label">Recent</div>
+          <div class="recents">
+            <div class="recent"><div class="r-av">DK</div><div class="r-nm">Dana</div></div>
+            <div class="recent"><div class="r-av">JL</div><div class="r-nm">Jordan</div></div>
+            <div class="recent"><div class="r-av">0x…</div><div class="r-nm">Wallet</div></div>
+            <div class="recent"><div class="r-av">+</div><div class="r-nm">New</div></div>
+          </div>
+
+          <button class="save-btn">Review transfer</button>
+
+          <div class="sec">More ways to send</div>
+          <div class="pcard">
+            <div class="ph"><div class="nm">Send a Wire</div><span class="arrow">→</span></div>
+            <div class="ds">Domestic &amp; international · same-day · fee applies</div>
+          </div>
+          <div class="pcard">
+            <div class="ph"><div class="nm">Send an ACH</div><span class="arrow">→</span></div>
+            <div class="ds">Bank transfer · free · 1–3 business days</div>
+          </div>
+        </section>
+
+        <!-- ADD -->
+        <section class="pane" id="add">
+          <div class="help-top">
+            <span class="back-btn" id="addBack">←</span>
+            <span class="help-title">Add money</span>
+          </div>
+          <div class="psub" style="margin:0 2px 16px;">Idle cash auto-earns in $YLDS the moment it lands.</div>
+
+          <div class="sec">Instant</div>
+          <div class="pcard">
+            <div class="ph"><div class="nm">Debit card or linked bank</div><span class="arrow">→</span></div>
+            <div class="ds">Available right away · fee applies</div>
+          </div>
+
+          <div class="sec">From a bank</div>
+          <div class="pcard">
+            <div class="ph"><div class="nm">Wire transfer</div><span class="arrow">→</span></div>
+            <div class="ds">Domestic &amp; international · same-day · fee applies</div>
+          </div>
+          <div class="pcard">
+            <div class="ph"><div class="nm">Bank transfer (ACH)</div><span class="arrow">→</span></div>
+            <div class="ds">Free · 1–3 business days</div>
+          </div>
+          <div class="pcard">
+            <div class="ph"><div class="nm">Mobile check deposit</div><span class="arrow">→</span></div>
+            <div class="ds">Snap a photo · free · 1–2 business days</div>
+          </div>
+
+          <div class="sec">Crypto</div>
+          <div class="pcard">
+            <div class="ph"><div class="nm">Transfer stablecoins</div><span class="arrow">→</span></div>
+            <div class="ds">On-chain from another wallet · minutes</div>
+          </div>
+          <div class="pcard">
+            <div class="ph"><div class="nm">Deposit crypto</div><span class="arrow">→</span></div>
+            <div class="ds">Across approved L1s · network fee applies</div>
+          </div>
+
+          <div class="sec">Automate</div>
+          <div class="pcard">
+            <div class="ph"><div class="nm">Set up direct deposit</div><span class="arrow">→</span></div>
+            <div class="ds">Route payroll to Wallet Co · every pay period</div>
+          </div>
+          <div class="pcard">
+            <div class="ph"><div class="nm">Recurring deposit</div><span class="arrow">→</span></div>
+            <div class="ds">Auto-invest weekly or monthly</div>
+          </div>
+
+          <div class="sec">Other</div>
+          <div class="pcard">
+            <div class="ph"><div class="nm">Request money</div><span class="arrow">→</span></div>
+            <div class="ds">Ask someone to pay you · fiat, stablecoin or crypto</div>
+          </div>
+          <div class="pcard">
+            <div class="ph"><div class="nm">Transfer investments in</div><span class="arrow">→</span></div>
+            <div class="ds">Move stocks &amp; assets from another brokerage</div>
+          </div>
+        </section>
+
+        <!-- EARN -->
+        <section class="pane" id="earn">
+          <div class="help-top">
+            <span class="back-btn" id="earnBack">←</span>
+            <span class="help-title">Earn</span>
+          </div>
+          <div class="psub" style="margin:0 2px 16px;">Put your money to work. Higher yield carries higher risk.</div>
+
+          <div class="pcard" id="buyYldsCard">
+            <div class="ph"><div class="nm">Buy $YLDS</div><span class="arrow">→</span></div>
+            <div class="big">3.25%</div>
+            <div class="ds">Treasury-backed public security · SOFR − 35 bps · 24×7 liquidity</div>
+          </div>
+
+          <div class="pcard">
+            <div class="ph"><div class="nm">Democratized Prime</div><span class="arrow">→</span></div>
+            <div class="big">Up to 8%</div>
+            <div class="ds">Figure's DeFi portal · unlevered yield lending against real-world assets</div>
+          </div>
+
+          <div class="pcard">
+            <div class="ph"><div class="nm">Hastra</div><span class="arrow">→</span></div>
+            <div class="big">30%+</div>
+            <div class="ds">Levered loans against RWAs on Ethereum · amplified yield</div>
+          </div>
+
+          <div class="pcard">
+            <div class="ph"><div class="nm">Lend digital assets</div><span class="arrow">→</span></div>
+            <div class="big">Variable</div>
+            <div class="ds">Lend crypto or $FGRS (Figure equity, native on-chain) and earn yield</div>
+          </div>
+        </section>
+
+        <!-- BUY $YLDS -->
+        <section class="pane" id="buyYlds">
+          <div class="help-top">
+            <span class="back-btn" id="buyBack">←</span>
+            <span class="help-title">Buy $YLDS</span>
+          </div>
+
+          <div class="ycard" style="margin-bottom:6px;">
+            <div class="row">
+              <div>
+                <div class="rate">3.25% APY</div>
+                <div class="sub">SOFR − 35 bps · backed by U.S. Treasuries &amp; bank deposits · 24×7 liquidity</div>
+              </div>
+              <span class="pill">$YLDS</span>
+            </div>
+          </div>
+
+          <div class="sec">Amount</div>
+          <div class="send-fields">
+            <div class="send-amt-row">
+              <span class="send-cur">$</span>
+              <input class="send-amt" id="buyAmt" inputmode="decimal" placeholder="0.00">
+              <button class="max-btn" id="buyMax">Max</button>
+            </div>
+            <div class="avail">Available: $12,840.00 USD cash</div>
+          </div>
+
+          <div class="sec">Pay from</div>
+          <div class="dd-wrap dd-block">
+            <select class="dd dd-full" id="buySource">
+              <option>USD cash · $12,840.00</option>
+              <option>Linked bank · Chase ••1234</option>
+            </select>
+          </div>
+
+          <div class="proj">
+            <div class="proj-row"><span>Estimated yield (1 yr)</span><span class="proj-amt" id="projYear">$0.00</span></div>
+            <div class="proj-row"><span>Rate</span><span>3.25% APY</span></div>
+            <div class="proj-row"><span>Settlement</span><span>Instant · earns immediately</span></div>
+            <div class="proj-row"><span>Liquidity</span><span>24×7 · no lockup</span></div>
+          </div>
+
+          <button class="save-btn" id="buyReview">Review purchase</button>
+          <div class="disclosure">$YLDS is a registered public security. Yield is variable (SOFR − 35 bps) and not guaranteed. Review offering disclosures before investing.</div>
         </section>
 
       </div>
 
       <!-- bottom nav -->
       <div class="nav">
-        <div class="tab active" data-pane="home"><span class="gi">▣</span>Bank</div>
+        <div class="tab" data-pane="bank"><span class="gi">▣</span>Bank</div>
         <div class="tab" data-pane="borrow"><span class="gi">◇</span>Borrow</div>
+        <div class="tab active" data-pane="home"><span class="gi">⌂</span>Home</div>
         <div class="tab" data-pane="trade"><span class="gi">⇅</span>Trade</div>
         <div class="tab" data-pane="agent"><span class="gi">✦</span>Agent</div>
       </div>
@@ -444,6 +925,125 @@
   document.getElementById('periodDd').addEventListener('change', function(){
     document.getElementById('earnedAmt').textContent = '+$' + earned[this.value].toFixed(2);
   });
+
+  // help screen: open from "?" , return via back arrow
+  function showPane(id){
+    document.querySelectorAll('.pane').forEach(function(p){ p.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+    document.querySelector('.content').scrollTop = 0;
+  }
+  var helpBtn = document.getElementById('helpBtn');
+  if (helpBtn) helpBtn.addEventListener('click', function(){ showPane('help'); });
+  var helpBack = document.getElementById('helpBack');
+  if (helpBack) helpBack.addEventListener('click', goHome);
+
+  // settings screen: open from gear, return via back arrow
+  var settingsBtn = document.getElementById('settingsBtn');
+  if (settingsBtn) settingsBtn.addEventListener('click', function(){ showPane('settings'); });
+  var settingsBack = document.getElementById('settingsBack');
+  if (settingsBack) settingsBack.addEventListener('click', goHome);
+
+  function goHome(){
+    showPane('home');
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.pane === 'home'); });
+  }
+
+  // toggle switches
+  document.querySelectorAll('.switch').forEach(function(sw){
+    sw.addEventListener('click', function(){ sw.classList.toggle('on'); });
+  });
+
+  // send screen: open from Send action, return via back arrow
+  var sendAction = document.getElementById('sendAction');
+  if (sendAction) sendAction.addEventListener('click', function(){ showPane('send'); });
+  var sendBack = document.getElementById('sendBack');
+  if (sendBack) sendBack.addEventListener('click', goHome);
+
+  // add money screen
+  var addAction = document.getElementById('addAction');
+  if (addAction) addAction.addEventListener('click', function(){ showPane('add'); });
+  var addBack = document.getElementById('addBack');
+  if (addBack) addBack.addEventListener('click', goHome);
+
+  // earn screen
+  var earnAction = document.getElementById('earnAction');
+  if (earnAction) earnAction.addEventListener('click', function(){ showPane('earn'); });
+  var earnBack = document.getElementById('earnBack');
+  if (earnBack) earnBack.addEventListener('click', goHome);
+
+  // buy $YLDS flow
+  var buyCard = document.getElementById('buyYldsCard');
+  if (buyCard) buyCard.addEventListener('click', function(){ showPane('buyYlds'); });
+  var buyBack = document.getElementById('buyBack');
+  if (buyBack) buyBack.addEventListener('click', function(){ showPane('earn'); });
+
+  var buyAmt = document.getElementById('buyAmt');
+  var BUY_AVAIL = 12840.00, YLDS_RATE = 0.0325;
+  function syncProj(){
+    var v = parseFloat((buyAmt.value || '').replace(/[^0-9.]/g, '')) || 0;
+    document.getElementById('projYear').textContent =
+      '$' + (v * YLDS_RATE).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  if (buyAmt) buyAmt.addEventListener('input', syncProj);
+  var buyMax = document.getElementById('buyMax');
+  if (buyMax) buyMax.addEventListener('click', function(){ buyAmt.value = BUY_AVAIL.toFixed(2); syncProj(); });
+
+  var buyReview = document.getElementById('buyReview');
+  if (buyReview) buyReview.addEventListener('click', function(){
+    var v = parseFloat((buyAmt.value || '').replace(/[^0-9.]/g, '')) || 0;
+    if (v <= 0) { alert('Enter an amount to buy.'); return; }
+    if (v > BUY_AVAIL) { alert('Amount exceeds your available USD cash.'); return; }
+    var yr = (v * YLDS_RATE).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    var amt = v.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    if (confirm('Confirm purchase\n\nBuy $' + amt + ' of $YLDS\nEst. yield (1 yr): $' + yr + ' at 3.25% APY\nPay from: USD cash\n\nProceed?')) {
+      alert('Purchase complete. Your $YLDS is now earning. (Mockup — no funds moved.)');
+      buyAmt.value = ''; syncProj(); showPane('earn');
+    }
+  });
+
+  // send: asset-dependent available balance + currency symbol
+  var assetInfo = {
+    usd:  { cur: '$', avail: 'Available: $12,840.00', max: '12840.00' },
+    ylds: { cur: '',  avail: 'Available: 57,500.00 $YLDS', max: '57500.00' },
+    fgrs: { cur: '',  avail: 'Available: 300.0 $FGRS (~$9,000.00)', max: '300.0' }
+  };
+  var sendAsset = document.getElementById('sendAsset');
+  function syncAsset(){
+    var a = assetInfo[sendAsset.value];
+    document.getElementById('sendCur').textContent = a.cur;
+    document.getElementById('sendAvail').textContent = a.avail;
+  }
+  if (sendAsset) sendAsset.addEventListener('change', syncAsset);
+  var maxBtn = document.querySelector('.max-btn');
+  if (maxBtn) maxBtn.addEventListener('click', function(){
+    document.getElementById('sendAmt').value = assetInfo[sendAsset.value].max;
+  });
+
+  // delete account confirmation (mockup)
+  var delBtn = document.querySelector('.delete-btn');
+  if (delBtn) delBtn.addEventListener('click', function(){
+    if (confirm('Delete your account? This permanently closes your account and erases your data. This cannot be undone.')) {
+      alert('Account deletion requested. (Mockup — no action taken.)');
+    }
+  });
+
+  // agent: upload a picture for the orb
+  var orbWrap = document.getElementById('orbWrap');
+  var orbFile = document.getElementById('orbFile');
+  if (orbWrap) {
+    orbWrap.addEventListener('click', function(){ orbFile.click(); });
+    orbFile.addEventListener('change', function(){
+      var f = this.files && this.files[0];
+      if (!f) return;
+      var reader = new FileReader();
+      reader.onload = function(e){
+        var orb = document.getElementById('orb');
+        orb.style.backgroundImage = 'url(' + e.target.result + ')';
+        document.getElementById('orbPlus').textContent = '✎';
+      };
+      reader.readAsDataURL(f);
+    });
+  }
 
   // History / Holdings sub-tabs
   document.querySelectorAll('.subtab').forEach(function(s){
