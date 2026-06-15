@@ -207,7 +207,7 @@
   .item:last-child { border-bottom: none; }
   .item .avatar { width: 40px; height: 40px; border-radius: 13px; background: rgba(255,255,255,0.07); display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; }
   .item .mid { flex: 1; min-width: 0; }
-  .item .mid .nm { font-size: 14.5px; font-weight: 550; }
+  .item .mid .nm { font-size: 14.5px; font-weight: 600; }
   .item .mid .mt { font-size: 12px; color: #8a97ab; margin-top: 2px; }
   .item .amt { font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
   .item .amt.pos { color: #6ee7b7; }
@@ -226,7 +226,7 @@
   .pcard .big { font-size: 22px; font-weight: 650; color: #34d399; letter-spacing: -0.02em; margin: 10px 0 4px; }
   .pcard .arrow { color: #6b7891; font-size: 18px; }
   .ptitle { font-size: 26px; font-weight: 680; letter-spacing: -0.03em; margin: 18px 2px 4px; }
-  .psub { font-size: 13.5px; color: #8a97ab; margin: 0 2px 22px; line-height: 1.5; }
+  .psub { font-size: 13.5px; color: #8a97ab; margin: 0 2px 16px; line-height: 1.5; }
 
   /* agent pane */
   .agent-hero { text-align: center; padding: 30px 6px 18px; }
@@ -335,7 +335,7 @@
     border-bottom: 1px solid rgba(255,255,255,0.06);
   }
   .set-toggle:last-child { border-bottom: none; }
-  .tg-t { font-size: 14.5px; font-weight: 550; }
+  .tg-t { font-size: 14.5px; font-weight: 600; }
   .tg-s { font-size: 12px; color: #8a97ab; margin-top: 2px; }
   .switch {
     width: 44px; height: 26px; border-radius: 999px; background: rgba(255,255,255,0.12);
@@ -392,6 +392,18 @@
   .loan-next b { color: #e8eef6; font-weight: 650; }
   .pay-now { color: #67e8f9; font-weight: 700; cursor: pointer; }
   .pay-now:hover { text-decoration: underline; }
+
+  /* card screen */
+  .card-face {
+    border-radius: 20px; padding: 22px; color: #06121f; min-height: 188px;
+    background: linear-gradient(135deg, #67e8f9 0%, #34d399 100%);
+    box-shadow: 0 18px 34px -14px rgba(34,211,238,0.55);
+    display: flex; flex-direction: column; justify-content: space-between; margin-bottom: 4px;
+  }
+  .card-brand { font-size: 17px; font-weight: 800; letter-spacing: -0.01em; }
+  .card-num { font-size: 21px; font-weight: 650; letter-spacing: 2px; font-variant-numeric: tabular-nums; }
+  .card-foot { display: flex; justify-content: space-between; font-size: 12.5px; font-weight: 700; letter-spacing: .05em; }
+  .market-item .ph { align-items: center; }
 
   /* securities predictions */
   .pos {
@@ -678,7 +690,7 @@
             <div class="ph"><div class="nm">Crypto-backed loan</div><span class="arrow">→</span></div>
             <div class="ds">Term borrowing against your crypto positions.</div>
           </div>
-          <div class="pcard">
+          <div class="pcard" id="cardEntry">
             <div class="ph"><div class="nm">Wallet Co Card</div><span class="arrow">→</span></div>
             <div class="ds">Secured & unsecured credit · outsized rewards.</div>
           </div>
@@ -722,13 +734,13 @@
           </div>
 
           <div class="sec">Try a skill</div>
-          <button class="chip"><span class="s">★</span> Produce a 1099 <span class="x">→</span></button>
-          <button class="chip"><span class="s">★</span> Find the best DeFi yield <span class="x">→</span></button>
-          <button class="chip"><span class="s">★</span> Show me how I've spent my money <span class="x">→</span></button>
+          <button class="chip skill-chip"><span class="s">★</span> Produce a 1099 <span class="x">→</span></button>
+          <button class="chip skill-chip"><span class="s">★</span> Find the best DeFi yield <span class="x">→</span></button>
+          <button class="chip skill-chip"><span class="s">★</span> Show me how I've spent my money <span class="x">→</span></button>
 
-          <button class="market-btn">⊞ Skills Market</button>
+          <button class="market-btn" id="marketBtn">⊞ Skills Market</button>
 
-          <button class="rails-btn">SET YOUR RAILS</button>
+          <button class="rails-btn" id="railsBtn">SET YOUR RAILS</button>
         </section>
 
         <!-- HELP -->
@@ -1097,6 +1109,96 @@
           <button class="save-btn" id="billSchedule" style="margin-top:16px;">Schedule payment</button>
         </section>
 
+        <!-- CARD -->
+        <section class="pane" id="card">
+          <div class="help-top">
+            <span class="back-btn" id="cardBack">←</span>
+            <span class="help-title">Card</span>
+          </div>
+
+          <div class="card-face">
+            <div class="card-brand">Wallet Co</div>
+            <div class="card-num" id="cardNum">•••• •••• •••• 4827</div>
+            <div class="card-foot"><span>MIKE CAGNEY</span><span>12/29</span></div>
+          </div>
+
+          <div class="sec">Card details</div>
+          <div class="set-group">
+            <div class="set-field set-static"><div><span class="fl">Card number</span><div class="fi-static" id="cardFull">•••• •••• •••• 4827</div></div><button class="mini-btn" id="cardReveal">Reveal</button></div>
+            <div class="set-field set-static"><div><span class="fl">Expiry</span><div class="fi-static" style="letter-spacing:0">12/29</div></div></div>
+            <div class="set-field set-static"><div><span class="fl">CVV</span><div class="fi-static" id="cardCvv">•••</div></div></div>
+          </div>
+
+          <div class="sec">Controls</div>
+          <div class="set-group">
+            <div class="set-toggle"><div><div class="tg-t">Freeze card</div><div class="tg-s">Instantly block all transactions</div></div><span class="switch"></span></div>
+            <div class="set-toggle"><div><div class="tg-t">Online payments</div><div class="tg-s">E-commerce &amp; subscriptions</div></div><span class="switch on"></span></div>
+            <div class="set-toggle"><div><div class="tg-t">International</div><div class="tg-s">Use outside the U.S.</div></div><span class="switch"></span></div>
+            <div class="set-toggle"><div><div class="tg-t">ATM withdrawals</div><div class="tg-s">Cash access</div></div><span class="switch on"></span></div>
+          </div>
+
+          <div class="sec">Rewards</div>
+          <div class="ycard">
+            <div class="row"><div><div class="rate">3% back</div><div class="sub">Toward Wallet Co products · $128.40 earned this month</div></div><span class="pill">Card</span></div>
+          </div>
+
+          <button class="save-btn" id="cardApplePay">Add to Apple Pay</button>
+        </section>
+
+        <!-- SET YOUR RAILS -->
+        <section class="pane" id="rails">
+          <div class="help-top">
+            <span class="back-btn" id="railsBack">←</span>
+            <span class="help-title">Your rails</span>
+          </div>
+          <div class="psub" style="margin:0 2px 16px;">Set the boundaries — your agent acts only inside them.</div>
+
+          <div class="sec">Guardrails</div>
+          <div class="set-group">
+            <div class="set-toggle"><div><div class="tg-t">Asset segregation</div><div class="tg-s">Keep cash, yield &amp; predictions separate</div></div><span class="switch on"></span></div>
+            <div class="set-toggle"><div><div class="tg-t">Approval workflows</div><div class="tg-s">Require my OK above the limit</div></div><span class="switch on"></span></div>
+          </div>
+
+          <div class="sec">Limits</div>
+          <div class="set-group">
+            <div class="set-field"><span class="fl">Per-transaction limit</span><input class="fi" id="railTxn" value="$2,500"></div>
+            <div class="set-field"><span class="fl">Daily limit</span><input class="fi" id="railDay" value="$10,000"></div>
+          </div>
+
+          <div class="sec">Risk threshold</div>
+          <div class="pseg" id="railRisk">
+            <button class="pseg-btn" data-r="cons">Conservative</button>
+            <button class="pseg-btn active" data-r="mod">Moderate</button>
+            <button class="pseg-btn" data-r="aggr">Aggressive</button>
+          </div>
+
+          <div class="sec">Counterparty allow-list</div>
+          <div class="set-group">
+            <div class="set-field set-static"><div class="fi-static" style="letter-spacing:0;font-size:14.5px">Coinbase</div><span class="dir yes">Allowed</span></div>
+            <div class="set-field set-static"><div class="fi-static" style="letter-spacing:0;font-size:14.5px">Figure</div><span class="dir yes">Allowed</span></div>
+            <div class="set-field set-static"><div class="fi-static" style="letter-spacing:0;font-size:14.5px">Kraken</div><span class="dir yes">Allowed</span></div>
+          </div>
+          <span class="pay-now" id="railAdd" style="display:inline-block;margin:6px 2px;">+ Add counterparty</span>
+
+          <button class="save-btn" id="railsSave" style="margin-top:14px;">Save rails</button>
+        </section>
+
+        <!-- SKILLS MARKET -->
+        <section class="pane" id="market">
+          <div class="help-top">
+            <span class="back-btn" id="marketBack">←</span>
+            <span class="help-title">Skills Market</span>
+          </div>
+          <div class="psub" style="margin:0 2px 16px;">Add new skills to your agent — it learns them instantly.</div>
+
+          <div class="pcard market-item"><div class="ph"><div class="nm">Tax-loss harvesting</div><button class="mini-btn mkt-add">Add</button></div><div class="ds">Index replication & automated rebalancing</div></div>
+          <div class="pcard market-item"><div class="ph"><div class="nm">Pay &amp; purchase</div><button class="mini-btn mkt-add">Add</button></div><div class="ds">Bills, subscriptions, travel, goods</div></div>
+          <div class="pcard market-item"><div class="ph"><div class="nm">Maximize yield</div><button class="mini-btn mkt-add">Add</button></div><div class="ds">Across approved DeFi protocols, risk-aware</div></div>
+          <div class="pcard market-item"><div class="ph"><div class="nm">Tax documents</div><span class="pill">Installed</span></div><div class="ds">Generate 1099s from transaction history</div></div>
+          <div class="pcard market-item"><div class="ph"><div class="nm">Spending insights</div><button class="mini-btn mkt-add">Add</button></div><div class="ds">Categorize and analyze your spending</div></div>
+          <div class="pcard market-item"><div class="ph"><div class="nm">Rebalance portfolio</div><button class="mini-btn mkt-add">Add</button></div><div class="ds">Keep target allocations on track</div></div>
+        </section>
+
       </div>
 
       <!-- bottom nav -->
@@ -1330,6 +1432,65 @@
       alert('Payment scheduled. (Mockup — no funds moved.)');
       document.getElementById('billPayee').value=''; document.getElementById('billAmt').value='';
     }
+  });
+
+  /* ===== Card, Rails, Skills Market, Agent ===== */
+  var cardEntry=document.getElementById('cardEntry');
+  if(cardEntry) cardEntry.addEventListener('click', function(){ showPane('card'); });
+  var cardBack=document.getElementById('cardBack');
+  if(cardBack) cardBack.addEventListener('click', function(){ showPane('borrow'); });
+  var cardReveal=document.getElementById('cardReveal');
+  if(cardReveal) cardReveal.addEventListener('click', function(){
+    var hidden = cardReveal.textContent==='Reveal';
+    var num = hidden ? '4827 5193 6604 4827' : '•••• •••• •••• 4827';
+    document.getElementById('cardFull').textContent = num;
+    document.getElementById('cardNum').textContent = num;
+    document.getElementById('cardCvv').textContent = hidden ? '418' : '•••';
+    cardReveal.textContent = hidden ? 'Hide' : 'Reveal';
+  });
+  var cardApplePay=document.getElementById('cardApplePay');
+  if(cardApplePay) cardApplePay.addEventListener('click', function(){ alert('Added to Apple Pay. (Mockup)'); });
+
+  var railsBtn=document.getElementById('railsBtn');
+  if(railsBtn) railsBtn.addEventListener('click', function(){ showPane('rails'); });
+  var railsBack=document.getElementById('railsBack');
+  if(railsBack) railsBack.addEventListener('click', function(){ showPane('agent'); });
+  var railRisk=document.getElementById('railRisk');
+  if(railRisk) railRisk.querySelectorAll('.pseg-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      railRisk.querySelectorAll('.pseg-btn').forEach(function(x){ x.classList.remove('active'); });
+      b.classList.add('active');
+    });
+  });
+  var railsSave=document.getElementById('railsSave');
+  if(railsSave) railsSave.addEventListener('click', function(){ alert('Rails saved — your agent will stay inside them. (Mockup)'); showPane('agent'); });
+  var railAdd=document.getElementById('railAdd');
+  if(railAdd) railAdd.addEventListener('click', function(){ alert('Add a counterparty to your allow-list. (Mockup)'); });
+
+  var marketBtn=document.getElementById('marketBtn');
+  if(marketBtn) marketBtn.addEventListener('click', function(){ showPane('market'); });
+  var marketBack=document.getElementById('marketBack');
+  if(marketBack) marketBack.addEventListener('click', function(){ showPane('agent'); });
+  document.querySelectorAll('.mkt-add').forEach(function(b){
+    b.addEventListener('click', function(){ b.outerHTML='<span class="pill">Installed</span>'; });
+  });
+
+  document.querySelectorAll('.skill-chip').forEach(function(ch){
+    ch.addEventListener('click', function(){
+      var txt = ch.textContent.replace(/[★→]/g,'').trim();
+      var input = document.querySelector('#agent .ask-input');
+      if(input){ input.value = txt; input.focus(); }
+    });
+  });
+
+  document.querySelectorAll('.ask-send').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var box = btn.closest('.ask-box'); var input = box ? box.querySelector('.ask-input') : null;
+      var v = input ? input.value.trim() : '';
+      if(!v){ if(input) input.focus(); return; }
+      alert('Sent to your agent:\n“'+v+'”\n\n(Mockup — no action taken.)');
+      input.value='';
+    });
   });
 
   /* ===== Securities Predictions ===== */
