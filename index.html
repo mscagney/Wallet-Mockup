@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<script type="application/json" id="cowork-artifact-meta">
+{
+  "name": "Wallet Co Mockup",
+  "schemaVersion": 1,
+  "description": "Clickable mobile mockup of the Wallet Co retail fintech app. Dark theme from the pitch deck, simplicity-first: one always-earning cash balance as the hero, with Borrow, Trade, and Agent tabs. Balance accrues yield live. Built to react to and iterate on."
+}
+</script>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -371,6 +378,92 @@
   .proj-amt { color: #6ee7b7 !important; font-weight: 680 !important; font-variant-numeric: tabular-nums; }
   .disclosure { font-size: 11px; color: #6b7891; line-height: 1.5; margin-top: 12px; text-align: center; }
 
+  /* banking: my loans */
+  .loan-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px; padding: 16px; margin-bottom: 6px;
+  }
+  .loan-name { font-size: 16px; font-weight: 650; }
+  .loan-summary { font-size: 15px; color: #e8eef6; margin-top: 7px; }
+  .loan-summary .rate { color: #8a97ab; }
+  .loan-summary b { font-weight: 680; }
+  .loan-avail { color: #6ee7b7; font-size: 13px; }
+  .loan-next { font-size: 13px; color: #8a97ab; margin-top: 10px; }
+  .loan-next b { color: #e8eef6; font-weight: 650; }
+  .pay-now { color: #67e8f9; font-weight: 700; cursor: pointer; }
+  .pay-now:hover { text-decoration: underline; }
+
+  /* securities predictions */
+  .pos {
+    padding: 14px 2px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .pos:last-child { border-bottom: none; }
+  .pos-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .pos-q { font-size: 14.5px; font-weight: 600; line-height: 1.35; }
+  .pos-bot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 9px; }
+  .pos-meta { font-size: 12.5px; color: #8a97ab; margin: 0; }
+  .pos-meta b { color: #e8eef6; font-weight: 600; }
+  .pos-trade {
+    background: rgba(34,211,238,0.12); border: 1px solid rgba(34,211,238,0.28); color: #67e8f9;
+    font-family: inherit; font-size: 12.5px; font-weight: 650; padding: 7px 16px; border-radius: 10px;
+    cursor: pointer; flex-shrink: 0; transition: background .2s;
+  }
+  .pos-trade:hover { background: rgba(34,211,238,0.2); }
+  .dir { font-size: 11px; font-weight: 700; padding: 4px 11px; border-radius: 999px; white-space: nowrap; flex-shrink: 0; }
+  .dir.yes { color: #6ee7b7; background: rgba(52,211,153,0.14); }
+  .dir.no { color: #fca5a5; background: rgba(248,113,113,0.14); }
+
+  .ticker-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 10px; }
+  .ticker-row::-webkit-scrollbar { display: none; }
+  .tk-chip {
+    flex: 0 0 auto; padding: 8px 14px; border-radius: 999px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.07);
+    font-size: 13px; font-weight: 600; color: #cdd6e3; cursor: pointer; white-space: nowrap;
+  }
+  .tk-chip.active { background: rgba(34,211,238,0.16); border-color: rgba(34,211,238,0.3); color: #67e8f9; }
+  .mkt-ctx { font-size: 12.5px; color: #8a97ab; margin: 2px 2px 12px; }
+  .mkt-ctx b { color: #e8eef6; font-weight: 650; }
+
+  .pseg { display: flex; gap: 4px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 3px; margin-bottom: 14px; }
+  .pseg-btn { flex: 1; border: none; background: transparent; color: #8a97ab; font-family: inherit; font-size: 12px; font-weight: 600; padding: 8px 0; border-radius: 9px; cursor: pointer; }
+  .pseg-btn.active { background: rgba(34,211,238,0.16); color: #67e8f9; }
+
+  .book-head, .book-row { display: grid; grid-template-columns: 58px 1fr 1fr; gap: 8px; align-items: center; }
+  .book-head { padding: 0 8px 8px 0; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #6b7891; font-weight: 600; }
+  .book-head .bh-yes, .book-head .bh-no { text-align: center; }
+  #bookBody {
+    max-height: 232px; overflow-y: auto; padding-right: 6px;
+    border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  #bookBody::-webkit-scrollbar { width: 5px; }
+  #bookBody::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.14); border-radius: 3px; }
+  .book-row { padding: 5px 0; }
+  .bk-strike { font-size: 14px; font-weight: 650; }
+  .bk-cell { padding: 9px 4px; border-radius: 10px; text-align: center; cursor: pointer; transition: filter .15s; }
+  .bk-cell:active { filter: brightness(1.25); }
+  .bk-yes { background: rgba(52,211,153,0.11); }
+  .bk-no { background: rgba(248,113,113,0.11); }
+  .bk-cell .px { display: block; font-size: 13.5px; font-weight: 700; }
+  .bk-yes .px { color: #6ee7b7; }
+  .bk-no .px { color: #fca5a5; }
+  .bk-cell .sz { display: block; font-size: 10px; color: #8a97ab; margin-top: 1px; }
+  .book-note { font-size: 11px; color: #6b7891; text-align: center; margin: 10px 0 2px; }
+
+  .ord-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .ord-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 2px; }
+  .ord-f .fl { display: block; font-size: 11px; color: #8a97ab; font-weight: 550; margin-bottom: 6px; }
+  .ord-in {
+    width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 12px; color: #e8eef6; font-family: inherit; font-size: 15px; outline: none;
+  }
+  .ord-in:focus { border-color: rgba(34,211,238,0.35); }
+  .dir-toggle { display: flex; gap: 8px; margin: 14px 0 12px; }
+  .dir-btn { flex: 1; padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: transparent; color: #8a97ab; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer; }
+  .dir-btn.sel-yes { background: rgba(52,211,153,0.16); border-color: rgba(52,211,153,0.4); color: #6ee7b7; }
+  .dir-btn.sel-no { background: rgba(248,113,113,0.16); border-color: rgba(248,113,113,0.4); color: #fca5a5; }
+  .cost-line { font-size: 12.5px; color: #8a97ab; text-align: center; margin: 14px 0 4px; }
+  .cost-line b { color: #e8eef6; font-weight: 650; }
+
   /* earn risk tags */
   .risk { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
   .risk.low { color: #6ee7b7; background: rgba(52,211,153,0.12); }
@@ -527,7 +620,7 @@
             </div>
             <div class="hdr">Loans</div>
             <div class="list">
-              <div class="hrow"><div class="avatar">🏠</div><div class="mid"><div class="nm">Figure HELOC</div><div class="mt">8.7% APR</div></div><div class="amt neg">−$35,000.00</div></div>
+              <div class="hrow"><div class="avatar">🏠</div><div class="mid"><div class="nm">Figure HELOC</div><div class="mt">8.7% APR</div></div><div class="amt neg">$35,000.00</div></div>
             </div>
           </div>
 
@@ -536,9 +629,35 @@
         <!-- BANK -->
         <section class="pane" id="bank">
           <div class="ptitle">Bank</div>
-          <div class="psub">Full-service banking — direct deposit, P2P, card, bill pay & wires.</div>
-          <div class="ycard">
-            <div class="sub" style="margin:0">This page is next on our list — you'll guide the layout and features. Placeholder for now.</div>
+
+          <div class="hero" style="padding:8px 2px 4px;">
+            <div class="label">Available balance</div>
+            <div class="bal">$<span>12,840</span><span class="cents">.00</span></div>
+          </div>
+
+          <div class="sec">Cash sweep</div>
+          <div class="set-group">
+            <div class="set-toggle">
+              <div><div class="tg-t">Sweep cash to $YLDS</div><div class="tg-s">Idle cash auto-earns 3.25% APR · 24×7 liquidity</div></div>
+              <span class="switch on"></span>
+            </div>
+          </div>
+
+          <div class="sec">My Loans</div>
+          <div class="loan-card">
+            <div class="loan-name">Figure HELOC</div>
+            <div class="loan-summary"><span class="rate">8%</span> · <b>$35,000</b> <span class="loan-avail">($15,000 available)</span> · <span class="pay-now" id="drawMore">Draw more</span></div>
+            <div class="loan-next">Next payment <b>$3,500</b> · 7/1 · <span class="pay-now" id="payLoan">Pay now</span></div>
+          </div>
+
+          <div class="sec">Set up</div>
+          <div class="pcard" id="bankDD">
+            <div class="ph"><div class="nm">Direct deposit</div><span class="arrow">→</span></div>
+            <div class="ds">Route your paycheck to Wallet Co · every pay period</div>
+          </div>
+          <div class="pcard" id="bankBill">
+            <div class="ph"><div class="nm">Bill payment</div><span class="arrow">→</span></div>
+            <div class="ds">Pay billers or people · one-time or recurring</div>
           </div>
         </section>
 
@@ -568,7 +687,11 @@
         <!-- TRADE -->
         <section class="pane" id="trade">
           <div class="ptitle">Trade</div>
-          <div class="psub">Stocks, crypto, and real-world assets — one account.</div>
+          <div class="psub">Securities predictions, stocks, and crypto — one account.</div>
+          <div class="pcard" id="predCard">
+            <div class="ph"><div class="nm">Securities Predictions</div><span class="arrow">→</span></div>
+            <div class="ds">Bet on outcomes — no commissions</div>
+          </div>
           <div class="pcard">
             <div class="ph"><div class="nm">Stocks</div><span class="arrow">→</span></div>
             <div class="ds">OPEN + new venues · fractional</div>
@@ -576,10 +699,6 @@
           <div class="pcard">
             <div class="ph"><div class="nm">Crypto</div><span class="arrow">→</span></div>
             <div class="ds">DEX & CEX routing for best price</div>
-          </div>
-          <div class="pcard">
-            <div class="ph"><div class="nm">Real-world assets</div><span class="arrow">→</span></div>
-            <div class="ds">Figure LOB & partners · Treasuries, private credit</div>
           </div>
           <div class="ycard" style="margin-top:6px">
             <div class="sub" style="margin:0">✓ KYC passport · ✓ full history · ✓ compliance built in</div>
@@ -782,7 +901,7 @@
           </div>
 
           <div class="sec">Automate</div>
-          <div class="pcard">
+          <div class="pcard" id="addDD">
             <div class="ph"><div class="nm">Set up direct deposit</div><span class="arrow">→</span></div>
             <div class="ds">Route payroll to Wallet Co · every pay period</div>
           </div>
@@ -879,6 +998,103 @@
 
           <button class="save-btn" id="buyReview">Review purchase</button>
           <div class="disclosure">$YLDS is a registered public security. Yield is variable (SOFR − 35 bps) and not guaranteed. Review offering disclosures before investing.</div>
+        </section>
+
+        <!-- SECURITIES PREDICTIONS -->
+        <section class="pane" id="predict">
+          <div class="help-top">
+            <span class="back-btn" id="predBack">←</span>
+            <span class="help-title">Securities Predictions</span>
+          </div>
+          <div class="psub" style="margin:0 2px 16px;">Bet on outcomes — no commissions. $1 per contract, settles at $1 if you're right.</div>
+
+          <div class="sec">Your predictions</div>
+          <div id="posList"></div>
+
+          <div class="sec">Markets</div>
+          <div class="ticker-row" id="tickerRow"></div>
+          <div class="mkt-ctx" id="mktCtx"></div>
+          <div class="pseg" id="dateSeg"></div>
+
+          <div class="book-head">
+            <span>Strike</span>
+            <span class="bh-yes">Yes bid</span>
+            <span class="bh-no">No offer</span>
+          </div>
+          <div id="bookBody"></div>
+          <div class="book-note">Tap a <b style="color:#6ee7b7">Yes bid</b> to take No · tap a <b style="color:#fca5a5">No offer</b> to take Yes</div>
+
+          <div class="sec">New prediction</div>
+          <div class="ord-grid">
+            <div class="ord-f"><span class="fl">Ticker</span><div class="dd-wrap dd-block"><select class="dd dd-full" id="oTicker"></select></div></div>
+            <div class="ord-f"><span class="fl">Expiry</span><div class="dd-wrap dd-block"><select class="dd dd-full" id="oDate"></select></div></div>
+            <div class="ord-f"><span class="fl">Strike (over)</span><div class="dd-wrap dd-block"><select class="dd dd-full" id="oStrike"></select></div></div>
+          </div>
+          <div class="dir-toggle">
+            <button class="dir-btn sel-yes" id="dirYes" data-dir="yes">Yes</button>
+            <button class="dir-btn" id="dirNo" data-dir="no">No</button>
+          </div>
+          <div class="ord-grid2">
+            <div class="ord-f"><span class="fl">Yes price (¢)</span><input class="ord-in" id="oPrice" inputmode="numeric" placeholder="50"></div>
+            <div class="ord-f"><span class="fl">Size ($1 units)</span><input class="ord-in" id="oSize" inputmode="numeric" placeholder="1,000"></div>
+          </div>
+          <div class="cost-line" id="costLine">Enter price &amp; size</div>
+          <button class="save-btn" id="placeOrder">Place order</button>
+          <div class="disclosure">Event contracts settle to $1 if the outcome occurs, $0 if not. Markets are peer-to-peer; prices reflect other users' orders. No commissions.</div>
+        </section>
+
+        <!-- DIRECT DEPOSIT -->
+        <section class="pane" id="directDeposit">
+          <div class="help-top">
+            <span class="back-btn" id="ddBack">←</span>
+            <span class="help-title">Direct deposit</span>
+          </div>
+          <div class="psub" style="margin:0 2px 16px;">Share these details with your employer or payroll provider. Deposits auto-sweep to $YLDS the moment they land.</div>
+
+          <div class="sec">Your account details</div>
+          <div class="set-group">
+            <div class="set-field set-static"><div><span class="fl">Account holder</span><div class="fi-static" style="letter-spacing:0">Mike Cagney</div></div></div>
+            <div class="set-field set-static"><div><span class="fl">Routing number</span><div class="fi-static" style="letter-spacing:1px">021000021</div></div><button class="mini-btn" data-copy="021000021">Copy</button></div>
+            <div class="set-field set-static"><div><span class="fl">Account number</span><div class="fi-static" style="letter-spacing:1px">4738 2910 55</div></div><button class="mini-btn" data-copy="4738291055">Copy</button></div>
+            <div class="set-field set-static"><div><span class="fl">Account type</span><div class="fi-static" style="letter-spacing:0">Checking</div></div></div>
+          </div>
+
+          <div class="sec">How much to deposit</div>
+          <div class="dd-wrap dd-block">
+            <select class="dd dd-full" id="ddAmount">
+              <option>Entire paycheck</option>
+              <option>A fixed amount</option>
+              <option>A percentage</option>
+            </select>
+          </div>
+
+          <button class="save-btn" id="ddAuto">Connect employer automatically</button>
+          <button class="signout-btn" id="ddForm" style="border-color:rgba(255,255,255,0.12);color:#cdd6e3;margin-top:10px;">Email me a pre-filled form</button>
+          <div class="disclosure">Direct deposits often arrive 1–2 days faster than a paper check, and idle cash earns 3.25% APR in $YLDS automatically.</div>
+        </section>
+
+        <!-- BILL PAY -->
+        <section class="pane" id="billPay">
+          <div class="help-top">
+            <span class="back-btn" id="billBack">←</span>
+            <span class="help-title">Bill pay</span>
+          </div>
+          <div class="psub" style="margin:0 2px 16px;">Pay billers or people, one-time or recurring — straight from your yield-bearing balance.</div>
+
+          <div class="sec">Scheduled</div>
+          <div class="list">
+            <div class="item"><div class="avatar">⚡</div><div class="mid"><div class="nm">NV Energy</div><div class="mt">Monthly · next Jul 1</div></div><div class="amt">$142.00</div></div>
+            <div class="item"><div class="avatar">🏠</div><div class="mid"><div class="nm">Rent — Greystar</div><div class="mt">Monthly · next Jul 1</div></div><div class="amt">$2,400.00</div></div>
+            <div class="item"><div class="avatar">📱</div><div class="mid"><div class="nm">Verizon</div><div class="mt">Monthly · next Jul 5</div></div><div class="amt">$95.00</div></div>
+          </div>
+
+          <div class="sec">New payment</div>
+          <div class="ord-f" style="margin-bottom:12px"><span class="fl">Payee</span><input class="ord-in" id="billPayee" placeholder="Biller or person"></div>
+          <div class="ord-grid2">
+            <div class="ord-f"><span class="fl">Amount</span><input class="ord-in" id="billAmt" inputmode="decimal" placeholder="$0.00"></div>
+            <div class="ord-f"><span class="fl">Frequency</span><div class="dd-wrap dd-block"><select class="dd dd-full" id="billFreq"><option>One-time</option><option>Monthly</option><option>Weekly</option></select></div></div>
+          </div>
+          <button class="save-btn" id="billSchedule" style="margin-top:16px;">Schedule payment</button>
         </section>
 
       </div>
@@ -1063,6 +1279,244 @@
     document.getElementById('clock').textContent = h + ':' + m;
   }
   clock(); setInterval(clock, 10000);
+
+  /* ===== Banking: direct deposit & bill pay ===== */
+  var ddReturn = 'bank';
+  var bankDD = document.getElementById('bankDD');
+  if (bankDD) bankDD.addEventListener('click', function(){ ddReturn='bank'; showPane('directDeposit'); });
+  var addDD = document.getElementById('addDD');
+  if (addDD) addDD.addEventListener('click', function(){ ddReturn='add'; showPane('directDeposit'); });
+  var ddBack = document.getElementById('ddBack');
+  if (ddBack) ddBack.addEventListener('click', function(){ showPane(ddReturn); });
+
+  var drawMore = document.getElementById('drawMore');
+  if (drawMore) drawMore.addEventListener('click', function(){
+    if (confirm('Draw from Figure HELOC\n\nUp to $15,000 available at 8% APR\nDeposited to your Wallet Co balance\n\nContinue?')) {
+      alert('Draw request submitted. (Mockup — no funds moved.)');
+    }
+  });
+
+  var payLoan = document.getElementById('payLoan');
+  if (payLoan) payLoan.addEventListener('click', function(){
+    if (confirm('Make HELOC payment\n\nFigure HELOC\n$3,500.00 · due Jul 1\nFrom: Wallet Co balance\n\nConfirm payment?')) {
+      alert('Payment of $3,500.00 scheduled. (Mockup — no funds moved.)');
+    }
+  });
+
+  var bankBill = document.getElementById('bankBill');
+  if (bankBill) bankBill.addEventListener('click', function(){ showPane('billPay'); });
+  var billBack = document.getElementById('billBack');
+  if (billBack) billBack.addEventListener('click', function(){ showPane('bank'); });
+
+  document.querySelectorAll('#directDeposit [data-copy]').forEach(function(b){
+    b.addEventListener('click', function(){
+      if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.copy).catch(function(){});
+      var o=b.textContent; b.textContent='Copied'; setTimeout(function(){ b.textContent=o; }, 1200);
+    });
+  });
+  var ddAuto = document.getElementById('ddAuto');
+  if (ddAuto) ddAuto.addEventListener('click', function(){ alert('Searching for your employer to connect payroll… (Mockup)'); });
+  var ddForm = document.getElementById('ddForm');
+  if (ddForm) ddForm.addEventListener('click', function(){ alert('Pre-filled direct deposit form sent to mcagney@gmail.com. (Mockup)'); });
+
+  var billSchedule = document.getElementById('billSchedule');
+  if (billSchedule) billSchedule.addEventListener('click', function(){
+    var payee=(document.getElementById('billPayee').value||'').trim();
+    var amt=parseFloat((document.getElementById('billAmt').value||'').replace(/[^0-9.]/g,''))||0;
+    var freq=document.getElementById('billFreq').value;
+    if(!payee){ alert('Enter a payee.'); return; }
+    if(amt<=0){ alert('Enter an amount.'); return; }
+    if(confirm('Schedule payment\n\nPay '+payee+'\n$'+amt.toFixed(2)+' · '+freq+'\nFrom: Wallet Co balance\n\nConfirm?')){
+      alert('Payment scheduled. (Mockup — no funds moved.)');
+      document.getElementById('billPayee').value=''; document.getElementById('billAmt').value='';
+    }
+  });
+
+  /* ===== Securities Predictions ===== */
+  var predCard = document.getElementById('predCard');
+  if (predCard) predCard.addEventListener('click', function(){ showPane('predict'); });
+  var predBack = document.getElementById('predBack');
+  if (predBack) predBack.addEventListener('click', function(){ showPane('trade');
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.pane === 'trade'); });
+  });
+
+  var TICKERS = [
+    {s:'FIGR',n:'Figure',px:92},{s:'AAPL',n:'Apple',px:236},{s:'NVDA',n:'Nvidia',px:172},
+    {s:'TSLA',n:'Tesla',px:248},{s:'MSFT',n:'Microsoft',px:432},{s:'AMZN',n:'Amazon',px:214},
+    {s:'GOOGL',n:'Alphabet',px:176},{s:'META',n:'Meta',px:584},{s:'AMD',n:'AMD',px:162},
+    {s:'COIN',n:'Coinbase',px:242},{s:'HOOD',n:'Robinhood',px:76},{s:'JPM',n:'JPMorgan',px:252},
+    {s:'NFLX',n:'Netflix',px:905},{s:'DIS',n:'Disney',px:112},{s:'BA',n:'Boeing',px:182},
+    {s:'SOFI',n:'SoFi',px:14},{s:'PLTR',n:'Palantir',px:132},{s:'UBER',n:'Uber',px:73},
+    {s:'SHOP',n:'Shopify',px:112},{s:'CRM',n:'Salesforce',px:265}
+  ];
+  var DATES = [
+    {k:'sep26',short:"Sep '26",full:'September 30, 2026'},
+    {k:'dec26',short:"Dec '26",full:'December 31, 2026'},
+    {k:'mar27',short:"Mar '27",full:'March 31, 2027'},
+    {k:'jun27',short:"Jun '27",full:'June 30, 2027'}
+  ];
+  var TMAP = {}; TICKERS.forEach(function(t){ TMAP[t.s] = t; });
+  var DMAP = {}; DATES.forEach(function(d){ DMAP[d.k] = d; });
+
+  // deterministic pseudo-random so the book is stable across renders
+  function seed(str){ var h=2166136261; for(var i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619); } return (h>>>0); }
+  function sizeFor(key){ return 500 + (seed(key)%9)*500; }            // 500..4500
+  function strikesFor(px){
+    var c = Math.round(px/5)*5, out = [];
+    for (var i=-6;i<=6;i++){ var k=c+i*5; if (k>0) out.push(k); }
+    return out;
+  }
+  // yes price = P(close > strike) via logistic on distance, scaled by horizon
+  function yesMid(px,strike,dIdx){
+    var vol = px*0.09*(1+dIdx*0.18);
+    var p = 1/(1+Math.exp(-(px-strike)/vol));
+    return Math.min(0.97, Math.max(0.03, p));
+  }
+  function quoteFor(sym,strike,dIdx){
+    var t=TMAP[sym], mid=yesMid(t.px,strike,dIdx);
+    var sp=0.02+(seed(sym+strike+dIdx)%3)*0.01;       // 2-4c spread
+    var bid=Math.max(0.01, Math.round((mid-sp/2)*100)/100);
+    var ask=Math.min(0.99, Math.round((mid+sp/2)*100)/100);
+    if (ask<=bid) ask=Math.min(0.99,bid+0.02);
+    return {bid:bid, ask:ask,
+            bidSz:sizeFor(sym+strike+dIdx+'b'), askSz:sizeFor(sym+strike+dIdx+'a')};
+  }
+  function c(n){ return (n).toFixed(2); }              // 0.50
+  function comma(n){ return n.toLocaleString('en-US'); }
+  function usd(n){ return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+  // positions
+  var POS = [
+    {sym:'FIGR',strike:100,date:'dec26',dir:'yes',units:5000},
+    {sym:'NVDA',strike:200,date:'sep26',dir:'no',units:3000},
+    {sym:'AAPL',strike:250,date:'mar27',dir:'yes',units:1000}
+  ];
+  function renderPositions(){
+    var el=document.getElementById('posList'); if(!el) return;
+    el.innerHTML = POS.map(function(p,i){
+      var dIdx=DATES.findIndex(function(d){return d.k===p.date;});
+      var q=quoteFor(p.sym,p.strike,dIdx);
+      var mid=(q.bid+q.ask)/2, val=p.units*(p.dir==='yes'?mid:(1-mid));
+      return '<div class="pos"><div class="pos-top"><div class="pos-q">'+p.sym+' over $'+p.strike+
+        '<br><span style="font-weight:500;color:#8a97ab;font-size:12.5px">by '+DMAP[p.date].full+'</span></div>'+
+        '<span class="dir '+p.dir+'">'+p.dir.toUpperCase()+'</span></div>'+
+        '<div class="pos-bot"><div class="pos-meta"><b>'+comma(p.units)+'</b> units · Mkt '+c(q.bid)+' / '+c(q.ask)+
+        ' · Value <b>'+usd(val)+'</b></div>'+
+        '<button class="pos-trade" data-i="'+i+'">Trade</button></div></div>';
+    }).join('');
+    el.querySelectorAll('.pos-trade').forEach(function(b){
+      b.addEventListener('click', function(){ tradePosition(POS[+b.dataset.i]); });
+    });
+  }
+  function tradePosition(p){
+    curSym=p.sym; curDateIdx=DATES.findIndex(function(d){return d.k===p.date;});
+    renderTickers(); renderDateSeg(); renderBook();
+    if(oTicker){ oTicker.value=p.sym; refreshStrikes(); oDate.value=p.date; oStrike.value=p.strike; setDir(p.dir); }
+    var ctx=document.getElementById('mktCtx'); if(ctx) ctx.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  // markets explorer state
+  var curSym='FIGR', curDateIdx=1;
+  function renderTickers(){
+    var el=document.getElementById('tickerRow'); if(!el) return;
+    el.innerHTML = TICKERS.map(function(t){
+      return '<div class="tk-chip'+(t.s===curSym?' active':'')+'" data-sym="'+t.s+'">'+t.s+'</div>';
+    }).join('');
+    el.querySelectorAll('.tk-chip').forEach(function(ch){
+      ch.addEventListener('click', function(){ curSym=ch.dataset.sym; renderTickers(); renderBook(); });
+    });
+  }
+  function renderDateSeg(){
+    var el=document.getElementById('dateSeg'); if(!el) return;
+    el.innerHTML = DATES.map(function(d,i){
+      return '<button class="pseg-btn'+(i===curDateIdx?' active':'')+'" data-i="'+i+'">'+d.short+'</button>';
+    }).join('');
+    el.querySelectorAll('.pseg-btn').forEach(function(b){
+      b.addEventListener('click', function(){ curDateIdx=+b.dataset.i; renderDateSeg(); renderBook(); });
+    });
+  }
+  function renderBook(){
+    var t=TMAP[curSym], d=DATES[curDateIdx];
+    var ctx=document.getElementById('mktCtx');
+    if(ctx) ctx.innerHTML='<b>'+t.s+'</b> · '+t.n+' · $'+t.px.toFixed(2)+' now · will it close <b>over</b> by '+d.short+'?';
+    var body=document.getElementById('bookBody'); if(!body) return;
+    body.innerHTML = strikesFor(t.px).map(function(k){
+      var q=quoteFor(t.s,k,curDateIdx);
+      return '<div class="book-row">'+
+        '<div class="bk-strike">$'+k+'</div>'+
+        '<div class="bk-cell bk-yes" data-act="hit" data-k="'+k+'" data-px="'+c(q.bid)+'" data-sz="'+q.bidSz+'"><span class="px">'+c(q.bid)+'</span><span class="sz">×'+comma(q.bidSz)+'</span></div>'+
+        '<div class="bk-cell bk-no" data-act="lift" data-k="'+k+'" data-px="'+c(q.ask)+'" data-sz="'+q.askSz+'"><span class="px">'+c(q.ask)+'</span><span class="sz">×'+comma(q.askSz)+'</span></div>'+
+      '</div>';
+    }).join('');
+    body.querySelectorAll('.bk-cell').forEach(function(cell){
+      cell.addEventListener('click', function(){ quickTrade(cell); });
+    });
+  }
+  function quickTrade(cell){
+    var k=cell.dataset.k, px=parseFloat(cell.dataset.px), sz=+cell.dataset.sz, t=TMAP[curSym], d=DATES[curDateIdx];
+    var head=curSym+' over $'+k+' by '+d.short;
+    var msg;
+    if (cell.dataset.act==='lift'){
+      msg='Lift offer — take YES\n\n'+head+'\nBuy '+comma(sz)+' YES @ '+px.toFixed(2)+
+          '\nCost: '+usd(px*sz)+'\nMax payout if YES: '+usd(sz)+'\n\nConfirm?';
+    } else {
+      msg='Hit bid — take NO\n\n'+head+'\nSell '+comma(sz)+' YES @ '+px.toFixed(2)+
+          '\nYou receive: '+usd(px*sz)+'\nMax payout if NO: '+usd(sz)+'\n\nConfirm?';
+    }
+    if (confirm(msg)) alert('Filled. (Mockup — no funds moved.)');
+  }
+
+  // order entry
+  function fillSelect(el, items){ el.innerHTML=items.map(function(o){return '<option value="'+o.v+'">'+o.t+'</option>';}).join(''); }
+  var oTicker=document.getElementById('oTicker'), oDate=document.getElementById('oDate'),
+      oStrike=document.getElementById('oStrike'), oPrice=document.getElementById('oPrice'),
+      oSize=document.getElementById('oSize'); var oDir='yes';
+  function initOrder(){
+    if(!oTicker) return;
+    fillSelect(oTicker, TICKERS.map(function(t){return {v:t.s,t:t.s+' · '+t.n};}));
+    fillSelect(oDate, DATES.map(function(d){return {v:d.k,t:d.full};}));
+    oDate.selectedIndex=1;
+    refreshStrikes();
+    oTicker.addEventListener('change', refreshStrikes);
+    [oPrice,oSize].forEach(function(i){ i.addEventListener('input', costLine); });
+    document.getElementById('dirYes').addEventListener('click', function(){ setDir('yes'); });
+    document.getElementById('dirNo').addEventListener('click', function(){ setDir('no'); });
+    document.getElementById('placeOrder').addEventListener('click', placeOrder);
+  }
+  function refreshStrikes(){
+    var t=TMAP[oTicker.value];
+    fillSelect(oStrike, strikesFor(t.px).map(function(k){return {v:k,t:'$'+k};}));
+    oStrike.value = Math.round(t.px/5)*5;
+    costLine();
+  }
+  function setDir(d){
+    oDir=d;
+    document.getElementById('dirYes').classList.toggle('sel-yes', d==='yes');
+    document.getElementById('dirNo').classList.toggle('sel-no', d==='no');
+    costLine();
+  }
+  function costLine(){
+    var p=parseInt((oPrice.value||'').replace(/[^0-9]/g,''),10);
+    var s=parseInt((oSize.value||'').replace(/[^0-9]/g,''),10);
+    var el=document.getElementById('costLine');
+    if(!p||!s||p<1||p>99){ el.innerHTML='Enter Yes price (1–99¢) &amp; size'; return; }
+    var per = oDir==='yes' ? p : (100-p);
+    el.innerHTML = (oDir==='yes'?'Pay':'Post')+' <b>'+per+'¢</b> × '+comma(s)+' = <b>'+usd(per*s/100)+
+      '</b> · wins <b>'+usd(s)+'</b> if '+oDir.toUpperCase();
+  }
+  function placeOrder(){
+    var p=parseInt((oPrice.value||'').replace(/[^0-9]/g,''),10);
+    var s=parseInt((oSize.value||'').replace(/[^0-9]/g,''),10);
+    if(!p||p<1||p>99){ alert('Enter a Yes price between 1 and 99¢.'); return; }
+    if(!s||s<1){ alert('Enter a size (number of $1 units).'); return; }
+    var t=TMAP[oTicker.value], d=DMAP[oDate.value], per=oDir==='yes'?p:(100-p);
+    var msg='Place order\n\n'+t.s+' over $'+oStrike.value+' by '+d.short+'\nSide: '+oDir.toUpperCase()+
+            '\n'+(oDir==='yes'?'Bid':'Offer')+' '+p+'¢ · '+comma(s)+' units'+
+            '\n'+(oDir==='yes'?'Pay':'Post')+' '+usd(per*s/100)+' · wins '+usd(s)+' if '+oDir.toUpperCase()+'\n\nSubmit to the market?';
+    if(confirm(msg)){ alert('Order submitted to the market. (Mockup — no funds moved.)'); oPrice.value=''; oSize.value=''; costLine(); }
+  }
+
+  renderPositions(); renderTickers(); renderDateSeg(); renderBook(); initOrder();
 </script>
 </body>
 </html>
