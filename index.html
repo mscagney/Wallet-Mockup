@@ -1325,23 +1325,27 @@
     });
   });
 
-  // live-earning account value
+  // live-earning account value (interest accrues in lockstep with the balance)
   var base = 64700.00;
-  var perTick = 0.0067;      // visible accrual, feels alive
+  var perTick = 0.0009;      // gentle, slow accrual
+  var earnedBase = { '24h': 13.07, '7d': 91.51, 'month': 397.67 };
+  var earnedVal = earnedBase['24h'];
   function render(){
     base += perTick;
+    earnedVal += perTick;    // earned moves with the balance
     var d = Math.floor(base);
-    var c = Math.round((base - d) * 100);
+    var c = Math.floor((base - d) * 100);
     document.getElementById('dollars').textContent = d.toLocaleString('en-US');
     document.getElementById('cents').textContent = String(c).padStart(2,'0');
+    document.getElementById('earnedAmt').textContent = '+$' + earnedVal.toFixed(2);
   }
-  setInterval(render, 900);
+  setInterval(render, 1200);
 
   // earned-in-period selector
   // blended: $57,500 @ 3.68% + $33,200 @ 8.00% = $4,772/yr ≈ $13.07/day
-  var earned = { '24h': 13.07, '7d': 91.51, 'month': 397.67 };
   document.getElementById('periodDd').addEventListener('change', function(){
-    document.getElementById('earnedAmt').textContent = '+$' + earned[this.value].toFixed(2);
+    earnedVal = earnedBase[this.value];
+    document.getElementById('earnedAmt').textContent = '+$' + earnedVal.toFixed(2);
   });
 
   // help screen: open from "?" , return via back arrow
