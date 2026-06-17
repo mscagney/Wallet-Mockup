@@ -336,6 +336,7 @@
 
   .set-static { display: flex; align-items: center; justify-content: space-between; }
   .fi-static { font-size: 15px; color: #e8eef6; letter-spacing: 2px; }
+  .fi-static.wallet-addr { letter-spacing: .5px; font-variant-numeric: tabular-nums; }
   .mini-btn {
     background: rgba(34,211,238,0.12); border: 1px solid rgba(34,211,238,0.28); color: #67e8f9;
     font-family: inherit; font-size: 12.5px; font-weight: 600; padding: 7px 14px; border-radius: 10px; cursor: pointer;
@@ -854,6 +855,12 @@
               <label class="set-field" style="max-width:74px"><span class="fl">State</span><input class="fi" type="text" value="NV"></label>
               <label class="set-field" style="max-width:96px"><span class="fl">ZIP</span><input class="fi" type="text" inputmode="numeric" value="89135"></label>
             </div>
+          </div>
+
+          <div class="sec">Blockchain wallet</div>
+          <div class="set-group">
+            <div class="set-field set-static"><div style="min-width:0;flex:1"><span class="fl">Wallet address</span><div class="fi-static wallet-addr">0x7A3f…9C21</div></div><button class="mini-btn" data-copy="0x7A3f4E8b2D1c9A0f6B5e3D8c7A2f1E0d4C5b9C21">Copy</button></div>
+            <div class="set-field set-static"><div><span class="fl">Network</span><div class="fi-static" style="letter-spacing:0">Provenance · Ethereum · Base · Solana</div></div></div>
           </div>
 
           <div class="sec">Security</div>
@@ -1678,7 +1685,7 @@
     if(confirm('Cancel Democratized Prime position\n\nFigure HELOC pool · $33,200.00 · 8.00% yield\nFunds return to your cash balance.\n\nConfirm?')) alert('Position cancelled. (Mockup — no funds moved.)');
   });
 
-  document.querySelectorAll('#directDeposit [data-copy]').forEach(function(b){
+  document.querySelectorAll('[data-copy]').forEach(function(b){
     b.addEventListener('click', function(){
       if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.copy).catch(function(){});
       var o=b.textContent; b.textContent='Copied'; setTimeout(function(){ b.textContent=o; }, 1200);
