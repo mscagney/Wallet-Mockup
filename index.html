@@ -404,6 +404,25 @@
   .pay-now { color: #67e8f9; font-weight: 700; cursor: pointer; }
   .pay-now:hover { text-decoration: underline; }
 
+  /* mobile check capture */
+  .check-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .check-tile {
+    aspect-ratio: 3/2; border: 1.5px dashed rgba(34,211,238,0.35); border-radius: 16px;
+    background: rgba(34,211,238,0.06); display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; font-size: 12.5px; color: #8a97ab; font-weight: 550; cursor: pointer; transition: background .2s;
+  }
+  .check-tile:hover { background: rgba(34,211,238,0.12); }
+  .check-tile .ct-ic { font-size: 24px; }
+
+  /* plaid flow */
+  .plaid-step { display: none; }
+  .plaid-step.active { display: block; }
+  .plaid-hero { text-align: center; padding: 24px 8px 20px; }
+  .plaid-lock { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 16px; background: rgba(52,211,153,0.14); border: 1px solid rgba(52,211,153,0.3); display: flex; align-items: center; justify-content: center; font-size: 26px; }
+  .plaid-h { font-size: 19px; font-weight: 680; letter-spacing: -0.02em; }
+  .plaid-p { font-size: 13px; color: #8a97ab; margin-top: 10px; line-height: 1.55; }
+  .plaid-bank, .plaid-acct { margin-bottom: 10px; }
+
   /* card screen */
   .card-face {
     border-radius: 20px; padding: 22px; color: #06121f; min-height: 188px;
@@ -1049,6 +1068,124 @@
           <div class="disclosure">Interest accrues at 8% APR on your outstanding HELOC balance.</div>
         </section>
 
+        <!-- ADD · DEBIT CARD -->
+        <section class="pane" id="debitFlow">
+          <div class="help-top">
+            <span class="back-btn" id="debitBack">←</span>
+            <span class="help-title">Add with debit card</span>
+          </div>
+          <div class="sec">Card details</div>
+          <div class="set-group">
+            <label class="set-field"><span class="fl">Card number</span><input class="fi" id="dcNum" inputmode="numeric" placeholder="1234 5678 9012 3456"></label>
+            <div class="set-row3">
+              <label class="set-field"><span class="fl">Expiry</span><input class="fi" id="dcExp" placeholder="MM/YY"></label>
+              <label class="set-field"><span class="fl">CVV</span><input class="fi" id="dcCvv" inputmode="numeric" placeholder="123"></label>
+            </div>
+          </div>
+          <div class="sec">Amount</div>
+          <div class="send-fields">
+            <div class="send-amt-row"><span class="send-cur">$</span><input class="send-amt" id="dcAmt" inputmode="decimal" placeholder="0.00"></div>
+            <div class="avail">Lands in your always-earning balance · fee applies</div>
+          </div>
+          <button class="save-btn" id="debitAddBtn" style="margin-top:16px;">Add money</button>
+          <div class="disclosure">Debit funds are available right away. A small fee applies.</div>
+        </section>
+
+        <!-- ADD · WIRE -->
+        <section class="pane" id="wireFlow">
+          <div class="help-top">
+            <span class="back-btn" id="wireBack">←</span>
+            <span class="help-title">Add by wire</span>
+          </div>
+          <div class="ycard" style="margin-bottom:6px;">
+            <div class="sub" style="margin:0">Share these details with your bank to wire funds in. Funds post to your balance when the wire arrives.</div>
+          </div>
+          <div class="sec">Wire instructions</div>
+          <div class="set-group">
+            <div class="set-field set-static"><div><span class="fl">Beneficiary</span><div class="fi-static" style="letter-spacing:0">Mike Cagney · Wallet Co</div></div></div>
+            <div class="set-field set-static"><div><span class="fl">Account number</span><div class="fi-static" style="letter-spacing:1px">4738 2910 55</div></div><button class="mini-btn" data-copy="4738291055">Copy</button></div>
+            <div class="set-field set-static"><div><span class="fl">Routing (ABA)</span><div class="fi-static" style="letter-spacing:1px">021000021</div></div><button class="mini-btn" data-copy="021000021">Copy</button></div>
+            <div class="set-field set-static"><div><span class="fl">SWIFT / BIC</span><div class="fi-static" style="letter-spacing:1px">WLTCUS66</div></div><button class="mini-btn" data-copy="WLTCUS66">Copy</button></div>
+            <div class="set-field set-static"><div><span class="fl">Receiving bank</span><div class="fi-static" style="letter-spacing:0">Column N.A., San Francisco, CA</div></div></div>
+            <div class="set-field set-static"><div><span class="fl">Reference / memo</span><div class="fi-static" style="letter-spacing:1px">WC-MCAGNEY-7741</div></div><button class="mini-btn" data-copy="WC-MCAGNEY-7741">Copy</button></div>
+          </div>
+          <div class="disclosure">Domestic wires post same-day; international 1–2 business days. Your bank may charge a fee.</div>
+        </section>
+
+        <!-- ADD · MOBILE CHECK -->
+        <section class="pane" id="checkFlow">
+          <div class="help-top">
+            <span class="back-btn" id="checkBack">←</span>
+            <span class="help-title">Mobile check deposit</span>
+          </div>
+          <div class="sec">Photograph your check</div>
+          <div class="check-tiles">
+            <div class="check-tile"><div class="ct-ic">📷</div>Front of check</div>
+            <div class="check-tile"><div class="ct-ic">📷</div>Back of check</div>
+          </div>
+          <div class="sec">Amount</div>
+          <div class="send-fields">
+            <div class="send-amt-row"><span class="send-cur">$</span><input class="send-amt" id="checkAmt" inputmode="decimal" placeholder="0.00"></div>
+            <div class="avail">Free · funds in 1–2 business days</div>
+          </div>
+          <button class="save-btn" id="checkAddBtn" style="margin-top:16px;">Deposit check</button>
+          <div class="disclosure">Endorse the back and write “For mobile deposit only at Wallet Co.”</div>
+        </section>
+
+        <!-- ADD · PLAID (link a bank) -->
+        <section class="pane" id="plaidFlow">
+          <div class="help-top">
+            <span class="back-btn" id="plaidBack">←</span>
+            <span class="help-title" id="plaidTitle">Link your bank</span>
+          </div>
+
+          <div class="plaid-step active" data-step="intro">
+            <div class="plaid-hero">
+              <div class="plaid-lock">🔒</div>
+              <div class="plaid-h">Connect your bank with Plaid</div>
+              <div class="plaid-p">Wallet Co uses Plaid to securely link your account. Your bank credentials are encrypted and never shared with Wallet Co.</div>
+            </div>
+            <button class="save-btn" id="plaidContinue">Continue</button>
+            <div class="disclosure">By continuing you agree to Plaid’s End User Privacy Policy.</div>
+          </div>
+
+          <div class="plaid-step" data-step="bank">
+            <div class="sec">Select your bank</div>
+            <input class="ord-in" placeholder="Search for your bank" style="margin-bottom:12px;">
+            <div class="pcard plaid-bank" data-bank="Chase"><div class="ph"><div class="nm">Chase</div><span class="arrow">→</span></div></div>
+            <div class="pcard plaid-bank" data-bank="Bank of America"><div class="ph"><div class="nm">Bank of America</div><span class="arrow">→</span></div></div>
+            <div class="pcard plaid-bank" data-bank="Wells Fargo"><div class="ph"><div class="nm">Wells Fargo</div><span class="arrow">→</span></div></div>
+            <div class="pcard plaid-bank" data-bank="Citibank"><div class="ph"><div class="nm">Citibank</div><span class="arrow">→</span></div></div>
+            <div class="pcard plaid-bank" data-bank="Capital One"><div class="ph"><div class="nm">Capital One</div><span class="arrow">→</span></div></div>
+          </div>
+
+          <div class="plaid-step" data-step="login">
+            <div class="sec" id="plaidBankName">Sign in</div>
+            <div class="set-group">
+              <label class="set-field"><span class="fl">Username</span><input class="fi" id="plaidUser" placeholder="Username"></label>
+              <label class="set-field"><span class="fl">Password</span><input class="fi" id="plaidPass" type="password" placeholder="Password"></label>
+            </div>
+            <button class="save-btn" id="plaidLogin" style="margin-top:14px;">Sign in securely</button>
+            <div class="disclosure">🔒 Your credentials are sent encrypted to your bank via Plaid.</div>
+          </div>
+
+          <div class="plaid-step" data-step="account">
+            <div class="sec">Select an account</div>
+            <div class="pcard plaid-acct" data-acct="Checking ••1234"><div class="ph"><div class="nm">Checking ••1234</div><span class="arrow">→</span></div><div class="ds">Available $8,420.00</div></div>
+            <div class="pcard plaid-acct" data-acct="Savings ••5678"><div class="ph"><div class="nm">Savings ••5678</div><span class="arrow">→</span></div><div class="ds">Available $22,100.00</div></div>
+          </div>
+
+          <div class="plaid-step" data-step="amount">
+            <div class="ycard" style="margin-bottom:6px;"><div class="sub" style="margin:0" id="plaidLinked">Bank linked.</div></div>
+            <div class="sec">Amount to transfer</div>
+            <div class="send-fields">
+              <div class="send-amt-row"><span class="send-cur">$</span><input class="send-amt" id="plaidAmt" inputmode="decimal" placeholder="0.00"></div>
+              <div class="avail">Free · arrives in 1–3 business days</div>
+            </div>
+            <button class="save-btn" id="plaidTransfer" style="margin-top:16px;">Transfer</button>
+          </div>
+        </section>
+
         <!-- EARN -->
         <section class="pane" id="earn">
           <div class="help-top">
@@ -1514,27 +1651,99 @@
   var addBack = document.getElementById('addBack');
   if (addBack) addBack.addEventListener('click', goHome);
 
-  // Add money: amount flow for fiat methods
+  // Add money: each method routes to its own detail screen
+  function creditBalance(amt){ base += amt; FIN.usdCash += amt; updateAccountDisplay(); renderFinances(); }
+  function readAmt(id){ return parseFloat((document.getElementById(id).value||'').replace(/[^0-9.]/g,'')) || 0; }
   document.querySelectorAll('.add-card').forEach(function(c){
     c.addEventListener('click', function(){
-      document.getElementById('addFlowTitle').textContent = c.dataset.title;
-      document.getElementById('addFlowNote').textContent = c.dataset.note;
-      document.getElementById('addFlowAmt').value = '';
-      showPane('addFlow');
+      var m = c.dataset.add;
+      if (m==='debit') { document.getElementById('dcNum').value=''; document.getElementById('dcExp').value=''; document.getElementById('dcCvv').value=''; document.getElementById('dcAmt').value=''; showPane('debitFlow'); }
+      else if (m==='wire') { showPane('wireFlow'); }
+      else if (m==='ach') { openPlaid(); }
+      else if (m==='check') { document.getElementById('checkAmt').value=''; showPane('checkFlow'); }
     });
   });
-  var addFlowBack = document.getElementById('addFlowBack');
-  if (addFlowBack) addFlowBack.addEventListener('click', function(){ showPane('add'); });
-  var addFlowBtn = document.getElementById('addFlowBtn');
-  if (addFlowBtn) addFlowBtn.addEventListener('click', function(){
-    var v = (document.getElementById('addFlowAmt').value||'').replace(/[^0-9.]/g,'');
-    if (!v || parseFloat(v) <= 0) { alert('Enter an amount to add.'); return; }
-    if (confirm('Add $'+parseFloat(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' to your Wallet Co balance?\n\nIt starts earning immediately.')) {
-      var amt = parseFloat(v);
-      base += amt; FIN.usdCash += amt;
-      updateAccountDisplay(); renderFinances();
-      alert('Money added — now earning. Your balance went up. (Mockup)');
-      showPane('home');
+
+  // debit card
+  var debitBack=document.getElementById('debitBack');
+  if(debitBack) debitBack.addEventListener('click', function(){ showPane('add'); });
+  var debitAddBtn=document.getElementById('debitAddBtn');
+  if(debitAddBtn) debitAddBtn.addEventListener('click', function(){
+    var num=(document.getElementById('dcNum').value||'').replace(/\s/g,'');
+    var exp=(document.getElementById('dcExp').value||'').trim();
+    var cvv=(document.getElementById('dcCvv').value||'').trim();
+    var v=readAmt('dcAmt');
+    if(num.length<15){ alert('Enter a valid card number.'); return; }
+    if(!/^\d{2}\/\d{2}$/.test(exp)){ alert('Enter expiry as MM/YY.'); return; }
+    if(cvv.length<3){ alert('Enter the 3–4 digit CVV.'); return; }
+    if(v<=0){ alert('Enter an amount to add.'); return; }
+    if(confirm('Add '+money2(v)+' from card ending '+num.slice(-4)+'?\n\nAvailable right away · fee applies.')){
+      creditBalance(v); alert('Added '+money2(v)+' — now earning. (Mockup)'); showPane('home');
+    }
+  });
+
+  // wire
+  var wireBack=document.getElementById('wireBack');
+  if(wireBack) wireBack.addEventListener('click', function(){ showPane('add'); });
+
+  // mobile check
+  var checkBack=document.getElementById('checkBack');
+  if(checkBack) checkBack.addEventListener('click', function(){ showPane('add'); });
+  document.querySelectorAll('.check-tile').forEach(function(t){
+    t.addEventListener('click', function(){ alert('Open camera to capture the check. (Mockup)'); });
+  });
+  var checkAddBtn=document.getElementById('checkAddBtn');
+  if(checkAddBtn) checkAddBtn.addEventListener('click', function(){
+    var v=readAmt('checkAmt');
+    if(v<=0){ alert('Enter the check amount.'); return; }
+    if(confirm('Deposit a '+money2(v)+' check?\n\nFunds available in 1–2 business days.')){
+      creditBalance(v); alert('Check submitted — '+money2(v)+' pending. (Mockup)'); showPane('home');
+    }
+  });
+
+  // Plaid bank-link flow
+  var PLAID_STEPS=['intro','bank','login','account','amount'];
+  function plaidShow(step){
+    document.querySelectorAll('#plaidFlow .plaid-step').forEach(function(s){ s.classList.toggle('active', s.dataset.step===step); });
+    document.getElementById('plaidFlow').dataset.cur=step;
+  }
+  function openPlaid(){
+    document.getElementById('plaidUser').value=''; document.getElementById('plaidPass').value=''; document.getElementById('plaidAmt').value='';
+    document.getElementById('plaidTitle').textContent='Link your bank';
+    plaidShow('intro'); showPane('plaidFlow');
+  }
+  var plaidBack=document.getElementById('plaidBack');
+  if(plaidBack) plaidBack.addEventListener('click', function(){
+    var cur=document.getElementById('plaidFlow').dataset.cur||'intro';
+    var i=PLAID_STEPS.indexOf(cur);
+    if(i<=0){ showPane('add'); } else { plaidShow(PLAID_STEPS[i-1]); }
+  });
+  var plaidContinue=document.getElementById('plaidContinue');
+  if(plaidContinue) plaidContinue.addEventListener('click', function(){ plaidShow('bank'); });
+  document.querySelectorAll('.plaid-bank').forEach(function(b){
+    b.addEventListener('click', function(){
+      document.getElementById('plaidBankName').textContent=b.dataset.bank+' · Sign in';
+      document.getElementById('plaidTitle').textContent=b.dataset.bank;
+      plaidShow('login');
+    });
+  });
+  var plaidLogin=document.getElementById('plaidLogin');
+  if(plaidLogin) plaidLogin.addEventListener('click', function(){
+    if(!document.getElementById('plaidUser').value.trim()){ alert('Enter your bank username.'); return; }
+    plaidShow('account');
+  });
+  document.querySelectorAll('.plaid-acct').forEach(function(a){
+    a.addEventListener('click', function(){
+      document.getElementById('plaidLinked').textContent='Bank linked: '+a.dataset.acct+'. Ready to transfer.';
+      plaidShow('amount');
+    });
+  });
+  var plaidTransfer=document.getElementById('plaidTransfer');
+  if(plaidTransfer) plaidTransfer.addEventListener('click', function(){
+    var v=readAmt('plaidAmt');
+    if(v<=0){ alert('Enter an amount to transfer.'); return; }
+    if(confirm('Transfer '+money2(v)+' from your linked bank?\n\nFree · arrives in 1–3 business days.')){
+      creditBalance(v); alert('Transfer started — '+money2(v)+' on the way. (Mockup)'); showPane('home');
     }
   });
   // crypto deposit + info-only add methods
