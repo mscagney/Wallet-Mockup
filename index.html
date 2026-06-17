@@ -514,6 +514,27 @@
   .cost-line { font-size: 12.5px; color: #8a97ab; text-align: center; margin: 14px 0 4px; }
   .cost-line b { color: #e8eef6; font-weight: 650; }
 
+  /* borrow against balance */
+  .bb-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 16px; margin-bottom: 12px; }
+  .bb-top { display: flex; justify-content: space-between; align-items: baseline; }
+  .bb-name { font-size: 16px; font-weight: 650; }
+  .bb-rate { font-size: 13px; font-weight: 650; color: #67e8f9; }
+  .bb-meta { font-size: 12.5px; color: #8a97ab; margin-top: 6px; }
+  .bb-meta b { color: #e8eef6; font-weight: 600; }
+  .bb-pct { color: #6b7891; }
+  .bb-amt-row { display: flex; align-items: center; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .bb-cur { font-size: 22px; font-weight: 650; color: #8a97ab; }
+  .bb-amt { flex: 1; background: transparent; border: none; outline: none; color: #e8eef6; font-family: inherit; font-size: 24px; font-weight: 680; letter-spacing: -0.02em; min-width: 0; }
+  .bb-amt::placeholder { color: #3f4a60; }
+  .bb-max { background: rgba(34,211,238,0.12); border: 1px solid rgba(34,211,238,0.28); color: #67e8f9; font-family: inherit; font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 9px; cursor: pointer; }
+  .bb-foot { font-size: 11.5px; color: #8a97ab; margin-top: 8px; }
+  .bb-cover { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .bb-cover-t { font-size: 12.5px; color: #cdd6e3; }
+  .bb-summary { margin: 4px 2px 14px; }
+  .bb-srow { display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: #cdd6e3; }
+  .bb-srow b { font-size: 18px; font-weight: 680; color: #6ee7b7; font-variant-numeric: tabular-nums; }
+  .bb-note { font-size: 12px; color: #8a97ab; margin-top: 8px; line-height: 1.5; }
+
   /* democratized prime markets */
   .mkt-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 16px; margin-bottom: 12px; }
   .mkt-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
@@ -526,6 +547,19 @@
   .mkt-sv { font-size: 14.5px; font-weight: 600; margin-top: 3px; font-variant-numeric: tabular-nums; }
   .util-bar { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; margin-bottom: 14px; }
   .util-fill { height: 100%; background: linear-gradient(90deg, #22d3ee, #34d399); border-radius: 3px; }
+  .mkt-risk { font-size: 12px; color: #8a97ab; margin-bottom: 12px; cursor: pointer; }
+  .mkt-risk b { color: #6ee7b7; font-weight: 650; }
+  .mkt-risk .rg-info { color: #67e8f9; margin-left: 2px; }
+  .mkt-risk:hover { color: #cdd6e3; }
+  .epos-tap { cursor: pointer; }
+  .epos-chev { color: #6b7891; font-weight: 700; }
+  /* risk grade explainer */
+  .rg-p { font-size: 13.5px; color: #b8c2d4; line-height: 1.6; margin-bottom: 12px; }
+  .rg-p b { color: #e8eef6; font-weight: 600; }
+  .rg-grade { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 13px; }
+  .rg-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .rg-name { font-weight: 600; width: 78px; flex-shrink: 0; }
+  .rg-desc { color: #8a97ab; }
   .mkt-cta { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .mkt-learn { font-size: 13px; }
   .select-btn {
@@ -755,10 +789,10 @@
           </div>
 
           <div class="sec">Borrow more</div>
-          <div class="pcard" data-info="Against your balance — borrow up to $36,150 via Democratized Prime. Draw or repay anytime.">
+          <div class="pcard" id="borrowBalanceEntry">
             <div class="ph"><div class="nm">Against your balance</div><span class="arrow">→</span></div>
             <div class="ds">Continuous borrowing via Democratized Prime — draw anytime, repay anytime.</div>
-            <div class="big" style="margin-top:14px">Up to $36,150</div>
+            <div class="big" style="margin-top:14px">Up to $64,250</div>
           </div>
           <div class="pcard" data-info="Figure HELOC — you have a pre-approved offer on your home equity. Funds in days.">
             <div class="ph"><div class="nm">Figure HELOC</div><span class="arrow">→</span></div>
@@ -772,6 +806,40 @@
             <div class="ph"><div class="nm">Wallet Co Card</div><span class="arrow">→</span></div>
             <div class="ds">Backed by a Figure HELOC</div>
           </div>
+        </section>
+
+        <!-- BORROW AGAINST YOUR BALANCE -->
+        <section class="pane" id="borrowBalance">
+          <div class="help-top">
+            <span class="back-btn" id="bbBack">←</span>
+            <span class="help-title">Borrow against your balance</span>
+          </div>
+          <div class="psub" style="margin:0 2px 16px;">Borrow against your assets and repay anytime, in real time. Funded through Democratized Prime.</div>
+
+          <div class="bb-card">
+            <div class="bb-top"><div class="bb-name">$YLDS</div><div class="bb-rate">Current 4.5% APR</div></div>
+            <div class="bb-meta">Balance <b id="bbYldsBal">$57,500.00</b> · Borrow up to <b id="bbYldsAvail">$57,500.00</b> <span class="bb-pct">(100%)</span></div>
+            <div class="bb-amt-row"><span class="bb-cur">$</span><input class="bb-amt" id="bbYldsAmt" data-asset="ylds" inputmode="decimal" placeholder="0.00"><button class="bb-max" data-for="bbYldsAmt">Max</button></div>
+            <div class="bb-foot">No margin call</div>
+          </div>
+
+          <div class="bb-card">
+            <div class="bb-top"><div class="bb-name">$FGRS</div><div class="bb-rate">Current 5.5% APR</div></div>
+            <div class="bb-meta">Balance <b id="bbFgrsBal">$9,000.00</b> · Borrow up to <b id="bbFgrsAvail">$6,750.00</b> <span class="bb-pct">(75%)</span></div>
+            <div class="bb-amt-row"><span class="bb-cur">$</span><input class="bb-amt" id="bbFgrsAmt" data-asset="fgrs" inputmode="decimal" placeholder="0.00"><button class="bb-max" data-for="bbFgrsAmt">Max</button></div>
+            <div class="bb-foot">Margin call at 95% loan to value.</div>
+            <div class="bb-cover">
+              <span class="bb-cover-t">Cover margin calls with available assets</span>
+              <span class="switch on"></span>
+            </div>
+          </div>
+
+          <div class="bb-summary">
+            <div class="bb-srow"><span>Total to borrow</span><b id="bbTotal">$0.00</b></div>
+            <div class="bb-note">Variable rate · repay anytime, in real time · borrowed through Democratized Prime. Your assets keep earning while pledged.</div>
+          </div>
+          <button class="save-btn" id="bbCommit">Borrow</button>
+          <div class="disclosure">If pledged collateral value falls, you may need to repay or add collateral. Rates are variable.</div>
         </section>
 
         <!-- TRADE -->
@@ -1206,7 +1274,7 @@
             </div>
           </div>
           <div class="epos">
-            <div class="epos-top"><div class="epos-name">Democratized Prime</div><div class="epos-val" id="eposPrimeVal">$33,200.00</div></div>
+            <div class="epos-top epos-tap" id="eposPrimeLink"><div class="epos-name">Democratized Prime <span class="epos-chev">›</span></div><div class="epos-val" id="eposPrimeVal">$33,200.00</div></div>
             <div class="epos-sub">Figure HELOC pool · 8.00% current yield</div>
             <div class="epos-foot bordered"><span class="pay-now danger" id="primeCancel">Cancel</span></div>
           </div>
@@ -1266,7 +1334,7 @@
 
           <div class="proj">
             <div class="proj-row"><span>Estimated yield (1 yr)</span><span class="proj-amt" id="lendProj">$0.00</span></div>
-            <div class="proj-row"><span>Target rate</span><span id="lendRateRow"></span></div>
+            <div class="proj-row"><span id="lendRateLabel">Target rate</span><span id="lendRateRow"></span></div>
             <div class="proj-row"><span>Liquidity</span><span id="lendLiq"></span></div>
           </div>
 
@@ -1288,6 +1356,7 @@
             <div class="mkt-head"><div class="mkt-name">Figure HELOC</div><div class="mkt-aprwrap"><div class="mkt-apr">8.10%</div><div class="mkt-aprlbl">Current APR</div></div></div>
             <div class="mkt-stats"><div><div class="mkt-sl">Pool size</div><div class="mkt-sv">$52,000,000</div></div><div><div class="mkt-sl">Utilization</div><div class="mkt-sv">85%</div></div></div>
             <div class="util-bar"><div class="util-fill" style="width:85%"></div></div>
+            <div class="mkt-risk">Figure Risk Grade: <b>Low</b> <span class="rg-info">ⓘ</span></div>
             <div class="mkt-cta"><span class="pay-now mkt-learn" data-name="Figure HELOC">Learn more</span><button class="select-btn mkt-select" data-mkt="heloc">Select</button></div>
           </div>
 
@@ -1295,6 +1364,7 @@
             <div class="mkt-head"><div class="mkt-name">Crypto-Backed Loans</div><div class="mkt-aprwrap"><div class="mkt-apr">7.95%</div><div class="mkt-aprlbl">Current APR</div></div></div>
             <div class="mkt-stats"><div><div class="mkt-sl">Pool size</div><div class="mkt-sv">$49,500,000</div></div><div><div class="mkt-sl">Utilization</div><div class="mkt-sv">80%</div></div></div>
             <div class="util-bar"><div class="util-fill" style="width:80%"></div></div>
+            <div class="mkt-risk">Figure Risk Grade: <b>Low</b> <span class="rg-info">ⓘ</span></div>
             <div class="mkt-cta"><span class="pay-now mkt-learn" data-name="Crypto-Backed Loans">Learn more</span><button class="select-btn mkt-select" data-mkt="crypto">Select</button></div>
           </div>
 
@@ -1302,8 +1372,34 @@
             <div class="mkt-head"><div class="mkt-name">Automobile</div><div class="mkt-aprwrap"><div class="mkt-apr">7.75%</div><div class="mkt-aprlbl">Current APR</div></div></div>
             <div class="mkt-stats"><div><div class="mkt-sl">Pool size</div><div class="mkt-sv">$50,250,000</div></div><div><div class="mkt-sl">Utilization</div><div class="mkt-sv">75%</div></div></div>
             <div class="util-bar"><div class="util-fill" style="width:75%"></div></div>
+            <div class="mkt-risk">Figure Risk Grade: <b>Low</b> <span class="rg-info">ⓘ</span></div>
             <div class="mkt-cta"><span class="pay-now mkt-learn" data-name="Automobile">Learn more</span><button class="select-btn mkt-select" data-mkt="auto">Select</button></div>
           </div>
+        </section>
+
+        <!-- RISK GRADE EXPLAINER -->
+        <section class="pane" id="riskGrade">
+          <div class="help-top">
+            <span class="back-btn" id="riskBack">←</span>
+            <span class="help-title">Figure Risk Grades</span>
+          </div>
+          <div class="psub" style="margin:0 2px 16px;">How Figure grades the risk of a Democratized Prime pool.</div>
+
+          <p class="rg-p">Every Democratized Prime pool is scored by Figure across two dimensions — <b>principal risk</b> and <b>liquidity risk</b> — and assigned an overall grade. Grades are a relative guide, not a guarantee, and can change as a pool’s composition and market conditions change.</p>
+
+          <div class="sec">Principal risk</div>
+          <p class="rg-p">Principal risk measures the likelihood that a lender does not get their full principal back. Figure evaluates the quality and seniority of the underlying collateral, weighted average loan-to-value (LTV), the degree of over-collateralization, borrower credit quality, historical default and recovery rates, and the structural protections in the pool (reserves, subordination, and first-loss capital). Pools backed by senior, well-collateralized, low-LTV assets score lower risk.</p>
+
+          <div class="sec">Liquidity risk</div>
+          <p class="rg-p">Liquidity risk measures how reliably a lender can withdraw on demand. Figure evaluates current pool utilization, redemption terms and notice periods, the maturity profile of the underlying loans, available cash buffers, and the depth of any secondary market. Lower, more stable utilization and shorter-duration assets score lower risk.</p>
+
+          <div class="sec">Grade scale</div>
+          <div class="rg-grade"><span class="rg-dot" style="background:#34d399"></span><span class="rg-name">Low</span><span class="rg-desc">Strong collateral and ample liquidity; loss of principal unlikely under normal conditions.</span></div>
+          <div class="rg-grade"><span class="rg-dot" style="background:#67e8f9"></span><span class="rg-name">Moderate</span><span class="rg-desc">Sound structure with some sensitivity to defaults or redemption pressure.</span></div>
+          <div class="rg-grade"><span class="rg-dot" style="background:#fbbf24"></span><span class="rg-name">Elevated</span><span class="rg-desc">Higher LTV, concentration, or utilization; principal or liquidity may be at risk in stress.</span></div>
+          <div class="rg-grade"><span class="rg-dot" style="background:#f87171"></span><span class="rg-name">High</span><span class="rg-desc">Material risk to principal and/or limited liquidity; suitable only for risk-tolerant lenders.</span></div>
+
+          <div class="disclosure">Risk grades are Figure’s estimates for informational purposes only and are not investment advice, ratings, or a guarantee of performance. Yields are variable and principal is not insured.</div>
         </section>
 
         <!-- BUY $YLDS -->
@@ -1566,7 +1662,7 @@
   });
 
   // ---- financial state (actions update these so the prototype feels live) ----
-  var FIN = { usdCash:12840, ylds:57500, prime:33200, fgrs:9000, helocBal:35000, helocAvail:15000 };
+  var FIN = { usdCash:12840, ylds:57500, prime:33200, fgrs:9000, usdc:0, helocBal:35000, helocAvail:15000 };
   function setText(id,t){ var e=document.getElementById(id); if(e) e.textContent=t; }
   function money(n){ return '$'+Math.round(n).toLocaleString('en-US'); }
   function money2(n){ return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
@@ -1759,6 +1855,44 @@
   // remaining placeholders -> contextual feedback (no silent dead-ends)
   document.querySelectorAll('#borrow [data-info], #trade [data-info]').forEach(function(c){
     c.addEventListener('click', function(){ alert(c.dataset.info+'\n\n(Mockup)'); });
+  });
+
+  // Borrow against your balance
+  function bbTotal(){
+    var t=0;
+    document.querySelectorAll('#borrowBalance .bb-amt').forEach(function(i){ t += parseFloat((i.value||'').replace(/[^0-9.]/g,''))||0; });
+    setText('bbTotal', money2(t));
+    return t;
+  }
+  function openBorrowBalance(){
+    var yAvail=FIN.ylds, fAvail=FIN.fgrs*0.75;
+    setText('bbYldsBal', money2(FIN.ylds)); setText('bbYldsAvail', money2(yAvail));
+    setText('bbFgrsBal', money2(FIN.fgrs)); setText('bbFgrsAvail', money2(fAvail));
+    var ya=document.getElementById('bbYldsAmt'), fa=document.getElementById('bbFgrsAmt');
+    ya.dataset.avail=yAvail; fa.dataset.avail=fAvail; ya.value=''; fa.value='';
+    bbTotal(); showPane('borrowBalance');
+  }
+  var bbEntry=document.getElementById('borrowBalanceEntry');
+  if(bbEntry) bbEntry.addEventListener('click', openBorrowBalance);
+  var bbBack=document.getElementById('bbBack');
+  if(bbBack) bbBack.addEventListener('click', function(){ showPane('borrow'); });
+  document.querySelectorAll('#borrowBalance .bb-amt').forEach(function(i){ i.addEventListener('input', bbTotal); });
+  document.querySelectorAll('#borrowBalance .bb-max').forEach(function(b){
+    b.addEventListener('click', function(){ var inp=document.getElementById(b.dataset.for); inp.value=(parseFloat(inp.dataset.avail)||0).toFixed(2); bbTotal(); });
+  });
+  var bbCommit=document.getElementById('bbCommit');
+  if(bbCommit) bbCommit.addEventListener('click', function(){
+    var ya=document.getElementById('bbYldsAmt'), fa=document.getElementById('bbFgrsAmt');
+    var y=parseFloat((ya.value||'').replace(/[^0-9.]/g,''))||0, f=parseFloat((fa.value||'').replace(/[^0-9.]/g,''))||0;
+    var yAvail=parseFloat(ya.dataset.avail)||0, fAvail=parseFloat(fa.dataset.avail)||0;
+    if(y+f<=0){ alert('Enter an amount to borrow.'); return; }
+    if(y>yAvail){ alert('$YLDS borrow exceeds available ('+money2(yAvail)+').'); return; }
+    if(f>fAvail){ alert('$FGRS borrow exceeds available ('+money2(fAvail)+').'); return; }
+    var lines=[]; if(y>0)lines.push('• '+money2(y)+' against $YLDS @ 4.5%'); if(f>0)lines.push('• '+money2(f)+' against $FGRS @ 5.5%');
+    if(confirm('Borrow through Democratized Prime\n\n'+lines.join('\n')+'\nTotal: '+money2(y+f)+'\nRepay anytime, in real time.\n\nConfirm?')){
+      FIN.usdCash += (y+f); FIN.primeBorrow=(FIN.primeBorrow||0)+(y+f); renderFinances();
+      alert('Borrowed '+money2(y+f)+' — funds are in your balance. (Mockup)'); showPane('borrow');
+    }
   });
   var referBanner = document.getElementById('referBanner');
   if (referBanner) referBanner.addEventListener('click', function(){ alert('Refer a friend\n\nShare your link — you both get $50 in $YLDS when they fund. (Mockup)'); });
@@ -1963,6 +2097,14 @@
   };
   var curLend='prime';
   var lendAmt=document.getElementById('lendAmt'), lendSource=document.getElementById('lendSource');
+  // Democratized Prime can be funded from $YLDS, USD, or USDC — default $YLDS, only those that exist
+  function primeSources(){
+    var arr=[];
+    if(FIN.ylds>0)    arr.push({t:'$YLDS · '+money2(FIN.ylds),     max:FIN.ylds,    cur:'$', key:'ylds'});
+    if(FIN.usdCash>0) arr.push({t:'USD cash · '+money2(FIN.usdCash), max:FIN.usdCash, cur:'$', key:'usd'});
+    if(FIN.usdc>0)    arr.push({t:'USDC · '+money2(FIN.usdc),       max:FIN.usdc,    cur:'$', key:'usdc'});
+    return arr;
+  }
   function lendSrc(){ return LEND[curLend].sources[lendSource.selectedIndex] || LEND[curLend].sources[0]; }
   function lendProjCalc(){
     var cfg=LEND[curLend], v=parseFloat((lendAmt.value||'').replace(/[^0-9.]/g,''))||0, s=lendSrc();
@@ -1972,7 +2114,13 @@
   function lendSyncSrc(){
     var s=lendSrc();
     document.getElementById('lendCur').textContent = s.cur;
-    document.getElementById('lendAvail').textContent = 'Available: ' + s.t.split(' · ')[1] + (s.cur==='$'?'':'');
+    if(curLend==='prime'){
+      var sum=FIN.ylds+FIN.usdCash+(FIN.usdc||0), names=[];
+      if(FIN.ylds>0)names.push('$YLDS'); if(FIN.usdCash>0)names.push('USD'); if(FIN.usdc>0)names.push('USDC');
+      document.getElementById('lendAvail').textContent = 'Available: '+money2(sum)+' across '+names.join(', ');
+    } else {
+      document.getElementById('lendAvail').textContent = 'Available: ' + s.t.split(' · ')[1];
+    }
     lendProjCalc();
   }
   function openLend(key){
@@ -1982,6 +2130,7 @@
     document.getElementById('lendDesc').textContent=cfg.desc;
     document.getElementById('lendPill').textContent=cfg.pill;
     document.getElementById('lendRateRow').textContent=cfg.rateRow;
+    document.getElementById('lendRateLabel').textContent = (key==='prime') ? 'Last rate' : 'Target rate';
     document.getElementById('lendLiq').textContent=cfg.liq;
     document.getElementById('lendDisc').textContent=cfg.disc;
     var rn=document.getElementById('lendRisk');
@@ -2004,22 +2153,33 @@
     crypto: { name:'Crypto-Backed Loans', apr:0.0795, aprTxt:'7.95%', desc:'Lending against over-collateralized crypto loans' },
     auto:   { name:'Automobile',          apr:0.0775, aprTxt:'7.75%', desc:'Lending against auto loans' }
   };
+  function openPrimeMarket(key){
+    var m=PRIME_MKTS[key];
+    LEND.prime.title='Lend · '+m.name;
+    LEND.prime.rate=m.aprTxt;
+    LEND.prime.apr=m.apr;
+    LEND.prime.rateRow=m.aprTxt+' APR · variable';
+    LEND.prime.desc=m.desc+' · Democratized Prime';
+    LEND.prime.sources=primeSources();   // $YLDS (default), USD, USDC — only those that exist
+    openLend('prime');
+  }
   var primeMktBack=document.getElementById('primeMktBack');
   if(primeMktBack) primeMktBack.addEventListener('click', function(){ showPane('earn'); });
   document.querySelectorAll('.mkt-learn').forEach(function(l){
     l.addEventListener('click', function(){ alert('Learn more — '+l.dataset.name+' market. (Mockup)'); });
   });
   document.querySelectorAll('.mkt-select').forEach(function(b){
-    b.addEventListener('click', function(){
-      var m=PRIME_MKTS[b.dataset.mkt];
-      LEND.prime.title='Lend · '+m.name;
-      LEND.prime.rate=m.aprTxt;
-      LEND.prime.apr=m.apr;
-      LEND.prime.rateRow=m.aprTxt+' APR · variable';
-      LEND.prime.desc=m.desc+' · Democratized Prime';
-      openLend('prime');
-    });
+    b.addEventListener('click', function(){ openPrimeMarket(b.dataset.mkt); });
   });
+  // "Figure Risk Grade" links -> explainer page
+  document.querySelectorAll('.mkt-risk').forEach(function(r){
+    r.addEventListener('click', function(){ showPane('riskGrade'); });
+  });
+  var riskBack=document.getElementById('riskBack');
+  if(riskBack) riskBack.addEventListener('click', function(){ showPane('primeMarkets'); });
+  // Earn: clicking the Democratized Prime balance opens its pool (Figure HELOC)
+  var eposPrime=document.getElementById('eposPrimeLink');
+  if(eposPrime) eposPrime.addEventListener('click', function(){ openPrimeMarket('heloc'); });
   if(lendAmt) lendAmt.addEventListener('input', lendProjCalc);
   if(lendSource) lendSource.addEventListener('change', lendSyncSrc);
   var lendMax=document.getElementById('lendMax');
@@ -2033,9 +2193,15 @@
     if(v>s.max){ alert('Amount exceeds available in '+s.t.split(' · ')[0]+'.'); return; }
     var proj = (cfg.apr!=null && s.cur==='$') ? ('Est. yield (1 yr): $'+(v*cfg.apr).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})) : 'Yield: variable';
     var amt = s.cur + (s.cur==='$' ? v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) : v) + (s.cur==='$'?'':' '+s.t.split(' · ')[0]);
-    if(confirm(cfg.title+'\n\nAmount: '+amt+'\nRate: '+cfg.rateRow+'\n'+proj+'\nFrom: '+s.t+'\n\nConfirm?')){
-      // Democratized Prime funded from USD cash grows your Prime holding
-      if(curLend==='prime' && s.cur==='$'){ FIN.usdCash -= v; FIN.prime += v; renderFinances(); }
+    var rateLbl = (curLend==='prime') ? 'Last rate' : 'Rate';
+    if(confirm(cfg.title+'\n\nAmount: '+amt+'\n'+rateLbl+': '+cfg.rateRow+'\n'+proj+'\nFrom: '+s.t+'\n\nConfirm?')){
+      // Democratized Prime grows your Prime holding, debiting whichever source you chose
+      if(curLend==='prime'){
+        if(s.key==='ylds') FIN.ylds -= v;
+        else if(s.key==='usd') FIN.usdCash -= v;
+        else if(s.key==='usdc') FIN.usdc -= v;
+        FIN.prime += v; renderFinances();
+      }
       alert('Position opened — now earning. (Mockup)'); showPane('earn');
     }
   });
