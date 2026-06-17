@@ -648,7 +648,7 @@
                 </select>
               </span>
             </div>
-            <div class="earning-text">Earning <span class="rate-hl">5.22%</span> on <span class="amt-hl">$90,200</span></div>
+            <div class="earning-text">Earning <span class="rate-hl" id="earnRateHl">5.26%</span> on <span class="amt-hl" id="earnAmtHl">$90,700</span> in $YLDS &amp; Prime</div>
           </div>
 
           <div class="actions">
@@ -657,7 +657,7 @@
             <div class="action" id="earnAction"><div class="ic">↗</div><div class="t">Earn</div></div>
           </div>
 
-          <div class="refer">
+          <div class="refer" id="referBanner">
             <div class="refer-txt"><div class="rt1">Refer a Friend and You Both Earn!</div><div class="rt2">Give $50, get $50 in $YLDS</div></div>
             <span class="refer-arrow">→</span>
           </div>
@@ -685,13 +685,13 @@
           <div class="subpane active" id="sub-holdings">
             <div class="hdr">Assets</div>
             <div class="list">
-              <div class="hrow tap" id="hYlds"><div class="avatar">🟢</div><div class="mid"><div class="nm">$YLDS</div><div class="mt">3.68% APY</div></div><div class="amt">$57,500.00</div></div>
-              <div class="hrow tap" id="hPrime"><div class="avatar">🔷</div><div class="mid"><div class="nm">Democratized Prime</div><div class="mt">8.00% APY</div></div><div class="amt">$33,200.00</div></div>
+              <div class="hrow tap" id="hYlds"><div class="avatar">🟢</div><div class="mid"><div class="nm">$YLDS</div><div class="mt">3.68% APY</div></div><div class="amt" id="hYldsAmt">$57,500.00</div></div>
+              <div class="hrow tap" id="hPrime"><div class="avatar">🔷</div><div class="mid"><div class="nm">Democratized Prime</div><div class="mt">8.00% APY</div></div><div class="amt" id="hPrimeAmt">$33,200.00</div></div>
               <div class="hrow"><div class="avatar">⬡</div><div class="mid"><div class="nm">$FGRS</div><div class="mt">300.0 shares · $30.00</div></div><div class="amt">$9,000.00</div></div>
             </div>
             <div class="hdr">Loans</div>
             <div class="list">
-              <div class="hrow tap" id="hHeloc"><div class="avatar">🏠</div><div class="mid"><div class="nm">Figure HELOC</div><div class="mt">8.7% APR</div></div><div class="amt neg">$35,000.00</div></div>
+              <div class="hrow tap" id="hHeloc"><div class="avatar">🏠</div><div class="mid"><div class="nm">Figure HELOC</div><div class="mt">8.7% APR</div></div><div class="amt neg" id="hHelocAmt">$35,000.00</div></div>
             </div>
           </div>
 
@@ -731,21 +731,21 @@
           <div class="sec">My Loans</div>
           <div class="loan-card">
             <div class="loan-name">Figure HELOC</div>
-            <div class="loan-summary"><span class="rate">8%</span> · <b>$35,000</b> <span class="loan-avail">($15,000 available)</span> · <span class="pay-now" id="drawMore">Draw more</span></div>
+            <div class="loan-summary"><span class="rate">8%</span> · <b id="helocBalTxt">$35,000</b> <span class="loan-avail">(<span id="helocAvailTxt">$15,000</span> available)</span> · <span class="pay-now" id="drawMore">Draw more</span></div>
             <div class="loan-next">Next payment <b>$3,500</b> · 7/1 · <span class="pay-now" id="payLoan">Pay now</span></div>
           </div>
 
           <div class="sec">Borrow more</div>
-          <div class="pcard">
+          <div class="pcard" data-info="Against your balance — borrow up to $36,150 via Democratized Prime. Draw or repay anytime.">
             <div class="ph"><div class="nm">Against your balance</div><span class="arrow">→</span></div>
             <div class="ds">Continuous borrowing via Democratized Prime — draw anytime, repay anytime.</div>
             <div class="big" style="margin-top:14px">Up to $36,150</div>
           </div>
-          <div class="pcard">
+          <div class="pcard" data-info="Figure HELOC — you have a pre-approved offer on your home equity. Funds in days.">
             <div class="ph"><div class="nm">Figure HELOC</div><span class="arrow">→</span></div>
             <div class="ds">Pre-approved offer on your home equity. Funds in days.</div>
           </div>
-          <div class="pcard">
+          <div class="pcard" data-info="Crypto-backed loan — term borrowing against your crypto positions.">
             <div class="ph"><div class="nm">Crypto-backed loan</div><span class="arrow">→</span></div>
             <div class="ds">Term borrowing against your crypto positions.</div>
           </div>
@@ -763,11 +763,11 @@
             <div class="ph"><div class="nm">Securities Predictions</div><span class="arrow">→</span></div>
             <div class="ds">Bet on outcomes — no commissions</div>
           </div>
-          <div class="pcard">
+          <div class="pcard" data-info="Stocks — trade on OPEN and new venues, fractional shares supported.">
             <div class="ph"><div class="nm">Stocks</div><span class="arrow">→</span></div>
             <div class="ds">OPEN + new venues · fractional</div>
           </div>
-          <div class="pcard">
+          <div class="pcard" data-info="Crypto — buy and sell with DEX & CEX routing for best price.">
             <div class="ph"><div class="nm">Crypto</div><span class="arrow">→</span></div>
             <div class="ds">DEX & CEX routing for best price</div>
           </div>
@@ -787,6 +787,8 @@
             <input class="agent-name" id="agentName" placeholder="Name your agent" maxlength="24">
           </div>
 
+          <button class="rails-btn" id="railsBtn" style="margin:4px 0 16px;">SET YOUR RAILS</button>
+
           <div class="ask-box">
             <input class="ask-input" placeholder="Ask your agent anything">
             <span class="ask-send">↑</span>
@@ -798,8 +800,6 @@
           <button class="chip skill-chip"><span class="s">★</span> Show me how I've spent my money <span class="x">→</span></button>
 
           <button class="market-btn" id="marketBtn">⊞ Skills Market</button>
-
-          <button class="rails-btn" id="railsBtn">SET YOUR RAILS</button>
         </section>
 
         <!-- HELP -->
@@ -868,7 +868,7 @@
           <div class="set-group">
             <div class="set-field set-static">
               <div><span class="fl">Password</span><div class="fi-static">••••••••••</div></div>
-              <button class="mini-btn">Change</button>
+              <button class="mini-btn" id="pwChange">Change</button>
             </div>
             <div class="set-toggle">
               <div><div class="tg-t">Two-factor authentication</div><div class="tg-s">Extra security at sign-in</div></div>
@@ -887,8 +887,8 @@
             <div class="set-toggle"><div><div class="tg-t">Push to phone</div><div class="tg-s">App push notifications</div></div><span class="switch"></span></div>
           </div>
 
-          <button class="save-btn">Save changes</button>
-          <button class="signout-btn">Sign out</button>
+          <button class="save-btn" id="settingsSave">Save changes</button>
+          <button class="signout-btn" id="signOut">Sign out</button>
 
           <div class="danger-zone">
             <button class="delete-btn">Delete account</button>
@@ -934,14 +934,14 @@
             <div class="recent"><div class="r-av">+</div><div class="r-nm">New</div></div>
           </div>
 
-          <button class="save-btn">Review transfer</button>
+          <button class="save-btn" id="sendReview">Review transfer</button>
 
           <div class="sec">More ways to send</div>
-          <div class="pcard">
+          <div class="pcard" data-rail="Wire transfer">
             <div class="ph"><div class="nm">Send a Wire</div><span class="arrow">→</span></div>
             <div class="ds">Domestic &amp; international · same-day · fee applies</div>
           </div>
-          <div class="pcard">
+          <div class="pcard" data-rail="ACH transfer">
             <div class="ph"><div class="nm">Send an ACH</div><span class="arrow">→</span></div>
             <div class="ds">Bank transfer · free · 1–3 business days</div>
           </div>
@@ -960,31 +960,31 @@
           <div class="psub" style="margin:0 2px 16px;">Idle cash auto-earns in $YLDS the moment it lands.</div>
 
           <div class="sec">Instant</div>
-          <div class="pcard">
+          <div class="pcard add-card" data-add="debit" data-title="Add with debit card" data-note="Available right away · fee applies">
             <div class="ph"><div class="nm">Debit card</div><span class="arrow">→</span></div>
             <div class="ds">Available right away · fee applies</div>
           </div>
 
           <div class="sec">From a bank</div>
-          <div class="pcard">
+          <div class="pcard add-card" data-add="wire" data-title="Add by wire" data-note="Domestic & international · same-day · fee applies">
             <div class="ph"><div class="nm">Wire transfer</div><span class="arrow">→</span></div>
             <div class="ds">Domestic &amp; international · same-day · fee applies</div>
           </div>
-          <div class="pcard">
+          <div class="pcard add-card" data-add="ach" data-title="Add by bank transfer" data-note="Free · arrives in 1–3 business days">
             <div class="ph"><div class="nm">Bank transfer (ACH)</div><span class="arrow">→</span></div>
             <div class="ds">Free · 1–3 business days</div>
           </div>
-          <div class="pcard">
+          <div class="pcard add-card" data-add="check" data-title="Mobile check deposit" data-note="Snap a photo · free · 1–2 business days">
             <div class="ph"><div class="nm">Mobile check deposit</div><span class="arrow">→</span></div>
             <div class="ds">Snap a photo · free · 1–2 business days</div>
           </div>
 
           <div class="sec">Crypto</div>
-          <div class="pcard">
+          <div class="pcard" data-deposit="stablecoins">
             <div class="ph"><div class="nm">Transfer stablecoins</div><span class="arrow">→</span></div>
             <div class="ds">On-chain from another wallet · minutes</div>
           </div>
-          <div class="pcard">
+          <div class="pcard" data-deposit="crypto">
             <div class="ph"><div class="nm">Deposit crypto</div><span class="arrow">→</span></div>
             <div class="ds">Across approved L1s · network fee applies</div>
           </div>
@@ -996,14 +996,57 @@
           </div>
 
           <div class="sec">Other</div>
-          <div class="pcard">
+          <div class="pcard" data-info="Request money — share a payment link or QR with anyone.">
             <div class="ph"><div class="nm">Request money</div><span class="arrow">→</span></div>
             <div class="ds">Ask someone to pay you · fiat, stablecoin or crypto</div>
           </div>
-          <div class="pcard">
+          <div class="pcard" data-info="Transfer investments in — connect another brokerage to move positions (ACATS).">
             <div class="ph"><div class="nm">Transfer investments in</div><span class="arrow">→</span></div>
             <div class="ds">Move stocks &amp; assets from another brokerage</div>
           </div>
+        </section>
+
+        <!-- ADD AMOUNT (reusable) -->
+        <section class="pane" id="addFlow">
+          <div class="help-top">
+            <span class="back-btn" id="addFlowBack">←</span>
+            <span class="help-title" id="addFlowTitle">Add money</span>
+          </div>
+          <div class="ycard" style="margin-bottom:6px;">
+            <div class="sub" id="addFlowNote" style="margin:0"></div>
+          </div>
+          <div class="sec">Amount</div>
+          <div class="send-fields">
+            <div class="send-amt-row">
+              <span class="send-cur">$</span>
+              <input class="send-amt" id="addFlowAmt" inputmode="decimal" placeholder="0.00">
+            </div>
+            <div class="avail">Lands in your always-earning $YLDS balance</div>
+          </div>
+          <button class="save-btn" id="addFlowBtn" style="margin-top:16px;">Add money</button>
+          <div class="disclosure">Idle cash auto-earns 3.25% APR in $YLDS the moment it lands.</div>
+        </section>
+
+        <!-- HELOC DRAW -->
+        <section class="pane" id="drawFlow">
+          <div class="help-top">
+            <span class="back-btn" id="drawBack">←</span>
+            <span class="help-title">Draw from HELOC</span>
+          </div>
+          <div class="ycard" style="margin-bottom:6px;">
+            <div class="sub" style="margin:0">Figure HELOC · 8% APR · borrow against your home equity. Funds land in your balance.</div>
+          </div>
+          <div class="sec">Amount</div>
+          <div class="send-fields">
+            <div class="send-amt-row">
+              <span class="send-cur">$</span>
+              <input class="send-amt" id="drawAmt" inputmode="decimal" placeholder="0.00">
+              <button class="max-btn" id="drawMax">Max</button>
+            </div>
+            <div class="avail" id="drawAvail">Available to draw: $15,000.00</div>
+          </div>
+          <button class="save-btn" id="drawBtn" style="margin-top:16px;">Draw funds</button>
+          <div class="disclosure">Interest accrues at 8% APR on your outstanding HELOC balance.</div>
         </section>
 
         <!-- EARN -->
@@ -1018,7 +1061,7 @@
           <div class="epos">
             <div class="epos-top">
               <div><div class="epos-name">$YLDS</div><div class="epos-sub">3.68% current yield</div></div>
-              <div class="epos-right"><div class="epos-val">$57,500.00</div><span class="pay-now" id="yldsRedeem">Redeem to cash</span></div>
+              <div class="epos-right"><div class="epos-val" id="eposYldsVal">$57,500.00</div><span class="pay-now" id="yldsRedeem">Redeem to cash</span></div>
             </div>
             <div class="epos-row">
               <div><div class="tg-t">Sweep cash to $YLDS</div><div class="tg-s">Idle cash auto-earns</div></div>
@@ -1026,7 +1069,7 @@
             </div>
           </div>
           <div class="epos">
-            <div class="epos-top"><div class="epos-name">Democratized Prime</div><div class="epos-val">$33,200.00</div></div>
+            <div class="epos-top"><div class="epos-name">Democratized Prime</div><div class="epos-val" id="eposPrimeVal">$33,200.00</div></div>
             <div class="epos-sub">Figure HELOC pool · 8.00% current yield</div>
             <div class="epos-foot bordered"><span class="pay-now danger" id="primeCancel">Cancel</span></div>
           </div>
@@ -1150,7 +1193,7 @@
               <input class="send-amt" id="buyAmt" inputmode="decimal" placeholder="0.00">
               <button class="max-btn" id="buyMax">Max</button>
             </div>
-            <div class="avail">Available: $12,840.00 USD cash</div>
+            <div class="avail" id="buyAvailTxt">Available: $12,840.00 USD cash</div>
           </div>
 
           <div class="sec">Pay from</div>
@@ -1190,11 +1233,11 @@
 
           <div class="book-head">
             <span>Strike</span>
-            <span class="bh-yes">Yes bid</span>
-            <span class="bh-no">No offer</span>
+            <span class="bh-yes">Buy Yes</span>
+            <span class="bh-no">Buy No</span>
           </div>
           <div id="bookBody"></div>
-          <div class="book-note">Tap a <b style="color:#6ee7b7">Yes bid</b> to take No · tap a <b style="color:#fca5a5">No offer</b> to take Yes</div>
+          <div class="book-note">Price is the cost per contract (¢ = chance). Tap <b style="color:#6ee7b7">Buy Yes</b> or <b style="color:#fca5a5">Buy No</b> — each pays $1 if you're right.</div>
 
           <div class="sec">New prediction</div>
           <div class="ord-grid">
@@ -1385,19 +1428,43 @@
     });
   });
 
+  // ---- financial state (actions update these so the prototype feels live) ----
+  var FIN = { usdCash:12840, ylds:57500, prime:33200, fgrs:9000, helocBal:35000, helocAvail:15000 };
+  function setText(id,t){ var e=document.getElementById(id); if(e) e.textContent=t; }
+  function money(n){ return '$'+Math.round(n).toLocaleString('en-US'); }
+  function money2(n){ return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function renderFinances(){
+    setText('hYldsAmt', money2(FIN.ylds));
+    setText('hPrimeAmt', money2(FIN.prime));
+    setText('hHelocAmt', money2(FIN.helocBal));
+    setText('eposYldsVal', money2(FIN.ylds));
+    setText('eposPrimeVal', money2(FIN.prime));
+    var assets = FIN.ylds + FIN.prime;
+    var blended = assets>0 ? (FIN.ylds*0.0368 + FIN.prime*0.08)/assets*100 : 0;
+    setText('earnRateHl', blended.toFixed(2)+'%');
+    setText('earnAmtHl', money(assets));
+    setText('helocBalTxt', money(FIN.helocBal));
+    setText('helocAvailTxt', money(FIN.helocAvail));
+    setText('drawAvail', 'Available to draw: '+money2(FIN.helocAvail));
+    setText('buyAvailTxt', 'Available: '+money2(FIN.usdCash)+' USD cash');
+    if (typeof syncAsset === 'function') syncAsset();
+  }
+
   // live-earning account value (interest accrues in lockstep with the balance)
   var base = 64700.00;
   var perTick = 0.0009;      // gentle, slow accrual
   var earnedBase = { '24h': 13.07, '7d': 91.51, 'month': 397.67 };
   var earnedVal = earnedBase['24h'];
+  function updateAccountDisplay(){
+    var d = Math.floor(base), c = Math.floor((base - d) * 100);
+    setText('dollars', d.toLocaleString('en-US'));
+    setText('cents', String(c).padStart(2,'0'));
+  }
   function render(){
     base += perTick;
     earnedVal += perTick;    // earned moves with the balance
-    var d = Math.floor(base);
-    var c = Math.floor((base - d) * 100);
-    document.getElementById('dollars').textContent = d.toLocaleString('en-US');
-    document.getElementById('cents').textContent = String(c).padStart(2,'0');
-    document.getElementById('earnedAmt').textContent = '+$' + earnedVal.toFixed(2);
+    updateAccountDisplay();
+    setText('earnedAmt', '+$' + earnedVal.toFixed(2));
   }
   setInterval(render, 1200);
 
@@ -1447,6 +1514,52 @@
   var addBack = document.getElementById('addBack');
   if (addBack) addBack.addEventListener('click', goHome);
 
+  // Add money: amount flow for fiat methods
+  document.querySelectorAll('.add-card').forEach(function(c){
+    c.addEventListener('click', function(){
+      document.getElementById('addFlowTitle').textContent = c.dataset.title;
+      document.getElementById('addFlowNote').textContent = c.dataset.note;
+      document.getElementById('addFlowAmt').value = '';
+      showPane('addFlow');
+    });
+  });
+  var addFlowBack = document.getElementById('addFlowBack');
+  if (addFlowBack) addFlowBack.addEventListener('click', function(){ showPane('add'); });
+  var addFlowBtn = document.getElementById('addFlowBtn');
+  if (addFlowBtn) addFlowBtn.addEventListener('click', function(){
+    var v = (document.getElementById('addFlowAmt').value||'').replace(/[^0-9.]/g,'');
+    if (!v || parseFloat(v) <= 0) { alert('Enter an amount to add.'); return; }
+    if (confirm('Add $'+parseFloat(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' to your Wallet Co balance?\n\nIt starts earning immediately.')) {
+      var amt = parseFloat(v);
+      base += amt; FIN.usdCash += amt;
+      updateAccountDisplay(); renderFinances();
+      alert('Money added — now earning. Your balance went up. (Mockup)');
+      showPane('home');
+    }
+  });
+  // crypto deposit + info-only add methods
+  document.querySelectorAll('[data-deposit]').forEach(function(c){
+    c.addEventListener('click', function(){
+      alert('Deposit '+c.dataset.deposit+'\n\nSend to your wallet address:\n0x7A3f4E8b2D1c9A0f6B5e3D8c7A2f1E0d4C5b9C21\n\n(Mockup — address copied to your wallet screen.)');
+    });
+  });
+  document.querySelectorAll('#add [data-info]').forEach(function(c){
+    c.addEventListener('click', function(){ alert(c.dataset.info+'\n\n(Mockup)'); });
+  });
+
+  // remaining placeholders -> contextual feedback (no silent dead-ends)
+  document.querySelectorAll('#borrow [data-info], #trade [data-info]').forEach(function(c){
+    c.addEventListener('click', function(){ alert(c.dataset.info+'\n\n(Mockup)'); });
+  });
+  var referBanner = document.getElementById('referBanner');
+  if (referBanner) referBanner.addEventListener('click', function(){ alert('Refer a friend\n\nShare your link — you both get $50 in $YLDS when they fund. (Mockup)'); });
+  var pwChange = document.getElementById('pwChange');
+  if (pwChange) pwChange.addEventListener('click', function(){ alert('Change password\n\nWe’ll send a secure link to mcagney@gmail.com. (Mockup)'); });
+  var settingsSave = document.getElementById('settingsSave');
+  if (settingsSave) settingsSave.addEventListener('click', function(){ alert('Changes saved. (Mockup)'); });
+  var signOut = document.getElementById('signOut');
+  if (signOut) signOut.addEventListener('click', function(){ if (confirm('Sign out of Wallet Co?')) alert('Signed out. (Mockup)'); });
+
   // earn screen
   var earnAction = document.getElementById('earnAction');
   if (earnAction) earnAction.addEventListener('click', function(){ showPane('earn'); });
@@ -1460,7 +1573,7 @@
   if (buyBack) buyBack.addEventListener('click', function(){ showPane('earn'); });
 
   var buyAmt = document.getElementById('buyAmt');
-  var BUY_AVAIL = 12840.00, YLDS_RATE = 0.0325;
+  var YLDS_RATE = 0.0325;
   function syncProj(){
     var v = parseFloat((buyAmt.value || '').replace(/[^0-9.]/g, '')) || 0;
     document.getElementById('projYear').textContent =
@@ -1468,37 +1581,65 @@
   }
   if (buyAmt) buyAmt.addEventListener('input', syncProj);
   var buyMax = document.getElementById('buyMax');
-  if (buyMax) buyMax.addEventListener('click', function(){ buyAmt.value = BUY_AVAIL.toFixed(2); syncProj(); });
+  if (buyMax) buyMax.addEventListener('click', function(){ buyAmt.value = FIN.usdCash.toFixed(2); syncProj(); });
 
   var buyReview = document.getElementById('buyReview');
   if (buyReview) buyReview.addEventListener('click', function(){
     var v = parseFloat((buyAmt.value || '').replace(/[^0-9.]/g, '')) || 0;
     if (v <= 0) { alert('Enter an amount to buy.'); return; }
-    if (v > BUY_AVAIL) { alert('Amount exceeds your available USD cash.'); return; }
+    if (v > FIN.usdCash) { alert('Amount exceeds your available USD cash ('+money2(FIN.usdCash)+').'); return; }
     var yr = (v * YLDS_RATE).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
     var amt = v.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
     if (confirm('Confirm purchase\n\nBuy $' + amt + ' of $YLDS\nEst. yield (1 yr): $' + yr + ' at 3.25% APY\nPay from: USD cash\n\nProceed?')) {
-      alert('Purchase complete. Your $YLDS is now earning. (Mockup — no funds moved.)');
+      FIN.usdCash -= v; FIN.ylds += v; renderFinances();
+      alert('Purchase complete. Your $YLDS holding grew and is now earning. (Mockup)');
       buyAmt.value = ''; syncProj(); showPane('earn');
     }
   });
 
-  // send: asset-dependent available balance + currency symbol
-  var assetInfo = {
-    usd:  { cur: '$', avail: 'Available: $12,840.00', max: '12840.00' },
-    ylds: { cur: '',  avail: 'Available: 57,500.00 $YLDS', max: '57500.00' },
-    fgrs: { cur: '',  avail: 'Available: 300.0 $FGRS (~$9,000.00)', max: '300.0' }
-  };
+  // send: asset-dependent available balance + currency symbol (from live state)
   var sendAsset = document.getElementById('sendAsset');
   function syncAsset(){
-    var a = assetInfo[sendAsset.value];
-    document.getElementById('sendCur').textContent = a.cur;
-    document.getElementById('sendAvail').textContent = a.avail;
+    if(!sendAsset) return;
+    var a = sendAsset.value;
+    setText('sendCur', a==='usd' ? '$' : '');
+    setText('sendAvail',
+      a==='usd'  ? 'Available: '+money2(FIN.usdCash) :
+      a==='ylds' ? 'Available: '+money2(FIN.ylds)+' $YLDS' :
+                   'Available: 300.0 $FGRS (~'+money2(FIN.fgrs)+')');
   }
   if (sendAsset) sendAsset.addEventListener('change', syncAsset);
   var maxBtn = document.querySelector('.max-btn');
   if (maxBtn) maxBtn.addEventListener('click', function(){
-    document.getElementById('sendAmt').value = assetInfo[sendAsset.value].max;
+    var a = sendAsset.value;
+    document.getElementById('sendAmt').value = a==='usd' ? FIN.usdCash.toFixed(2) : a==='ylds' ? FIN.ylds.toFixed(2) : '300.0';
+  });
+  var sendReview = document.getElementById('sendReview');
+  if (sendReview) sendReview.addEventListener('click', function(){
+    var assetLabel = { usd:'USD', ylds:'$YLDS', fgrs:'$FGRS' }[sendAsset.value];
+    var amt = (document.getElementById('sendAmt').value||'').replace(/[^0-9.]/g,'');
+    var to = (document.getElementById('sendTo').value||'').trim();
+    if (!amt || parseFloat(amt) <= 0) { alert('Enter an amount to send.'); return; }
+    if (!to) { alert('Enter who to send to.'); document.getElementById('sendTo').focus(); return; }
+    var v = parseFloat(amt);
+    var disp = (sendAsset.value==='usd' ? '$'+amt : amt+' '+assetLabel);
+    if (confirm('Review transfer\n\nSend: '+disp+'\nTo: '+to+'\n\nSend now?')) {
+      if (sendAsset.value==='usd') { FIN.usdCash -= v; base -= v; }
+      else if (sendAsset.value==='ylds') { FIN.ylds -= v; base -= v; }
+      updateAccountDisplay(); renderFinances();
+      alert('Sent. (Mockup)');
+      document.getElementById('sendAmt').value=''; document.getElementById('sendTo').value='';
+    }
+  });
+  document.querySelectorAll('#send [data-rail]').forEach(function(c){
+    c.addEventListener('click', function(){ alert(c.dataset.rail+' — choose recipient and amount. (Mockup)'); });
+  });
+  document.querySelectorAll('#send .recent').forEach(function(r){
+    r.addEventListener('click', function(){
+      var nm=r.querySelector('.r-nm'); var to=document.getElementById('sendTo');
+      if(nm && nm.textContent!=='New' && to) to.value=nm.textContent;
+      else if(to) to.focus();
+    });
   });
 
   // delete account confirmation (mockup)
@@ -1554,16 +1695,28 @@
   if (ddBack) ddBack.addEventListener('click', function(){ showPane(ddReturn); });
 
   var drawMore = document.getElementById('drawMore');
-  if (drawMore) drawMore.addEventListener('click', function(){
-    if (confirm('Draw from Figure HELOC\n\nUp to $15,000 available at 8% APR\nDeposited to your Wallet Co balance\n\nContinue?')) {
-      alert('Draw request submitted. (Mockup — no funds moved.)');
+  if (drawMore) drawMore.addEventListener('click', function(){ document.getElementById('drawAmt').value=''; renderFinances(); showPane('drawFlow'); });
+  var drawBack = document.getElementById('drawBack');
+  if (drawBack) drawBack.addEventListener('click', function(){ showPane('borrow'); });
+  var drawMax = document.getElementById('drawMax');
+  if (drawMax) drawMax.addEventListener('click', function(){ document.getElementById('drawAmt').value = FIN.helocAvail.toFixed(2); });
+  var drawBtn = document.getElementById('drawBtn');
+  if (drawBtn) drawBtn.addEventListener('click', function(){
+    var v = parseFloat((document.getElementById('drawAmt').value||'').replace(/[^0-9.]/g,''))||0;
+    if (v <= 0) { alert('Enter an amount to draw.'); return; }
+    if (v > FIN.helocAvail) { alert('Exceeds available to draw ('+money2(FIN.helocAvail)+').'); return; }
+    if (confirm('Draw '+money2(v)+' from your Figure HELOC at 8% APR?\n\nFunds land in your balance.')) {
+      FIN.helocBal += v; FIN.helocAvail -= v; FIN.usdCash += v; renderFinances();
+      alert('Drawn '+money2(v)+'. It’s in your balance; your HELOC balance went up. (Mockup)');
+      showPane('borrow');
     }
   });
 
   var payLoan = document.getElementById('payLoan');
   if (payLoan) payLoan.addEventListener('click', function(){
     if (confirm('Make HELOC payment\n\nFigure HELOC\n$3,500.00 · due Jul 1\nFrom: Wallet Co balance\n\nConfirm payment?')) {
-      alert('Payment of $3,500.00 scheduled. (Mockup — no funds moved.)');
+      FIN.helocBal = Math.max(0, FIN.helocBal - 3500); FIN.helocAvail += 3500; FIN.usdCash -= 3500; renderFinances();
+      alert('Payment of $3,500.00 made. Your HELOC balance went down. (Mockup)');
     }
   });
 
@@ -1672,18 +1825,26 @@
     var proj = (cfg.apr!=null && s.cur==='$') ? ('Est. yield (1 yr): $'+(v*cfg.apr).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})) : 'Yield: variable';
     var amt = s.cur + (s.cur==='$' ? v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}) : v) + (s.cur==='$'?'':' '+s.t.split(' · ')[0]);
     if(confirm(cfg.title+'\n\nAmount: '+amt+'\nRate: '+cfg.rateRow+'\n'+proj+'\nFrom: '+s.t+'\n\nConfirm?')){
-      alert('Position opened — now earning. (Mockup — no funds moved.)'); showPane('earn');
+      // Democratized Prime funded from USD cash grows your Prime holding
+      if(curLend==='prime' && s.cur==='$'){ FIN.usdCash -= v; FIN.prime += v; renderFinances(); }
+      alert('Position opened — now earning. (Mockup)'); showPane('earn');
     }
   });
 
   // earn position actions
   var yldsRedeem=document.getElementById('yldsRedeem');
   if(yldsRedeem) yldsRedeem.addEventListener('click', function(){
-    if(confirm('Redeem $YLDS to cash\n\n$57,500.00 · 24×7 liquidity, no lockup\nFunds land instantly in your balance.\n\nConfirm?')) alert('Redemption complete. (Mockup — no funds moved.)');
+    if(confirm('Redeem $YLDS to cash\n\n'+money2(FIN.ylds)+' · 24×7 liquidity, no lockup\nFunds land instantly in your balance.\n\nConfirm?')){
+      FIN.usdCash += FIN.ylds; FIN.ylds = 0; renderFinances();
+      alert('Redeemed to cash. Your $YLDS position is now $0. (Mockup)');
+    }
   });
   var primeCancel=document.getElementById('primeCancel');
   if(primeCancel) primeCancel.addEventListener('click', function(){
-    if(confirm('Cancel Democratized Prime position\n\nFigure HELOC pool · $33,200.00 · 8.00% yield\nFunds return to your cash balance.\n\nConfirm?')) alert('Position cancelled. (Mockup — no funds moved.)');
+    if(confirm('Cancel Democratized Prime position\n\nFigure HELOC pool · '+money2(FIN.prime)+' · 8.00% yield\nFunds return to your cash balance.\n\nConfirm?')){
+      FIN.usdCash += FIN.prime; FIN.prime = 0; renderFinances();
+      alert('Position cancelled — funds returned to cash. (Mockup)');
+    }
   });
 
   document.querySelectorAll('[data-copy]').forEach(function(b){
@@ -1818,8 +1979,10 @@
   function seed(str){ var h=2166136261; for(var i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619); } return (h>>>0); }
   function sizeFor(key){ return 500 + (seed(key)%9)*500; }            // 500..4500
   function strikesFor(px){
-    var c = Math.round(px/5)*5, out = [];
-    for (var i=-6;i<=6;i++){ var k=c+i*5; if (k>0) out.push(k); }
+    // span ~40%–130% of price in $5 steps, so both deep OTM and ITM strikes are reachable
+    var lo = Math.max(5, Math.round(px*0.40/5)*5);
+    var hi = Math.round(px*1.30/5)*5, out = [];
+    for (var k=lo; k<=hi; k+=5) out.push(k);
     return out;
   }
   // yes price = P(close > strike) via logistic on distance, scaled by horizon
@@ -1898,10 +2061,11 @@
     var body=document.getElementById('bookBody'); if(!body) return;
     body.innerHTML = strikesFor(t.px).map(function(k){
       var q=quoteFor(t.s,k,curDateIdx);
+      var yesPx=q.ask, noPx=Math.max(0.01, Math.round((1-q.bid)*100)/100);
       return '<div class="book-row">'+
         '<div class="bk-strike">$'+k+'</div>'+
-        '<div class="bk-cell bk-yes" data-act="hit" data-k="'+k+'" data-px="'+c(q.bid)+'" data-sz="'+q.bidSz+'"><span class="px">'+c(q.bid)+'</span><span class="sz">×'+comma(q.bidSz)+'</span></div>'+
-        '<div class="bk-cell bk-no" data-act="lift" data-k="'+k+'" data-px="'+c(q.ask)+'" data-sz="'+q.askSz+'"><span class="px">'+c(q.ask)+'</span><span class="sz">×'+comma(q.askSz)+'</span></div>'+
+        '<div class="bk-cell bk-yes" data-act="yes" data-k="'+k+'" data-px="'+c(yesPx)+'" data-sz="'+q.askSz+'"><span class="px">'+c(yesPx)+'</span><span class="sz">×'+comma(q.askSz)+'</span></div>'+
+        '<div class="bk-cell bk-no" data-act="no" data-k="'+k+'" data-px="'+c(noPx)+'" data-sz="'+q.bidSz+'"><span class="px">'+c(noPx)+'</span><span class="sz">×'+comma(q.bidSz)+'</span></div>'+
       '</div>';
     }).join('');
     body.querySelectorAll('.bk-cell').forEach(function(cell){
@@ -1909,16 +2073,11 @@
     });
   }
   function quickTrade(cell){
-    var k=cell.dataset.k, px=parseFloat(cell.dataset.px), sz=+cell.dataset.sz, t=TMAP[curSym], d=DATES[curDateIdx];
-    var head=curSym+' over $'+k+' by '+d.short;
-    var msg;
-    if (cell.dataset.act==='lift'){
-      msg='Lift offer — take YES\n\n'+head+'\nBuy '+comma(sz)+' YES @ '+px.toFixed(2)+
-          '\nCost: '+usd(px*sz)+'\nMax payout if YES: '+usd(sz)+'\n\nConfirm?';
-    } else {
-      msg='Hit bid — take NO\n\n'+head+'\nSell '+comma(sz)+' YES @ '+px.toFixed(2)+
-          '\nYou receive: '+usd(px*sz)+'\nMax payout if NO: '+usd(sz)+'\n\nConfirm?';
-    }
+    var k=cell.dataset.k, px=parseFloat(cell.dataset.px), sz=+cell.dataset.sz, d=DATES[curDateIdx];
+    var side=cell.dataset.act==='yes' ? 'YES' : 'NO';
+    var msg='Buy '+side+'\n\n'+curSym+' over $'+k+' by '+d.short+
+            '\nBuy '+comma(sz)+' '+side+' @ '+px.toFixed(2)+
+            '\nCost: '+usd(px*sz)+'\nWins '+usd(sz)+' if '+side+'\n\nConfirm?';
     if (confirm(msg)) alert('Filled. (Mockup — no funds moved.)');
   }
 
@@ -1973,6 +2132,7 @@
   }
 
   renderPositions(); renderTickers(); renderDateSeg(); renderBook(); initOrder();
+  renderFinances();
 </script>
 </body>
 </html>
