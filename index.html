@@ -494,6 +494,25 @@
   .cost-line { font-size: 12.5px; color: #8a97ab; text-align: center; margin: 14px 0 4px; }
   .cost-line b { color: #e8eef6; font-weight: 650; }
 
+  /* democratized prime markets */
+  .mkt-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 16px; margin-bottom: 12px; }
+  .mkt-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+  .mkt-name { font-size: 16px; font-weight: 650; }
+  .mkt-aprwrap { text-align: right; flex-shrink: 0; }
+  .mkt-apr { font-size: 22px; font-weight: 680; color: #34d399; letter-spacing: -0.02em; line-height: 1; }
+  .mkt-aprlbl { font-size: 10.5px; color: #8a97ab; margin-top: 3px; }
+  .mkt-stats { display: flex; gap: 28px; margin: 4px 0 10px; }
+  .mkt-sl { font-size: 11px; color: #8a97ab; font-weight: 550; }
+  .mkt-sv { font-size: 14.5px; font-weight: 600; margin-top: 3px; font-variant-numeric: tabular-nums; }
+  .util-bar { height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; margin-bottom: 14px; }
+  .util-fill { height: 100%; background: linear-gradient(90deg, #22d3ee, #34d399); border-radius: 3px; }
+  .mkt-cta { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .mkt-learn { font-size: 13px; }
+  .select-btn {
+    background: linear-gradient(160deg, #22d3ee, #34d399); color: #06121f; border: none;
+    font-family: inherit; font-size: 13px; font-weight: 700; padding: 9px 24px; border-radius: 11px; cursor: pointer;
+  }
+
   /* lend risk note */
   .risk-note {
     background: rgba(251,191,36,0.10); border: 1px solid rgba(251,191,36,0.25);
@@ -502,10 +521,12 @@
 
   /* earn: current positions */
   .epos { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 16px; margin-bottom: 12px; }
-  .epos-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  .epos-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
   .epos-name { font-size: 16px; font-weight: 650; }
   .epos-val { font-size: 16px; font-weight: 680; font-variant-numeric: tabular-nums; }
   .epos-sub { font-size: 12.5px; color: #8a97ab; margin-top: 5px; }
+  .epos-right { text-align: right; flex-shrink: 0; }
+  .epos-right .pay-now { display: inline-block; margin-top: 6px; font-size: 13px; }
   .epos-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06); }
   .epos-foot { margin-top: 12px; }
   .epos-foot.bordered { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); }
@@ -987,13 +1008,14 @@
 
           <div class="sec">Your earning positions</div>
           <div class="epos">
-            <div class="epos-top"><div class="epos-name">$YLDS</div><div class="epos-val">$57,500.00</div></div>
-            <div class="epos-sub">3.68% current yield</div>
+            <div class="epos-top">
+              <div><div class="epos-name">$YLDS</div><div class="epos-sub">3.68% current yield</div></div>
+              <div class="epos-right"><div class="epos-val">$57,500.00</div><span class="pay-now" id="yldsRedeem">Redeem to cash</span></div>
+            </div>
             <div class="epos-row">
               <div><div class="tg-t">Sweep cash to $YLDS</div><div class="tg-s">Idle cash auto-earns</div></div>
               <span class="switch on"></span>
             </div>
-            <div class="epos-foot"><span class="pay-now" id="yldsRedeem">Redeem to cash</span></div>
           </div>
           <div class="epos">
             <div class="epos-top"><div class="epos-name">Democratized Prime</div><div class="epos-val">$33,200.00</div></div>
@@ -1064,6 +1086,36 @@
 
           <button class="save-btn" id="lendReview">Review</button>
           <div class="disclosure" id="lendDisc"></div>
+        </section>
+
+        <!-- DEMOCRATIZED PRIME MARKETS -->
+        <section class="pane" id="primeMarkets">
+          <div class="help-top">
+            <span class="back-btn" id="primeMktBack">←</span>
+            <span class="help-title">Democratized Prime</span>
+          </div>
+          <div class="psub" style="margin:0 2px 16px;">Choose a market to lend into. Higher utilization, higher yield.</div>
+
+          <div class="mkt-card">
+            <div class="mkt-head"><div class="mkt-name">Figure HELOC</div><div class="mkt-aprwrap"><div class="mkt-apr">8.10%</div><div class="mkt-aprlbl">Current APR</div></div></div>
+            <div class="mkt-stats"><div><div class="mkt-sl">Pool size</div><div class="mkt-sv">$52,000,000</div></div><div><div class="mkt-sl">Utilization</div><div class="mkt-sv">85%</div></div></div>
+            <div class="util-bar"><div class="util-fill" style="width:85%"></div></div>
+            <div class="mkt-cta"><span class="pay-now mkt-learn" data-name="Figure HELOC">Learn more</span><button class="select-btn mkt-select" data-mkt="heloc">Select</button></div>
+          </div>
+
+          <div class="mkt-card">
+            <div class="mkt-head"><div class="mkt-name">Crypto-Backed Loans</div><div class="mkt-aprwrap"><div class="mkt-apr">7.95%</div><div class="mkt-aprlbl">Current APR</div></div></div>
+            <div class="mkt-stats"><div><div class="mkt-sl">Pool size</div><div class="mkt-sv">$49,500,000</div></div><div><div class="mkt-sl">Utilization</div><div class="mkt-sv">80%</div></div></div>
+            <div class="util-bar"><div class="util-fill" style="width:80%"></div></div>
+            <div class="mkt-cta"><span class="pay-now mkt-learn" data-name="Crypto-Backed Loans">Learn more</span><button class="select-btn mkt-select" data-mkt="crypto">Select</button></div>
+          </div>
+
+          <div class="mkt-card">
+            <div class="mkt-head"><div class="mkt-name">Automobile</div><div class="mkt-aprwrap"><div class="mkt-apr">7.75%</div><div class="mkt-aprlbl">Current APR</div></div></div>
+            <div class="mkt-stats"><div><div class="mkt-sl">Pool size</div><div class="mkt-sv">$50,250,000</div></div><div><div class="mkt-sl">Utilization</div><div class="mkt-sv">75%</div></div></div>
+            <div class="util-bar"><div class="util-fill" style="width:75%"></div></div>
+            <div class="mkt-cta"><span class="pay-now mkt-learn" data-name="Automobile">Learn more</span><button class="select-btn mkt-select" data-mkt="auto">Select</button></div>
+          </div>
         </section>
 
         <!-- BUY $YLDS -->
@@ -1570,14 +1622,40 @@
     showPane('lend');
   }
   document.querySelectorAll('.lend-card').forEach(function(card){
-    card.addEventListener('click', function(){ openLend(card.dataset.lend); });
+    card.addEventListener('click', function(){
+      if (card.dataset.lend === 'prime') { showPane('primeMarkets'); }
+      else { openLend(card.dataset.lend); }
+    });
+  });
+
+  // Democratized Prime markets -> configure prime lend for the chosen market
+  var PRIME_MKTS = {
+    heloc:  { name:'Figure HELOC',        apr:0.0810, aprTxt:'8.10%', desc:'Lending against home-equity (HELOC) loans' },
+    crypto: { name:'Crypto-Backed Loans', apr:0.0795, aprTxt:'7.95%', desc:'Lending against over-collateralized crypto loans' },
+    auto:   { name:'Automobile',          apr:0.0775, aprTxt:'7.75%', desc:'Lending against auto loans' }
+  };
+  var primeMktBack=document.getElementById('primeMktBack');
+  if(primeMktBack) primeMktBack.addEventListener('click', function(){ showPane('earn'); });
+  document.querySelectorAll('.mkt-learn').forEach(function(l){
+    l.addEventListener('click', function(){ alert('Learn more — '+l.dataset.name+' market. (Mockup)'); });
+  });
+  document.querySelectorAll('.mkt-select').forEach(function(b){
+    b.addEventListener('click', function(){
+      var m=PRIME_MKTS[b.dataset.mkt];
+      LEND.prime.title='Lend · '+m.name;
+      LEND.prime.rate=m.aprTxt;
+      LEND.prime.apr=m.apr;
+      LEND.prime.rateRow=m.aprTxt+' APR · variable';
+      LEND.prime.desc=m.desc+' · Democratized Prime';
+      openLend('prime');
+    });
   });
   if(lendAmt) lendAmt.addEventListener('input', lendProjCalc);
   if(lendSource) lendSource.addEventListener('change', lendSyncSrc);
   var lendMax=document.getElementById('lendMax');
   if(lendMax) lendMax.addEventListener('click', function(){ var s=lendSrc(); lendAmt.value = (s.max % 1 ? s.max : s.max.toFixed(2)); lendProjCalc(); });
   var lendBack=document.getElementById('lendBack');
-  if(lendBack) lendBack.addEventListener('click', function(){ showPane('earn'); });
+  if(lendBack) lendBack.addEventListener('click', function(){ showPane(curLend==='prime' ? 'primeMarkets' : 'earn'); });
   var lendReview=document.getElementById('lendReview');
   if(lendReview) lendReview.addEventListener('click', function(){
     var cfg=LEND[curLend], s=lendSrc(), v=parseFloat((lendAmt.value||'').replace(/[^0-9.]/g,''))||0;
