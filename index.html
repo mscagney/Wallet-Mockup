@@ -290,6 +290,13 @@
     background: linear-gradient(160deg, #22d3ee, #34d399); color: #06121f;
     display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; cursor: pointer;
   }
+  .ask-mic {
+    width: 34px; height: 34px; border-radius: 11px; flex-shrink: 0; margin-right: 2px;
+    display: flex; align-items: center; justify-content: center; font-size: 15px;
+    color: #67e8f9; background: rgba(34,211,238,0.10); border: 1px solid rgba(34,211,238,0.22); cursor: pointer;
+  }
+  .ask-mic.listening { color: #fca5a5; background: rgba(248,113,113,0.18); border-color: rgba(248,113,113,0.4); animation: micpulse 1.2s infinite; }
+  @keyframes micpulse { 0%,100%{ box-shadow: 0 0 0 0 rgba(248,113,113,.45);} 50%{ box-shadow: 0 0 0 7px rgba(248,113,113,0);} }
 
   /* help screen */
   .help-top { display: flex; align-items: center; gap: 12px; margin: 16px 0 18px; }
@@ -617,6 +624,21 @@
   }
   .to-box:focus { border-color: rgba(34,211,238,0.35); }
   .to-help { font-size: 11.5px; color: #6b7891; margin-top: 8px; line-height: 1.4; }
+  .to-row { display: flex; gap: 10px; align-items: stretch; }
+  .to-row .to-box { flex: 1; }
+  .scan-btn {
+    width: 54px; flex-shrink: 0; border-radius: 16px; cursor: pointer; font-size: 20px;
+    background: rgba(34,211,238,0.10); border: 1px solid rgba(34,211,238,0.25); color: #67e8f9;
+    display: flex; align-items: center; justify-content: center; transition: background .2s;
+  }
+  .scan-btn:hover { background: rgba(34,211,238,0.18); }
+  /* deposit receive QR */
+  .qr-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 18px; text-align: center; margin-bottom: 6px; }
+  .qr-box { width: 196px; height: 196px; background: #fff; border-radius: 14px; padding: 10px; margin: 0 auto; box-sizing: border-box; }
+  .qr-box svg { display: block; width: 100%; height: 100%; }
+  .qr-cap { font-size: 13px; color: #8a97ab; margin-top: 14px; }
+  .qr-addr { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; }
+  .qr-addr-txt { font-size: 13px; color: #cdd6e3; letter-spacing: .5px; }
 
   .recents-label { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #6b7891; margin: 18px 2px 12px; font-weight: 600; }
   .recents { display: flex; gap: 16px; margin-bottom: 4px; }
@@ -659,6 +681,20 @@
   .tab.active { color: #67e8f9; }
 
   .home-ind { position:absolute; bottom:8px; left:50%; transform:translateX(-50%); width:134px; height:5px; border-radius:3px; background:rgba(255,255,255,.3); z-index:26; }
+
+  /* guided tour */
+  .tour { position:absolute; inset:0; z-index:60; display:none; pointer-events:none; }
+  .tour.active { display:block; }
+  .tour-mask { position:absolute; background:rgba(6,12,20,0.74); pointer-events:auto; }
+  .tour-hl { position:absolute; border-radius:14px; border:2px solid #34d399; box-shadow:0 0 0 4px rgba(52,211,153,0.25); transition:top .2s, left .2s, width .2s, height .2s; pointer-events:none; }
+  .tour-tip {
+    position:absolute; left:16px; right:16px; background:#16243f; border:1px solid rgba(52,211,153,0.35);
+    border-radius:16px; padding:16px; box-shadow:0 16px 40px -10px rgba(0,0,0,0.6); pointer-events:auto;
+  }
+  .tour-text { font-size:14px; color:#e8eef6; line-height:1.5; }
+  .tour-row { display:flex; align-items:center; gap:10px; margin-top:14px; }
+  .tour-step { font-size:12px; color:#8a97ab; margin-right:auto; }
+  .tour-exit { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.16); color:#cdd6e3; font-family:inherit; font-size:12.5px; font-weight:600; padding:8px 14px; border-radius:10px; cursor:pointer; }
 </style>
 </head>
 <body>
@@ -706,7 +742,7 @@
 
           <div class="actions">
             <div class="action" id="sendAction"><div class="ic">↑</div><div class="t">Send</div></div>
-            <div class="action" id="addAction"><div class="ic">↓</div><div class="t">Add</div></div>
+            <div class="action" id="addAction"><div class="ic">↓</div><div class="t">Deposit</div></div>
             <div class="action" id="earnAction"><div class="ic">↗</div><div class="t">Earn</div></div>
           </div>
 
@@ -1009,8 +1045,11 @@
 
           <div class="sec">To who?</div>
           <div class="field-inset">
-            <input class="to-box" id="sendTo" type="text">
-            <div class="to-help">Enter an email, mobile number, contact or wallet address</div>
+            <div class="to-row">
+              <input class="to-box" id="sendTo" type="text">
+              <button class="scan-btn" id="sendScan" title="Scan a crypto address">📷</button>
+            </div>
+            <div class="to-help">Enter an email, mobile number, contact or wallet address — or tap 📷 to scan a crypto address.</div>
           </div>
 
           <div class="recents-label">Recent</div>
@@ -1046,10 +1085,21 @@
           </div>
           <div class="psub" style="margin:0 2px 16px;">Idle cash auto-earns in $YLDS the moment it lands.</div>
 
+          <div class="sec">Receive</div>
+          <div class="qr-card">
+            <div class="qr-box" id="depositQR"></div>
+            <div class="qr-cap">Scan to send crypto to your wallet</div>
+            <div class="qr-addr"><span class="qr-addr-txt">0x7A3f…9C21</span><button class="mini-btn" data-copy="0x7A3f4E8b2D1c9A0f6B5e3D8c7A2f1E0d4C5b9C21">Copy</button></div>
+          </div>
+
           <div class="sec">Instant</div>
           <div class="pcard add-card" data-add="debit" data-title="Add with debit card" data-note="Available right away · fee applies">
             <div class="ph"><div class="nm">Debit card</div><span class="arrow">→</span></div>
             <div class="ds">Available right away · fee applies</div>
+          </div>
+          <div class="pcard add-card" data-add="wallet" data-title="Apple Pay / Google Pay" data-note="Available right away · fee applies">
+            <div class="ph"><div class="nm"> Apple Pay / Google Pay</div><span class="arrow">→</span></div>
+            <div class="ds">One-tap deposit · available right away</div>
           </div>
 
           <div class="sec">From a bank</div>
@@ -1637,6 +1687,22 @@
 
       </div>
 
+      <!-- guided tour overlay -->
+      <div class="tour" id="tour">
+        <div class="tour-mask" id="maskT"></div>
+        <div class="tour-mask" id="maskB"></div>
+        <div class="tour-mask" id="maskL"></div>
+        <div class="tour-mask" id="maskR"></div>
+        <div class="tour-hl" id="tourHl"></div>
+        <div class="tour-tip" id="tourTip">
+          <div class="tour-text" id="tourText"></div>
+          <div class="tour-row">
+            <span class="tour-step" id="tourStep"></span>
+            <button class="tour-exit" id="tourExit">Exit tutorial</button>
+          </div>
+        </div>
+      </div>
+
       <!-- bottom nav -->
       <div class="nav">
         <div class="tab" data-pane="tutorial"><span class="gi">▷</span>Tutorial</div>
@@ -1747,6 +1813,31 @@
   var addBack = document.getElementById('addBack');
   if (addBack) addBack.addEventListener('click', goHome);
 
+  // Send: scan a crypto address
+  var sendScan = document.getElementById('sendScan');
+  if (sendScan) sendScan.addEventListener('click', function(){
+    alert('Point your camera at a QR code to scan a crypto address. (Mockup)');
+  });
+
+  // Deposit: render a QR placeholder for receiving crypto
+  function renderQR(id, seed){
+    var box=document.getElementById(id); if(!box) return;
+    var N=25, cell=8, sz=N*cell, h=2166136261;
+    for(var i=0;i<seed.length;i++){ h^=seed.charCodeAt(i); h=Math.imul(h,16777619); }
+    function rnd(){ h^=h<<13; h^=h>>>17; h^=h<<5; return ((h>>>0)%1000)/1000; }
+    var s='<svg viewBox="0 0 '+sz+' '+sz+'" xmlns="http://www.w3.org/2000/svg"><rect width="'+sz+'" height="'+sz+'" fill="#fff"/>';
+    for(var y=0;y<N;y++){ for(var x=0;x<N;x++){
+      if((x<8&&y<8)||(x>=N-8&&y<8)||(x<8&&y>=N-8)) continue;
+      if(rnd()>0.55) s+='<rect x="'+(x*cell)+'" y="'+(y*cell)+'" width="'+cell+'" height="'+cell+'" fill="#0a1220"/>';
+    }}
+    function finder(fx,fy){ return '<rect x="'+(fx*cell)+'" y="'+(fy*cell)+'" width="'+(7*cell)+'" height="'+(7*cell)+'" fill="#0a1220"/>'+
+      '<rect x="'+((fx+1)*cell)+'" y="'+((fy+1)*cell)+'" width="'+(5*cell)+'" height="'+(5*cell)+'" fill="#fff"/>'+
+      '<rect x="'+((fx+2)*cell)+'" y="'+((fy+2)*cell)+'" width="'+(3*cell)+'" height="'+(3*cell)+'" fill="#0a1220"/>'; }
+    s+=finder(0,0)+finder(N-7,0)+finder(0,N-7)+'</svg>';
+    box.innerHTML=s;
+  }
+  renderQR('depositQR','0x7A3f4E8b2D1c9A0f6B5e3D8c7A2f1E0d4C5b9C21');
+
   // Add money: each method routes to its own detail screen
   function creditBalance(amt){ base += amt; FIN.usdCash += amt; updateAccountDisplay(); renderFinances(); }
   function readAmt(id){ return parseFloat((document.getElementById(id).value||'').replace(/[^0-9.]/g,'')) || 0; }
@@ -1757,7 +1848,23 @@
       else if (m==='wire') { showPane('wireFlow'); }
       else if (m==='ach') { openPlaid(); }
       else if (m==='check') { document.getElementById('checkAmt').value=''; showPane('checkFlow'); }
+      else if (m==='wallet') {
+        document.getElementById('addFlowTitle').textContent = c.dataset.title;
+        document.getElementById('addFlowNote').textContent = 'Confirm with Face ID — funds land right away.';
+        document.getElementById('addFlowAmt').value=''; showPane('addFlow');
+      }
     });
+  });
+  // Apple Pay / Google Pay quick-amount screen
+  var addFlowBack = document.getElementById('addFlowBack');
+  if (addFlowBack) addFlowBack.addEventListener('click', function(){ showPane('add'); });
+  var addFlowBtn = document.getElementById('addFlowBtn');
+  if (addFlowBtn) addFlowBtn.addEventListener('click', function(){
+    var v = parseFloat((document.getElementById('addFlowAmt').value||'').replace(/[^0-9.]/g,'')) || 0;
+    if (v <= 0) { alert('Enter an amount to add.'); return; }
+    if (confirm('Add '+money2(v)+' via Apple Pay / Google Pay?\n\nConfirm with Face ID — funds land right away.')) {
+      creditBalance(v); alert('Added '+money2(v)+' — now earning. (Mockup)'); showPane('home');
+    }
   });
 
   // debit card
@@ -2069,10 +2176,70 @@
   if (billBack) billBack.addEventListener('click', function(){ showPane('send'); });
 
   // tutorial videos
+  // ===== Guided tours: tap the real control to advance =====
+  // step.free = true → no spotlight mask (lets the user fill a whole form, then tap the target)
+  var TOURS = {
+    'How to fund your account': [
+      { pane:'home', sel:'#addAction', text:'Tap Add to put money into your wallet.' },
+      { pane:'add',  sel:'.add-card[data-add="debit"]', text:'Choose how to fund — tap Debit card.' },
+      { pane:'debitFlow', sel:'#debitAddBtn', free:true, text:'Enter your card details and an amount above, then tap Add money. It lands in your balance and starts earning right away — that’s it!' }
+    ],
+    'How to lend in Democratized Prime': [
+      { pane:'earn', sel:'.lend-card[data-lend="prime"]', text:'Open Democratized Prime from your Earn screen.' },
+      { pane:'primeMarkets', sel:'.mkt-select', text:'Compare the pools, then tap Select on the one you want.' },
+      { pane:'lend', sel:'#lendReview', free:true, text:'Enter how much to lend above, then tap Review to confirm. Done!' }
+    ]
+  };
+  var TOUR=[], tourI=0, tourCleanup=null;
+  function clearTourListener(){ if(tourCleanup){ tourCleanup(); tourCleanup=null; } }
+  function endTour(){ clearTourListener(); TOUR=[]; document.getElementById('tour').classList.remove('active'); }
+  function setMasks(r, sr){
+    var pad=6, t=(r.top-sr.top)-pad, l=(r.left-sr.left)-pad, w=r.width+2*pad, h=r.height+2*pad, W=sr.width, H=sr.height;
+    function set(id,top,left,width,height){ var e=document.getElementById(id); e.style.display='block'; e.style.top=Math.max(0,top)+'px'; e.style.left=Math.max(0,left)+'px'; e.style.width=Math.max(0,width)+'px'; e.style.height=Math.max(0,height)+'px'; }
+    set('maskT',0,0,W,t); set('maskB',t+h,0,W,H-(t+h)); set('maskL',t,0,l,h); set('maskR',t,l+w,W-(l+w),h);
+  }
+  function hideMasks(){ ['maskT','maskB','maskL','maskR'].forEach(function(id){ document.getElementById(id).style.display='none'; }); }
+  function advanceTour(){ if(tourI>=TOUR.length-1){ endTour(); return; } tourI++; showTourStep(); }
+  function showTourStep(){
+    clearTourListener();
+    var st=TOUR[tourI]; if(!st){ endTour(); return; }
+    if(st.pane) showPane(st.pane);
+    setTimeout(function(){
+      var screen=document.querySelector('.screen'), sr=screen.getBoundingClientRect();
+      var el=document.querySelector(st.sel), hl=document.getElementById('tourHl'), tip=document.getElementById('tourTip');
+      if(el){
+        var r=el.getBoundingClientRect();
+        hl.style.display='block';
+        hl.style.top=(r.top-sr.top-6)+'px'; hl.style.left=(r.left-sr.left-6)+'px';
+        hl.style.width=(r.width+12)+'px'; hl.style.height=(r.height+12)+'px';
+        if(st.free){ hideMasks(); } else { setMasks(r, sr); }
+        var below=(r.bottom-sr.top) < sr.height-240;
+        if(below){ tip.style.top=(r.bottom-sr.top+16)+'px'; tip.style.bottom='auto'; }
+        else { tip.style.bottom=(sr.bottom-r.top+16)+'px'; tip.style.top='auto'; }
+        // advance by interacting with the real control
+        var evt=(el.tagName==='INPUT') ? 'input' : 'click';
+        var handler=function(){ el.removeEventListener(evt, handler); tourCleanup=null; setTimeout(advanceTour, evt==='click'?140:250); };
+        el.addEventListener(evt, handler);
+        tourCleanup=function(){ el.removeEventListener(evt, handler); };
+      } else { hideMasks(); hl.style.display='none'; }
+      document.getElementById('tourText').textContent=st.text;
+      document.getElementById('tourStep').textContent=(tourI+1)+' of '+TOUR.length;
+    }, 90);
+  }
+  function startTour(steps){ TOUR=steps; tourI=0; document.getElementById('tour').classList.add('active'); showTourStep(); }
+  document.getElementById('tourExit').addEventListener('click', endTour);
+
   document.querySelectorAll('.tut-item').forEach(function(t){
     t.addEventListener('click', function(){
       var nm=t.querySelector('.nm'); var title=nm?nm.textContent:'video';
-      alert('Playing: '+title+'\n\n(Mockup — no video.)');
+      if(TOURS[title]){
+        if(confirm('▶ “'+title+'”\n\n(Mockup video plays here.)\n\nWant me to walk you through it on your screen, step by step?')){
+          startTour(TOURS[title]);
+        }
+      } else {
+        // concept-only videos (e.g., MPC custody) — just play, no walkthrough offer
+        alert('▶ “'+title+'”\n\n(Mockup video plays here.)');
+      }
     });
   });
 
@@ -2314,14 +2481,49 @@
     });
   });
 
+  // Voice output — the agent speaks the request back, then "I'm working on it."
+  function agentSpeak(text){
+    if(!('speechSynthesis' in window)) return;
+    try{ window.speechSynthesis.cancel(); var u=new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=1; u.pitch=1; window.speechSynthesis.speak(u); }catch(e){}
+  }
   document.querySelectorAll('.ask-send').forEach(function(btn){
     btn.addEventListener('click', function(){
       var box = btn.closest('.ask-box'); var input = box ? box.querySelector('.ask-input') : null;
       var v = input ? input.value.trim() : '';
       if(!v){ if(input) input.focus(); return; }
-      alert('Sent to your agent:\n“'+v+'”\n\n(Mockup — no action taken.)');
+      var req = v.replace(/[.!?]+$/,'');
+      var reply = req + '. I’m working on it.';
+      agentSpeak(reply);
+      alert('🔊 Agent: “'+reply+'”');
       input.value='';
     });
+  });
+
+  // Voice input — inject a mic into every ask-box and dictate via the Web Speech API
+  var SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  function startDictation(box, mic){
+    var input = box.querySelector('.ask-input');
+    if(!SpeechRec){ alert('Voice input needs a supported browser (Chrome, Edge, or Safari) on a secure (https) connection.'); return; }
+    try{
+      var rec = new SpeechRec();
+      rec.lang = 'en-US'; rec.interimResults = true; rec.maxAlternatives = 1;
+      mic.classList.add('listening');
+      rec.onresult = function(e){ var t=''; for(var i=0;i<e.results.length;i++){ t += e.results[i][0].transcript; } input.value = t; };
+      rec.onend = function(){ mic.classList.remove('listening'); if(input.value.trim()) input.focus(); };
+      rec.onerror = function(){ mic.classList.remove('listening'); };
+      rec.start();
+    }catch(err){
+      mic.classList.remove('listening');
+      alert('Couldn’t start the microphone here (the preview sandbox may block it). It works on your deployed https site in Chrome/Edge/Safari.');
+    }
+  }
+  document.querySelectorAll('.ask-box').forEach(function(box){
+    if(box.querySelector('.ask-mic')) return;
+    var mic = document.createElement('span');
+    mic.className = 'ask-mic'; mic.textContent = '🎤'; mic.title = 'Speak';
+    var send = box.querySelector('.ask-send');
+    if(send) box.insertBefore(mic, send); else box.appendChild(mic);
+    mic.addEventListener('click', function(){ startDictation(box, mic); });
   });
 
   /* ===== Securities Predictions ===== */
@@ -2498,7 +2700,7 @@
     var el=document.getElementById('costLine');
     if(!p||!s||p<1||p>99){ el.innerHTML='Enter Yes price (1–99¢) &amp; size'; return; }
     var per = oDir==='yes' ? p : (100-p);
-    el.innerHTML = (oDir==='yes'?'Pay':'Post')+' <b>'+per+'¢</b> × '+comma(s)+' = <b>'+usd(per*s/100)+
+    el.innerHTML = 'Pay'+' <b>'+per+'¢</b> × '+comma(s)+' = <b>'+usd(per*s/100)+
       '</b> · wins <b>'+usd(s)+'</b> if '+oDir.toUpperCase();
   }
   function placeOrder(){
@@ -2509,7 +2711,7 @@
     var t=TMAP[oTicker.value], d=DMAP[oDate.value], per=oDir==='yes'?p:(100-p);
     var msg='Place order\n\n'+t.s+' over $'+oStrike.value+' by '+d.short+'\nSide: '+oDir.toUpperCase()+
             '\n'+(oDir==='yes'?'Bid':'Offer')+' '+p+'¢ · '+comma(s)+' units'+
-            '\n'+(oDir==='yes'?'Pay':'Post')+' '+usd(per*s/100)+' · wins '+usd(s)+' if '+oDir.toUpperCase()+'\n\nSubmit to the market?';
+            '\n'+'Pay'+' '+usd(per*s/100)+' · wins '+usd(s)+' if '+oDir.toUpperCase()+'\n\nSubmit to the market?';
     if(confirm(msg)){ alert('Order submitted to the market. (Mockup — no funds moved.)'); oPrice.value=''; oSize.value=''; costLine(); }
   }
 
