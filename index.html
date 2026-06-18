@@ -632,6 +632,21 @@
     display: flex; align-items: center; justify-content: center; transition: background .2s;
   }
   .scan-btn:hover { background: rgba(34,211,238,0.18); }
+  /* apple pay / google pay native-style buttons */
+  .pay-btns { margin-top: 16px; }
+  .applepay-btn {
+    display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; height: 50px;
+    background: #000; color: #fff; border: none; border-radius: 9px; cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 20px; font-weight: 600;
+  }
+  .applepay-btn svg { margin-top: -2px; }
+  .gpay-btn {
+    display: flex; align-items: center; justify-content: center; gap: 5px; width: 100%; height: 50px; margin-top: 10px;
+    background: #fff; color: #3c4043; border: 1px solid #dadce0; border-radius: 9px; cursor: pointer;
+    font-family: "Roboto", "Segoe UI", sans-serif; font-size: 18px; font-weight: 600;
+  }
+  .applepay-btn:active, .gpay-btn:active { opacity: .85; }
+
   /* deposit receive QR */
   .qr-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 18px; text-align: center; margin-bottom: 6px; }
   .qr-box { width: 196px; height: 196px; background: #fff; border-radius: 14px; padding: 10px; margin: 0 auto; box-sizing: border-box; }
@@ -639,6 +654,11 @@
   .qr-cap { font-size: 13px; color: #8a97ab; margin-top: 14px; }
   .qr-addr { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; }
   .qr-addr-txt { font-size: 13px; color: #cdd6e3; letter-spacing: .5px; }
+  .qr-head { cursor: pointer; align-items: center; }
+  .qr-chev { color: #6b7891; font-size: 16px; transition: transform .2s; }
+  .qr-chev.open { transform: rotate(180deg); }
+  .qr-reveal { display: none; text-align: center; padding-top: 16px; margin-top: 14px; border-top: 1px solid rgba(255,255,255,0.06); }
+  .qr-reveal.open { display: block; }
 
   .recents-label { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: #6b7891; margin: 18px 2px 12px; font-weight: 600; }
   .recents { display: flex; gap: 16px; margin-bottom: 4px; }
@@ -1085,21 +1105,22 @@
           </div>
           <div class="psub" style="margin:0 2px 16px;">Idle cash auto-earns in $YLDS the moment it lands.</div>
 
-          <div class="sec">Receive</div>
-          <div class="qr-card">
-            <div class="qr-box" id="depositQR"></div>
-            <div class="qr-cap">Scan to send crypto to your wallet</div>
-            <div class="qr-addr"><span class="qr-addr-txt">0x7A3f…9C21</span><button class="mini-btn" data-copy="0x7A3f4E8b2D1c9A0f6B5e3D8c7A2f1E0d4C5b9C21">Copy</button></div>
-          </div>
-
           <div class="sec">Instant</div>
           <div class="pcard add-card" data-add="debit" data-title="Add with debit card" data-note="Available right away · fee applies">
             <div class="ph"><div class="nm">Debit card</div><span class="arrow">→</span></div>
             <div class="ds">Available right away · fee applies</div>
           </div>
           <div class="pcard add-card" data-add="wallet" data-title="Apple Pay / Google Pay" data-note="Available right away · fee applies">
-            <div class="ph"><div class="nm"> Apple Pay / Google Pay</div><span class="arrow">→</span></div>
+            <div class="ph"><div class="nm">Apple Pay / Google Pay</div><span class="arrow">→</span></div>
             <div class="ds">One-tap deposit · available right away</div>
+          </div>
+          <div class="pcard">
+            <div class="ph qr-head" id="qrHead"><div><div class="nm">Scan your QR / copy your wallet address</div><div class="ds" style="margin-top:5px">Receive crypto to your wallet</div></div><span class="qr-chev" id="qrChev">⌄</span></div>
+            <div class="qr-reveal" id="qrReveal">
+              <div class="qr-box" id="depositQR"></div>
+              <div class="qr-cap">Scan to send crypto to your wallet</div>
+              <div class="qr-addr"><span class="qr-addr-txt">0x7A3f…9C21</span><button class="mini-btn" data-copy="0x7A3f4E8b2D1c9A0f6B5e3D8c7A2f1E0d4C5b9C21">Copy</button></div>
+            </div>
           </div>
 
           <div class="sec">From a bank</div>
@@ -1160,7 +1181,10 @@
             </div>
             <div class="avail">Lands in your always-earning $YLDS balance</div>
           </div>
-          <button class="save-btn" id="addFlowBtn" style="margin-top:16px;">Add money</button>
+          <div class="pay-btns">
+            <button class="applepay-btn" id="applePayBtn"><svg viewBox="0 0 384 512" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span>Pay</span></button>
+            <button class="gpay-btn" id="gpayBtn"><svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg><span>Pay</span></button>
+          </div>
           <div class="disclosure">Idle cash auto-earns 3.25% APR in $YLDS the moment it lands.</div>
         </section>
 
@@ -1837,6 +1861,11 @@
     box.innerHTML=s;
   }
   renderQR('depositQR','0x7A3f4E8b2D1c9A0f6B5e3D8c7A2f1E0d4C5b9C21');
+  var qrHead=document.getElementById('qrHead');
+  if(qrHead) qrHead.addEventListener('click', function(){
+    document.getElementById('qrReveal').classList.toggle('open');
+    document.getElementById('qrChev').classList.toggle('open');
+  });
 
   // Add money: each method routes to its own detail screen
   function creditBalance(amt){ base += amt; FIN.usdCash += amt; updateAccountDisplay(); renderFinances(); }
@@ -1858,14 +1887,17 @@
   // Apple Pay / Google Pay quick-amount screen
   var addFlowBack = document.getElementById('addFlowBack');
   if (addFlowBack) addFlowBack.addEventListener('click', function(){ showPane('add'); });
-  var addFlowBtn = document.getElementById('addFlowBtn');
-  if (addFlowBtn) addFlowBtn.addEventListener('click', function(){
+  function walletPay(label){
     var v = parseFloat((document.getElementById('addFlowAmt').value||'').replace(/[^0-9.]/g,'')) || 0;
     if (v <= 0) { alert('Enter an amount to add.'); return; }
-    if (confirm('Add '+money2(v)+' via Apple Pay / Google Pay?\n\nConfirm with Face ID — funds land right away.')) {
-      creditBalance(v); alert('Added '+money2(v)+' — now earning. (Mockup)'); showPane('home');
+    if (confirm('Add '+money2(v)+' with '+label+'?\n\nDouble-click to confirm with Face ID — funds land right away.')) {
+      creditBalance(v); alert('Added '+money2(v)+' with '+label+' — now earning. (Mockup)'); showPane('home');
     }
-  });
+  }
+  var applePayBtn = document.getElementById('applePayBtn');
+  if (applePayBtn) applePayBtn.addEventListener('click', function(){ walletPay('Apple Pay'); });
+  var gpayBtn = document.getElementById('gpayBtn');
+  if (gpayBtn) gpayBtn.addEventListener('click', function(){ walletPay('Google Pay'); });
 
   // debit card
   var debitBack=document.getElementById('debitBack');
