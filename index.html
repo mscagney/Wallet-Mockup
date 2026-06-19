@@ -702,6 +702,23 @@
 
   .home-ind { position:absolute; bottom:8px; left:50%; transform:translateX(-50%); width:134px; height:5px; border-radius:3px; background:rgba(255,255,255,.3); z-index:26; }
 
+  /* prediction order ticket */
+  .ticket { position:absolute; inset:0; z-index:65; display:none; background:rgba(6,12,20,0.6); }
+  .ticket.active { display:block; }
+  .ticket-card { position:absolute; left:0; right:0; bottom:0; background:#14213a; border-top-left-radius:22px; border-top-right-radius:22px; padding:20px 18px 30px; box-shadow:0 -16px 40px -10px rgba(0,0,0,0.5); }
+  .ticket-head { display:flex; justify-content:space-between; align-items:center; }
+  .ticket-title { font-size:16px; font-weight:680; letter-spacing:-0.01em; }
+  .ticket-x { color:#8a97ab; font-size:18px; cursor:pointer; padding:0 4px; }
+  .ticket-sub { font-size:12.5px; color:#8a97ab; margin-top:4px; }
+  .ticket-size { display:flex; align-items:center; gap:8px; margin-top:16px; font-size:13px; color:#8a97ab; }
+  .ticket-size input { width:96px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:9px 11px; color:#e8eef6; font-family:inherit; font-size:14px; outline:none; }
+  .ticket-opt { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:14px; margin-top:12px; cursor:pointer; transition:background .2s; }
+  .ticket-opt:hover { background:rgba(255,255,255,0.09); }
+  .ticket-opt:active { transform:scale(.99); }
+  .to-main { font-size:14.5px; font-weight:650; }
+  .to-main .yes { color:#6ee7b7; } .to-main .no { color:#fca5a5; }
+  .ticket-opt .to-note { font-size:12px; color:#8a97ab; margin-top:5px; line-height:1.45; }
+
   /* guided tour */
   .tour { position:absolute; inset:0; z-index:60; display:none; pointer-events:none; }
   .tour.active { display:block; }
@@ -794,9 +811,11 @@
           <div class="subpane active" id="sub-holdings">
             <div class="hdr">Assets</div>
             <div class="list">
+              <div class="hrow"><div class="avatar">💵</div><div class="mid"><div class="nm">USD Cash</div><div class="mt">Sweeping to $YLDS</div></div><div class="amt" id="hUsdAmt">$12,840.00</div></div>
               <div class="hrow tap" id="hYlds"><div class="avatar">🟢</div><div class="mid"><div class="nm">$YLDS</div><div class="mt">3.68% APY</div></div><div class="amt" id="hYldsAmt">$57,500.00</div></div>
               <div class="hrow tap" id="hPrime"><div class="avatar">🔷</div><div class="mid"><div class="nm">Democratized Prime</div><div class="mt">8.00% APY</div></div><div class="amt" id="hPrimeAmt">$33,200.00</div></div>
               <div class="hrow"><div class="avatar">⬡</div><div class="mid"><div class="nm">$FGRS</div><div class="mt">300.0 shares · $30.00</div></div><div class="amt">$9,000.00</div></div>
+              <div class="hrow"><div class="avatar">₿</div><div class="mid"><div class="nm">BTC</div><div class="mt">0.25 coins · $65,000</div></div><div class="amt" id="hBtcAmt">$16,250.00</div></div>
             </div>
             <div class="hdr">Loans</div>
             <div class="list">
@@ -857,6 +876,10 @@
           <div class="pcard" data-info="Crypto-backed loan — term borrowing against your crypto positions.">
             <div class="ph"><div class="nm">Crypto-backed loan</div><span class="arrow">→</span></div>
             <div class="ds">Term borrowing against your crypto positions.</div>
+          </div>
+          <div class="pcard" data-info="Borrow $FGRS — borrow shares to lend out for income or to sell short. Settles on Provenance.">
+            <div class="ph"><div class="nm">Borrow $FGRS</div><span class="arrow">→</span></div>
+            <div class="ds">Borrow $FGRS to loan or sell short.</div>
           </div>
           <div class="pcard" id="cardEntry">
             <div class="ph"><div class="nm">Wallet Co Card</div><span class="arrow">→</span></div>
@@ -1053,6 +1076,7 @@
                 <option value="usd">USD · US Dollars</option>
                 <option value="ylds">$YLDS</option>
                 <option value="fgrs">$FGRS</option>
+                <option value="btc">BTC</option>
               </select>
             </div>
             <div class="send-amt-row">
@@ -1540,29 +1564,13 @@
 
           <div class="book-head">
             <span>Strike</span>
-            <span class="bh-yes">Buy Yes</span>
-            <span class="bh-no">Buy No</span>
+            <span class="bh-yes">Yes bid</span>
+            <span class="bh-no">No bid</span>
           </div>
           <div id="bookBody"></div>
-          <div class="book-note">Price is the cost per contract (¢ = chance). Tap <b style="color:#6ee7b7">Buy Yes</b> or <b style="color:#fca5a5">Buy No</b> — each pays $1 if you're right.</div>
+          <div class="book-note">Prices are resting bids (¢ = chance). Tap one to <b style="color:#6ee7b7">join the bid</b> or <b style="color:#fca5a5">take the other side</b>.</div>
 
-          <div class="sec">New prediction</div>
-          <div class="ord-grid">
-            <div class="ord-f"><span class="fl">Ticker</span><div class="dd-wrap dd-block"><select class="dd dd-full" id="oTicker"></select></div></div>
-            <div class="ord-f"><span class="fl">Expiry</span><div class="dd-wrap dd-block"><select class="dd dd-full" id="oDate"></select></div></div>
-            <div class="ord-f"><span class="fl">Strike (over)</span><div class="dd-wrap dd-block"><select class="dd dd-full" id="oStrike"></select></div></div>
-          </div>
-          <div class="dir-toggle">
-            <button class="dir-btn sel-yes" id="dirYes" data-dir="yes">Yes</button>
-            <button class="dir-btn" id="dirNo" data-dir="no">No</button>
-          </div>
-          <div class="ord-grid2">
-            <div class="ord-f"><span class="fl">Yes price (¢)</span><input class="ord-in" id="oPrice" inputmode="numeric" placeholder="50"></div>
-            <div class="ord-f"><span class="fl">Size ($1 units)</span><input class="ord-in" id="oSize" inputmode="numeric" placeholder="1,000"></div>
-          </div>
-          <div class="cost-line" id="costLine">Enter price &amp; size</div>
-          <button class="save-btn" id="placeOrder">Place order</button>
-          <div class="disclosure">Event contracts settle to $1 if the outcome occurs, $0 if not. Markets are peer-to-peer; prices reflect other users' orders. No commissions.</div>
+          <div class="disclosure" style="margin-top:18px;">Event contracts settle to $1 if the outcome occurs, $0 if not. Markets are peer-to-peer; prices reflect other users' orders. No commissions.</div>
         </section>
 
         <!-- DIRECT DEPOSIT -->
@@ -1727,6 +1735,23 @@
         </div>
       </div>
 
+      <!-- prediction order ticket -->
+      <div class="ticket" id="ticket">
+        <div class="ticket-card">
+          <div class="ticket-head"><span class="ticket-title" id="ticketTitle">Market</span><span class="ticket-x" id="ticketClose">✕</span></div>
+          <div class="ticket-sub" id="ticketSub"></div>
+          <div class="ticket-size">Size <input id="ticketSize" inputmode="numeric"> contracts</div>
+          <div class="ticket-opt" id="ticketJoin">
+            <div class="to-main" id="joinMain"></div>
+            <div class="to-note">Posts your order at this price and waits to be filled (maker).</div>
+          </div>
+          <div class="ticket-opt" id="ticketTake">
+            <div class="to-main" id="takeMain"></div>
+            <div class="to-note">Fills now against the resting order (taker).</div>
+          </div>
+        </div>
+      </div>
+
       <!-- bottom nav -->
       <div class="nav">
         <div class="tab" data-pane="tutorial"><span class="gi">▷</span>Tutorial</div>
@@ -1752,11 +1777,13 @@
   });
 
   // ---- financial state (actions update these so the prototype feels live) ----
-  var FIN = { usdCash:12840, ylds:57500, prime:33200, fgrs:9000, usdc:0, helocBal:35000, helocAvail:15000 };
+  var FIN = { usdCash:12840, ylds:57500, prime:33200, fgrs:9000, btc:16250, usdc:0, helocBal:35000, helocAvail:15000 };
   function setText(id,t){ var e=document.getElementById(id); if(e) e.textContent=t; }
   function money(n){ return '$'+Math.round(n).toLocaleString('en-US'); }
   function money2(n){ return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
   function renderFinances(){
+    setText('hUsdAmt', money2(FIN.usdCash));
+    setText('hBtcAmt', money2(FIN.btc));
     setText('hYldsAmt', money2(FIN.ylds));
     setText('hPrimeAmt', money2(FIN.prime));
     setText('hHelocAmt', money2(FIN.helocBal));
@@ -1773,8 +1800,8 @@
     if (typeof syncAsset === 'function') syncAsset();
   }
 
-  // live-earning account value (interest accrues in lockstep with the balance)
-  var base = 64700.00;
+  // live account value = net worth: cash + $YLDS + Prime + $FGRS + BTC − HELOC
+  var base = 93790.00;
   var perTick = 0.0009;      // gentle, slow accrual
   var earnedBase = { '24h': 13.07, '7d': 91.51, 'month': 397.67 };
   var earnedVal = earnedBase['24h'];
@@ -2088,17 +2115,18 @@
     setText('sendAvail',
       a==='usd'  ? 'Available: '+money2(FIN.usdCash) :
       a==='ylds' ? 'Available: '+money2(FIN.ylds)+' $YLDS' :
+      a==='btc'  ? 'Available: 0.25 BTC (~'+money2(FIN.btc)+')' :
                    'Available: 300.0 $FGRS (~'+money2(FIN.fgrs)+')');
   }
   if (sendAsset) sendAsset.addEventListener('change', syncAsset);
   var maxBtn = document.querySelector('.max-btn');
   if (maxBtn) maxBtn.addEventListener('click', function(){
     var a = sendAsset.value;
-    document.getElementById('sendAmt').value = a==='usd' ? FIN.usdCash.toFixed(2) : a==='ylds' ? FIN.ylds.toFixed(2) : '300.0';
+    document.getElementById('sendAmt').value = a==='usd' ? FIN.usdCash.toFixed(2) : a==='ylds' ? FIN.ylds.toFixed(2) : a==='btc' ? '0.25' : '300.0';
   });
   var sendReview = document.getElementById('sendReview');
   if (sendReview) sendReview.addEventListener('click', function(){
-    var assetLabel = { usd:'USD', ylds:'$YLDS', fgrs:'$FGRS' }[sendAsset.value];
+    var assetLabel = { usd:'USD', ylds:'$YLDS', fgrs:'$FGRS', btc:'BTC' }[sendAsset.value];
     var amt = (document.getElementById('sendAmt').value||'').replace(/[^0-9.]/g,'');
     var to = (document.getElementById('sendTo').value||'').trim();
     if (!amt || parseFloat(amt) <= 0) { alert('Enter an amount to send.'); return; }
@@ -2594,12 +2622,13 @@
     for (var k=lo; k<=hi; k+=5) out.push(k);
     return out;
   }
-  // Yes/No prices from the exponential curve: 0.99 at lowest strike → 0.07 at highest; No = 1.02 − Yes
+  // Resting bids from the exponential curve: Yes 0.99 at lowest strike → 0.07 at highest.
+  // No bid = 1 − Yes − 0.02 (the 2¢ gap is the bid/ask spread).
   function curvePrices(sym, strike){
     var s=strikesFor(TMAP[sym].px), lo=s[0], hi=s[s.length-1];
     var decayK=(hi>lo)?Math.log(0.99/0.07)/(hi-lo):0;
-    var yes=Math.min(0.99, Math.max(0.01, Math.round(0.99*Math.exp(-decayK*(strike-lo))*100)/100));
-    var no=Math.min(0.99, Math.max(0.01, Math.round((1.02-yes)*100)/100));
+    var yes=Math.min(0.99, Math.max(0.02, Math.round(0.99*Math.exp(-decayK*(strike-lo))*100)/100));
+    var no=Math.max(0.01, Math.round((1-yes-0.02)*100)/100);
     return {yes:yes, no:no};
   }
   // yes price = P(close > strike) via logistic on distance, scaled by horizon
@@ -2688,14 +2717,50 @@
       cell.addEventListener('click', function(){ quickTrade(cell); });
     });
   }
+  // tapping a bid opens an order ticket: JOIN the bid (maker) or TAKE the other side (taker)
+  var ticketCtx=null;
   function quickTrade(cell){
-    var k=cell.dataset.k, px=parseFloat(cell.dataset.px), sz=+cell.dataset.sz, d=DATES[curDateIdx];
-    var side=cell.dataset.act==='yes' ? 'YES' : 'NO';
-    var msg='Buy '+side+'\n\n'+curSym+' over $'+k+' by '+d.short+
-            '\nBuy '+comma(sz)+' '+side+' @ '+px.toFixed(2)+
-            '\nCost: '+usd(px*sz)+'\nWins '+usd(sz)+' if '+side+'\n\nConfirm?';
-    if (confirm(msg)) alert('Filled. (Mockup — no funds moved.)');
+    openTicket(cell.dataset.act, parseFloat(cell.dataset.px), +cell.dataset.sz, cell.dataset.k);
   }
+  function openTicket(side, bid, sz, strike){
+    var d=DATES[curDateIdx];
+    ticketCtx={ side:side, bid:bid, strike:strike, dateShort:d.short };
+    document.getElementById('ticketTitle').textContent = curSym+' over $'+strike;
+    document.getElementById('ticketSub').textContent = 'by '+d.full+' · you tapped the '+side.toUpperCase()+' bid '+bid.toFixed(2);
+    document.getElementById('ticketSize').value = sz;
+    renderTicket();
+    document.getElementById('ticket').classList.add('active');
+  }
+  function ticketSz(){ return parseInt((document.getElementById('ticketSize').value||'').replace(/[^0-9]/g,''),10)||0; }
+  function renderTicket(){
+    if(!ticketCtx) return;
+    var sz=ticketSz(), side=ticketCtx.side, bid=ticketCtx.bid, opp=(side==='yes'?'no':'yes');
+    var takePx=Math.round((1-bid)*100)/100;
+    document.getElementById('joinMain').innerHTML='Join — buy '+comma(sz)+' <span class="'+side+'">'+side.toUpperCase()+'</span> @ '+bid.toFixed(2)+' · '+usd(bid*sz);
+    document.getElementById('takeMain').innerHTML='Take — buy '+comma(sz)+' <span class="'+opp+'">'+opp.toUpperCase()+'</span> now @ '+takePx.toFixed(2)+' · '+usd(takePx*sz);
+  }
+  function closeTicket(){ document.getElementById('ticket').classList.remove('active'); ticketCtx=null; }
+  document.getElementById('ticketClose').addEventListener('click', closeTicket);
+  document.getElementById('ticket').addEventListener('click', function(e){ if(e.target===this) closeTicket(); });
+  document.getElementById('ticketSize').addEventListener('input', renderTicket);
+  document.getElementById('ticketJoin').addEventListener('click', function(){
+    if(!ticketCtx) return; var sz=ticketSz(); if(sz<=0){ alert('Enter a size.'); return; }
+    var sU=ticketCtx.side.toUpperCase();
+    if(confirm('Join the bid\n\n'+curSym+' over $'+ticketCtx.strike+' by '+ticketCtx.dateShort+
+      '\nBid '+ticketCtx.bid.toFixed(2)+' to buy '+comma(sz)+' '+sU+
+      '\nCost if filled: '+usd(ticketCtx.bid*sz)+'\n\nPost this order?')){
+      alert('Order posted to the book — waiting to be filled. (Mockup)'); closeTicket();
+    }
+  });
+  document.getElementById('ticketTake').addEventListener('click', function(){
+    if(!ticketCtx) return; var sz=ticketSz(); if(sz<=0){ alert('Enter a size.'); return; }
+    var opp=(ticketCtx.side==='yes'?'no':'yes'), oU=opp.toUpperCase(), takePx=Math.round((1-ticketCtx.bid)*100)/100;
+    if(confirm('Take the other side — fills now\n\n'+curSym+' over $'+ticketCtx.strike+' by '+ticketCtx.dateShort+
+      '\nBuy '+comma(sz)+' '+oU+' @ '+takePx.toFixed(2)+
+      '\nCost: '+usd(takePx*sz)+' · wins '+usd(sz)+' if '+oU+'\n\nFill now?')){
+      alert('Filled. (Mockup — no funds moved.)'); closeTicket();
+    }
+  });
 
   // order entry
   function fillSelect(el, items){ el.innerHTML=items.map(function(o){return '<option value="'+o.v+'">'+o.t+'</option>';}).join(''); }
@@ -2747,7 +2812,7 @@
     if(confirm(msg)){ alert('Order submitted to the market. (Mockup — no funds moved.)'); oPrice.value=''; oSize.value=''; costLine(); }
   }
 
-  renderPositions(); renderTickers(); renderDateSeg(); renderBook(); initOrder();
+  renderPositions(); renderTickers(); renderDateSeg(); renderBook();
   renderFinances();
 </script>
 </body>
