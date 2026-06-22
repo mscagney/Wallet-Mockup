@@ -12,7 +12,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wallet Co — Mockup</title>
 <style>
-  :root { color-scheme: light; }
+  :root {
+    color-scheme: light;
+    /* prediction-market tokens (navy theme) */
+    --pp-1:#16243f; --pp-2:rgba(255,255,255,0.05); --pp-3:rgba(255,255,255,0.09);
+    --pp-t1:#e8eef6; --pp-t2:#8a97ab; --pp-t3:#6b7891;
+    --pp-bd:rgba(255,255,255,0.10); --pp-bd2:rgba(255,255,255,0.18);
+    --pp-suc-bg:rgba(52,211,153,0.14); --pp-suc-t:#6ee7b7; --pp-suc-bd:rgba(52,211,153,0.42); --pp-suc:#34d399;
+    --pp-dan-bg:rgba(248,113,113,0.14); --pp-dan-t:#fca5a5; --pp-dan-bd:rgba(248,113,113,0.42); --pp-dan:#f87171;
+    --pp-inf-bg:rgba(34,211,238,0.12); --pp-inf-t:#67e8f9;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
   body {
@@ -701,6 +710,91 @@
   .tab.active { color: #67e8f9; }
 
   .home-ind { position:absolute; bottom:8px; left:50%; transform:translateX(-50%); width:134px; height:5px; border-radius:3px; background:rgba(255,255,255,.3); z-index:26; }
+
+  /* ===== predictions: ladder UX ===== */
+  .lp-toggle { display:flex; gap:4px; background:var(--pp-2); border:1px solid var(--pp-bd); border-radius:12px; padding:3px; margin-bottom:14px; }
+  .lp-btn { flex:1; border:none; background:transparent; color:var(--pp-t2); font-family:inherit; font-size:12px; font-weight:600; padding:9px 0; border-radius:9px; cursor:pointer; }
+  .lp-btn.active { background:var(--pp-inf-bg); color:var(--pp-inf-t); }
+  .exp-label { font-size:12px; color:var(--pp-t2); margin:0 2px 8px; display:flex; justify-content:space-between; }
+  .exp-label span { color:var(--pp-t3); }
+  .exp-pills { display:flex; gap:6px; overflow-x:auto; padding-bottom:8px; margin-bottom:8px; }
+  .exp-pills::-webkit-scrollbar { display:none; }
+  .exp-pill { flex:0 0 auto; padding:7px 14px; border-radius:999px; font-size:13px; cursor:pointer; border:1px solid var(--pp-bd); background:transparent; color:var(--pp-t2); font-family:inherit; }
+  .exp-pill.active { border-color:var(--pp-suc-bd); background:var(--pp-suc-bg); color:var(--pp-suc-t); font-weight:600; }
+  .ladder-head { display:flex; align-items:center; gap:10px; padding:0 4px 6px; font-size:10.5px; color:var(--pp-t3); text-transform:uppercase; letter-spacing:.05em; }
+  .lad-row { display:flex; align-items:center; gap:10px; padding:9px 6px; border-bottom:1px solid var(--pp-bd); border-radius:8px; }
+  .lad-row.lad-spot { background:var(--pp-inf-bg); }
+  .lad-left { width:78px; flex:0 0 auto; }
+  .lad-k { font-size:14px; font-weight:650; }
+  .lad-sub { font-size:10px; color:var(--pp-t3); margin-top:2px; }
+  .lad-bar { flex:1; height:6px; border-radius:3px; background:var(--pp-2); overflow:hidden; }
+  .lad-bar span { display:block; height:100%; background:var(--pp-inf-t); opacity:.5; }
+  .lad-btns { display:flex; gap:6px; flex:0 0 auto; }
+  .lad-q { width:50px; padding:6px 0; border-radius:8px; cursor:pointer; text-align:center; font-family:inherit; }
+  .lad-q .lq-s { font-size:10px; display:block; line-height:1; opacity:.85; }
+  .lad-q .lq-p { font-size:13px; font-weight:650; }
+  .lad-q2 { flex:1; padding:7px 0; border-radius:8px; cursor:pointer; text-align:center; font-family:inherit; }
+  .lad-q2 .lq-p { font-size:14px; font-weight:650; display:block; line-height:1.1; }
+  .lad-q2 .lq-s { font-size:10px; opacity:.8; }
+  .suc { background:var(--pp-suc-bg); border:1px solid var(--pp-suc-bd); color:var(--pp-suc-t); }
+  .dan { background:var(--pp-dan-bg); border:1px solid var(--pp-dan-bd); color:var(--pp-dan-t); }
+
+  /* prediction bottom sheet (slip + pro ticket) */
+  .psheet { position:absolute; inset:0; z-index:65; display:none; background:rgba(6,12,20,0.6); }
+  .psheet.active { display:block; }
+  .psheet-card { position:absolute; left:0; right:0; bottom:0; background:var(--pp-1); border-top-left-radius:20px; border-top-right-radius:20px; padding:16px 16px 26px; box-shadow:0 -16px 40px -10px rgba(0,0,0,0.5); }
+  .sheet-head { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; }
+  .sheet-title { font-size:14.5px; font-weight:650; }
+  .sheet-sub { font-size:12px; color:var(--pp-t2); margin-top:2px; }
+  .sheet-x { color:var(--pp-t3); font-size:17px; cursor:pointer; padding:0 4px; }
+  .sheet-pill { display:inline-block; padding:5px 12px; border-radius:999px; font-size:12px; font-weight:600; margin-bottom:14px; }
+  .stepper-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+  .stepper-row > span { font-size:13px; color:var(--pp-t2); }
+  .stepper { display:flex; align-items:center; gap:14px; }
+  .stepper button, .stp-box button { width:30px; height:30px; border-radius:8px; cursor:pointer; border:1px solid var(--pp-bd2); background:transparent; color:var(--pp-t1); font-size:16px; font-family:inherit; }
+  .stepper span { font-size:16px; font-weight:600; min-width:28px; text-align:center; }
+  .stat-row { display:flex; gap:8px; margin-bottom:14px; }
+  .stat-tile { flex:1; background:var(--pp-2); border-radius:8px; padding:9px 8px; }
+  .st-l { font-size:10px; color:var(--pp-t2); margin-bottom:3px; }
+  .st-v { font-size:13px; font-weight:600; }
+  .bp-line { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:11.5px; color:var(--pp-t2); margin:0 2px 12px; }
+  .bp-line b { color:var(--pp-t1); font-weight:600; }
+  .bp-note { color:var(--pp-t3); flex-shrink:0; }
+  .sheet-cta { width:100%; padding:13px; border-radius:12px; cursor:pointer; border:none; font-family:inherit; font-size:14.5px; font-weight:650; color:#06121f; }
+  .sheet-cta.suc { background:var(--pp-suc); } .sheet-cta.dan { background:var(--pp-dan); }
+  .sheet-done { text-align:center; padding:24px 8px; }
+  .sheet-done-ic { font-size:26px; margin-bottom:6px; }
+  .sheet-done-ic.suc { color:var(--pp-suc-t); } .sheet-done-ic.dan { color:var(--pp-dan-t); }
+  .sheet-done-t { font-size:15px; font-weight:650; margin-bottom:4px; }
+  .sheet-done-s { font-size:12.5px; color:var(--pp-t2); }
+  /* pro ticket */
+  .depth { background:var(--pp-2); border-radius:10px; padding:8px 10px; margin-bottom:10px; }
+  .depth-lvl { display:flex; align-items:center; padding:2px 0; }
+  .depth-lvl.mine { border-radius:6px; padding:2px 6px; margin:0 -6px; }
+  .depth-lvl.mine.suc { background:var(--pp-suc-bg); } .depth-lvl.mine.dan { background:var(--pp-dan-bg); }
+  .dl-p { font-size:12px; min-width:34px; font-weight:500; }
+  .dl-p.suc { color:var(--pp-suc-t); } .dl-p.dan { color:var(--pp-dan-t); }
+  .dl-bar { flex:1; height:5px; border-radius:3px; margin:0 8px; overflow:hidden; }
+  .dl-bar.suc { background:var(--pp-suc-bg); } .dl-bar.dan { background:var(--pp-dan-bg); }
+  .dl-bar span { display:block; height:100%; }
+  .dl-bar.suc span { background:var(--pp-suc-t); opacity:.5; } .dl-bar.dan span { background:var(--pp-dan-t); opacity:.5; }
+  .dl-s { font-size:11px; color:var(--pp-t2); min-width:42px; text-align:right; }
+  .depth-spread { text-align:center; font-size:10px; color:var(--pp-t3); padding:3px 0; }
+  .side-toggle { display:flex; gap:6px; margin-bottom:8px; }
+  .side-btn { flex:1; padding:9px; border-radius:9px; cursor:pointer; font-size:13px; font-family:inherit; border:1px solid var(--pp-bd); background:transparent; color:var(--pp-t2); }
+  .side-btn.on { font-weight:600; }
+  .side-btn.on.suc { border-color:var(--pp-suc-bd); background:var(--pp-suc-bg); color:var(--pp-suc-t); }
+  .side-btn.on.dan { border-color:var(--pp-dan-bd); background:var(--pp-dan-bg); color:var(--pp-dan-t); }
+  .sell-eq { font-size:10px; color:var(--pp-t3); margin:0 0 12px; }
+  .stepper-pair { display:flex; gap:10px; margin-bottom:12px; }
+  .stp { flex:1; }
+  .stp-l { font-size:11px; color:var(--pp-t2); margin-bottom:5px; }
+  .stp-box { display:flex; align-items:center; justify-content:space-between; border:1px solid var(--pp-bd2); border-radius:9px; padding:4px 6px; }
+  .stp-box span { font-size:14px; font-weight:600; }
+  .status { border-radius:10px; padding:9px 11px; margin-bottom:12px; }
+  .status.suc { border:1px solid var(--pp-suc-bd); background:var(--pp-suc-bg); } .status.dan { border:1px solid var(--pp-dan-bd); background:var(--pp-dan-bg); }
+  .status-t { font-size:13px; font-weight:600; } .status.suc .status-t { color:var(--pp-suc-t); } .status.dan .status-t { color:var(--pp-dan-t); }
+  .status-s { font-size:11px; opacity:.85; } .status.suc .status-s { color:var(--pp-suc-t); } .status.dan .status-s { color:var(--pp-dan-t); }
 
   /* prediction order ticket */
   .ticket { position:absolute; inset:0; z-index:65; display:none; background:rgba(6,12,20,0.6); }
@@ -1560,17 +1654,17 @@
           <div class="sec">Markets</div>
           <div class="ticker-row" id="tickerRow"></div>
           <div class="mkt-ctx" id="mktCtx"></div>
-          <div class="pseg" id="dateSeg"></div>
-
-          <div class="book-head">
-            <span>Strike</span>
-            <span class="bh-yes">Yes bid</span>
-            <span class="bh-no">No bid</span>
+          <div class="lp-toggle" id="predMode">
+            <button class="lp-btn active" data-mode="lite">Lite · back yes/no</button>
+            <button class="lp-btn" data-mode="pro">Pro · order book</button>
           </div>
-          <div id="bookBody"></div>
-          <div class="book-note">Prices are resting bids (¢ = chance). Tap one to <b style="color:#6ee7b7">join the bid</b> or <b style="color:#fca5a5">take the other side</b>.</div>
+          <div class="exp-label">Will it close above… <span id="expFull"></span></div>
+          <div class="exp-pills" id="expPills"></div>
+          <div class="ladder-head" id="ladderHead"></div>
+          <div id="ladder"></div>
+          <div class="book-note" id="predNote"></div>
 
-          <div class="disclosure" style="margin-top:18px;">Event contracts settle to $1 if the outcome occurs, $0 if not. Markets are peer-to-peer; prices reflect other users' orders. No commissions.</div>
+          <div class="disclosure" style="margin-top:14px;">Event contracts settle to $1 if the outcome occurs, $0 if not. Cents = the market's implied probability. No commissions.</div>
         </section>
 
         <!-- DIRECT DEPOSIT -->
@@ -1735,22 +1829,8 @@
         </div>
       </div>
 
-      <!-- prediction order ticket -->
-      <div class="ticket" id="ticket">
-        <div class="ticket-card">
-          <div class="ticket-head"><span class="ticket-title" id="ticketTitle">Market</span><span class="ticket-x" id="ticketClose">✕</span></div>
-          <div class="ticket-sub" id="ticketSub"></div>
-          <div class="ticket-size">Size <input id="ticketSize" inputmode="numeric"> contracts</div>
-          <div class="ticket-opt" id="ticketJoin">
-            <div class="to-main" id="joinMain"></div>
-            <div class="to-note">Posts your order at this price and waits to be filled (maker).</div>
-          </div>
-          <div class="ticket-opt" id="ticketTake">
-            <div class="to-main" id="takeMain"></div>
-            <div class="to-note">Fills now against the resting order (taker).</div>
-          </div>
-        </div>
-      </div>
+      <!-- prediction bet slip / order ticket -->
+      <div class="psheet" id="predSheet"><div class="psheet-card" id="predSheetCard"></div></div>
 
       <!-- bottom nav -->
       <div class="nav">
@@ -2603,216 +2683,182 @@
     {s:'SOFI',n:'SoFi',px:14},{s:'PLTR',n:'Palantir',px:132},{s:'UBER',n:'Uber',px:73},
     {s:'SHOP',n:'Shopify',px:112},{s:'CRM',n:'Salesforce',px:265}
   ];
-  var DATES = [
-    {k:'sep26',short:"Sep '26",full:'September 30, 2026'},
-    {k:'dec26',short:"Dec '26",full:'December 31, 2026'},
-    {k:'mar27',short:"Mar '27",full:'March 31, 2027'},
-    {k:'jun27',short:"Jun '27",full:'June 30, 2027'}
-  ];
   var TMAP = {}; TICKERS.forEach(function(t){ TMAP[t.s] = t; });
-  var DMAP = {}; DATES.forEach(function(d){ DMAP[d.k] = d; });
+  var EXP = [
+    {id:'jul',label:'Jul',full:'end of July 2026',t:0.08},
+    {id:'aug',label:'Aug',full:'end of August 2026',t:0.17},
+    {id:'sep',label:'Sep',full:'end of September 2026',t:0.25},
+    {id:'q4',label:'Q4',full:'end of December 2026',t:0.5},
+    {id:'q1',label:"Q1 '27",full:'end of March 2027',t:0.75},
+    {id:'q2',label:"Q2 '27",full:'end of June 2027',t:1.0}
+  ];
+  var EMAP = {}; EXP.forEach(function(e){ EMAP[e.id]=e; });
+  /* lognormal fair value: P(S_T > K) */
+  var PSIGMA=0.6;
+  function perf(x){var k=1/(1+0.3275911*Math.abs(x));var y=1-(((((1.061405429*k-1.453152027)*k)+1.421413741)*k-0.284496736)*k+0.254829592)*k*Math.exp(-x*x);return x>=0?y:-y;}
+  function pncdf(x){return 0.5*(1+perf(x/Math.SQRT2));}
+  function fairAt(S,K,t){var p=Math.round(pncdf((Math.log(S/K)-0.5*PSIGMA*PSIGMA*t)/(PSIGMA*Math.sqrt(t)))*100);return Math.min(96,Math.max(4,p));}
+  function pseed(str){var h=2166136261;for(var i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619);}return(h>>>0);}
+  function depthSz(K,n){return 40+(((K*7+n*23)%160));}
+  function strikesFor(S){var c=Math.round(S/5)*5,out=[];for(var i=4;i>=-4;i--){var k=c+i*5;if(k>0)out.push(k);}return out;}
+  function spotK(S){return Math.round(S/5)*5;}
+  function comma(n){return n.toLocaleString('en-US');}
+  function usd(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-  // deterministic pseudo-random so the book is stable across renders
-  function seed(str){ var h=2166136261; for(var i=0;i<str.length;i++){ h^=str.charCodeAt(i); h=Math.imul(h,16777619); } return (h>>>0); }
-  function sizeFor(key){ return 500 + (seed(key)%9)*500; }            // 500..4500
-  function strikesFor(px){
-    // span ~40%–130% of price in $5 steps, so both deep OTM and ITM strikes are reachable
-    var lo = Math.max(5, Math.round(px*0.40/5)*5);
-    var hi = Math.round(px*1.30/5)*5, out = [];
-    for (var k=lo; k<=hi; k+=5) out.push(k);
-    return out;
-  }
-  // Resting bids from the exponential curve: Yes 0.99 at lowest strike → 0.07 at highest.
-  // No bid = 1 − Yes − 0.02 (the 2¢ gap is the bid/ask spread).
-  function curvePrices(sym, strike){
-    var s=strikesFor(TMAP[sym].px), lo=s[0], hi=s[s.length-1];
-    var decayK=(hi>lo)?Math.log(0.99/0.07)/(hi-lo):0;
-    var yes=Math.min(0.99, Math.max(0.02, Math.round(0.99*Math.exp(-decayK*(strike-lo))*100)/100));
-    var no=Math.max(0.01, Math.round((1-yes-0.02)*100)/100);
-    return {yes:yes, no:no};
-  }
-  // yes price = P(close > strike) via logistic on distance, scaled by horizon
-  function yesMid(px,strike,dIdx){
-    var vol = px*0.09*(1+dIdx*0.18);
-    var p = 1/(1+Math.exp(-(px-strike)/vol));
-    return Math.min(0.97, Math.max(0.03, p));
-  }
-  function quoteFor(sym,strike,dIdx){
-    var t=TMAP[sym], mid=yesMid(t.px,strike,dIdx);
-    var sp=0.02+(seed(sym+strike+dIdx)%3)*0.01;       // 2-4c spread
-    var bid=Math.max(0.01, Math.round((mid-sp/2)*100)/100);
-    var ask=Math.min(0.99, Math.round((mid+sp/2)*100)/100);
-    if (ask<=bid) ask=Math.min(0.99,bid+0.02);
-    return {bid:bid, ask:ask,
-            bidSz:sizeFor(sym+strike+dIdx+'b'), askSz:sizeFor(sym+strike+dIdx+'a')};
-  }
-  function c(n){ return (n).toFixed(2); }              // 0.50
-  function comma(n){ return n.toLocaleString('en-US'); }
-  function usd(n){ return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  var curSym='FIGR', curExp='q4', curMode='lite';
 
-  // positions
-  var POS = [
-    {sym:'FIGR',strike:100,date:'dec26',dir:'yes',units:5000},
-    {sym:'NVDA',strike:200,date:'sep26',dir:'no',units:3000},
-    {sym:'AAPL',strike:250,date:'mar27',dir:'yes',units:1000}
+  /* positions */
+  var POS=[
+    {sym:'FIGR',strike:100,exp:'q4',dir:'yes',units:5000},
+    {sym:'NVDA',strike:200,exp:'sep',dir:'no',units:3000},
+    {sym:'AAPL',strike:250,exp:'q1',dir:'yes',units:1000}
   ];
   function renderPositions(){
     var el=document.getElementById('posList'); if(!el) return;
-    el.innerHTML = POS.map(function(p,i){
-      var cp=curvePrices(p.sym,p.strike);
-      var px=(p.dir==='yes'?cp.yes:cp.no), val=p.units*px;
+    el.innerHTML=POS.map(function(p,i){
+      var S=TMAP[p.sym].px,e=EMAP[p.exp],yes=fairAt(S,p.strike,e.t),no=100-yes;
+      var cents=p.dir==='yes'?yes:no,val=p.units*cents/100;
       return '<div class="pos"><div class="pos-top"><div class="pos-q">'+p.sym+' over $'+p.strike+
-        '<br><span style="font-weight:500;color:#8a97ab;font-size:12.5px">by '+DMAP[p.date].full+'</span></div>'+
+        '<br><span style="font-weight:500;color:#8a97ab;font-size:12.5px">by '+e.full+'</span></div>'+
         '<span class="dir '+p.dir+'">'+p.dir.toUpperCase()+'</span></div>'+
-        '<div class="pos-bot"><div class="pos-meta"><b>'+comma(p.units)+'</b> units · Yes '+c(cp.yes)+' / No '+c(cp.no)+
-        ' · Value <b>'+usd(val)+'</b></div>'+
+        '<div class="pos-bot"><div class="pos-meta"><b>'+comma(p.units)+'</b> contracts · Yes '+yes+'¢ / No '+no+'¢ · Value <b>'+usd(val)+'</b></div>'+
         '<button class="pos-trade" data-i="'+i+'">Trade</button></div></div>';
     }).join('');
-    el.querySelectorAll('.pos-trade').forEach(function(b){
-      b.addEventListener('click', function(){ tradePosition(POS[+b.dataset.i]); });
-    });
+    el.querySelectorAll('.pos-trade').forEach(function(b){ b.addEventListener('click', function(){ tradePosition(POS[+b.dataset.i]); }); });
   }
-  function tradePosition(p){
-    curSym=p.sym; curDateIdx=DATES.findIndex(function(d){return d.k===p.date;});
-    renderTickers(); renderDateSeg(); renderBook();
-    if(oTicker){ oTicker.value=p.sym; refreshStrikes(); oDate.value=p.date; oStrike.value=p.strike; setDir(p.dir); }
-    var ctx=document.getElementById('mktCtx'); if(ctx) ctx.scrollIntoView({behavior:'smooth', block:'start'});
-  }
+  function tradePosition(p){ curSym=p.sym; curExp=p.exp; closeSheet(); renderTickers(); renderExp(); renderLadder(); var ctx=document.getElementById('mktCtx'); if(ctx) ctx.scrollIntoView({behavior:'smooth',block:'start'}); }
 
-  // markets explorer state
-  var curSym='FIGR', curDateIdx=1;
   function renderTickers(){
     var el=document.getElementById('tickerRow'); if(!el) return;
-    el.innerHTML = TICKERS.map(function(t){
-      return '<div class="tk-chip'+(t.s===curSym?' active':'')+'" data-sym="'+t.s+'">'+t.s+'</div>';
-    }).join('');
-    el.querySelectorAll('.tk-chip').forEach(function(ch){
-      ch.addEventListener('click', function(){ curSym=ch.dataset.sym; renderTickers(); renderBook(); });
-    });
+    el.innerHTML=TICKERS.map(function(t){return '<div class="tk-chip'+(t.s===curSym?' active':'')+'" data-sym="'+t.s+'">'+t.s+'</div>';}).join('');
+    el.querySelectorAll('.tk-chip').forEach(function(ch){ ch.addEventListener('click', function(){ curSym=ch.dataset.sym; closeSheet(); renderTickers(); renderLadder(); }); });
   }
-  function renderDateSeg(){
-    var el=document.getElementById('dateSeg'); if(!el) return;
-    el.innerHTML = DATES.map(function(d,i){
-      return '<button class="pseg-btn'+(i===curDateIdx?' active':'')+'" data-i="'+i+'">'+d.short+'</button>';
-    }).join('');
-    el.querySelectorAll('.pseg-btn').forEach(function(b){
-      b.addEventListener('click', function(){ curDateIdx=+b.dataset.i; renderDateSeg(); renderBook(); });
-    });
-  }
-  function renderBook(){
-    var t=TMAP[curSym], d=DATES[curDateIdx];
-    var ctx=document.getElementById('mktCtx');
-    if(ctx) ctx.innerHTML='<b>'+t.s+'</b> · '+t.n+' · $'+t.px.toFixed(2)+' now · will it close <b>over</b> by '+d.short+'?';
-    var body=document.getElementById('bookBody'); if(!body) return;
-    body.innerHTML = strikesFor(t.px).map(function(k){
-      var q=quoteFor(t.s,k,curDateIdx);
-      var cp=curvePrices(t.s,k), yesPx=cp.yes, noPx=cp.no;
-      return '<div class="book-row">'+
-        '<div class="bk-strike">$'+k+'</div>'+
-        '<div class="bk-cell bk-yes" data-act="yes" data-k="'+k+'" data-px="'+c(yesPx)+'" data-sz="'+q.askSz+'"><span class="px">'+c(yesPx)+'</span><span class="sz">×'+comma(q.askSz)+'</span></div>'+
-        '<div class="bk-cell bk-no" data-act="no" data-k="'+k+'" data-px="'+c(noPx)+'" data-sz="'+q.bidSz+'"><span class="px">'+c(noPx)+'</span><span class="sz">×'+comma(q.bidSz)+'</span></div>'+
-      '</div>';
-    }).join('');
-    body.querySelectorAll('.bk-cell').forEach(function(cell){
-      cell.addEventListener('click', function(){ quickTrade(cell); });
-    });
-  }
-  // tapping a bid opens an order ticket: JOIN the bid (maker) or TAKE the other side (taker)
-  var ticketCtx=null;
-  function quickTrade(cell){
-    openTicket(cell.dataset.act, parseFloat(cell.dataset.px), +cell.dataset.sz, cell.dataset.k);
-  }
-  function openTicket(side, bid, sz, strike){
-    var d=DATES[curDateIdx];
-    ticketCtx={ side:side, bid:bid, strike:strike, dateShort:d.short };
-    document.getElementById('ticketTitle').textContent = curSym+' over $'+strike;
-    document.getElementById('ticketSub').textContent = 'by '+d.full+' · you tapped the '+side.toUpperCase()+' bid '+bid.toFixed(2);
-    document.getElementById('ticketSize').value = sz;
-    renderTicket();
-    document.getElementById('ticket').classList.add('active');
-  }
-  function ticketSz(){ return parseInt((document.getElementById('ticketSize').value||'').replace(/[^0-9]/g,''),10)||0; }
-  function renderTicket(){
-    if(!ticketCtx) return;
-    var sz=ticketSz(), side=ticketCtx.side, bid=ticketCtx.bid, opp=(side==='yes'?'no':'yes');
-    var takePx=Math.round((1-bid)*100)/100;
-    document.getElementById('joinMain').innerHTML='Join — buy '+comma(sz)+' <span class="'+side+'">'+side.toUpperCase()+'</span> @ '+bid.toFixed(2)+' · '+usd(bid*sz);
-    document.getElementById('takeMain').innerHTML='Take — buy '+comma(sz)+' <span class="'+opp+'">'+opp.toUpperCase()+'</span> now @ '+takePx.toFixed(2)+' · '+usd(takePx*sz);
-  }
-  function closeTicket(){ document.getElementById('ticket').classList.remove('active'); ticketCtx=null; }
-  document.getElementById('ticketClose').addEventListener('click', closeTicket);
-  document.getElementById('ticket').addEventListener('click', function(e){ if(e.target===this) closeTicket(); });
-  document.getElementById('ticketSize').addEventListener('input', renderTicket);
-  document.getElementById('ticketJoin').addEventListener('click', function(){
-    if(!ticketCtx) return; var sz=ticketSz(); if(sz<=0){ alert('Enter a size.'); return; }
-    var sU=ticketCtx.side.toUpperCase();
-    if(confirm('Join the bid\n\n'+curSym+' over $'+ticketCtx.strike+' by '+ticketCtx.dateShort+
-      '\nBid '+ticketCtx.bid.toFixed(2)+' to buy '+comma(sz)+' '+sU+
-      '\nCost if filled: '+usd(ticketCtx.bid*sz)+'\n\nPost this order?')){
-      alert('Order posted to the book — waiting to be filled. (Mockup)'); closeTicket();
-    }
-  });
-  document.getElementById('ticketTake').addEventListener('click', function(){
-    if(!ticketCtx) return; var sz=ticketSz(); if(sz<=0){ alert('Enter a size.'); return; }
-    var opp=(ticketCtx.side==='yes'?'no':'yes'), oU=opp.toUpperCase(), takePx=Math.round((1-ticketCtx.bid)*100)/100;
-    if(confirm('Take the other side — fills now\n\n'+curSym+' over $'+ticketCtx.strike+' by '+ticketCtx.dateShort+
-      '\nBuy '+comma(sz)+' '+oU+' @ '+takePx.toFixed(2)+
-      '\nCost: '+usd(takePx*sz)+' · wins '+usd(sz)+' if '+oU+'\n\nFill now?')){
-      alert('Filled. (Mockup — no funds moved.)'); closeTicket();
-    }
-  });
-
-  // order entry
-  function fillSelect(el, items){ el.innerHTML=items.map(function(o){return '<option value="'+o.v+'">'+o.t+'</option>';}).join(''); }
-  var oTicker=document.getElementById('oTicker'), oDate=document.getElementById('oDate'),
-      oStrike=document.getElementById('oStrike'), oPrice=document.getElementById('oPrice'),
-      oSize=document.getElementById('oSize'); var oDir='yes';
-  function initOrder(){
-    if(!oTicker) return;
-    fillSelect(oTicker, TICKERS.map(function(t){return {v:t.s,t:t.s+' · '+t.n};}));
-    fillSelect(oDate, DATES.map(function(d){return {v:d.k,t:d.full};}));
-    oDate.selectedIndex=1;
-    refreshStrikes();
-    oTicker.addEventListener('change', refreshStrikes);
-    [oPrice,oSize].forEach(function(i){ i.addEventListener('input', costLine); });
-    document.getElementById('dirYes').addEventListener('click', function(){ setDir('yes'); });
-    document.getElementById('dirNo').addEventListener('click', function(){ setDir('no'); });
-    document.getElementById('placeOrder').addEventListener('click', placeOrder);
-  }
-  function refreshStrikes(){
-    var t=TMAP[oTicker.value];
-    fillSelect(oStrike, strikesFor(t.px).map(function(k){return {v:k,t:'$'+k};}));
-    oStrike.value = Math.round(t.px/5)*5;
-    costLine();
-  }
-  function setDir(d){
-    oDir=d;
-    document.getElementById('dirYes').classList.toggle('sel-yes', d==='yes');
-    document.getElementById('dirNo').classList.toggle('sel-no', d==='no');
-    costLine();
-  }
-  function costLine(){
-    var p=parseInt((oPrice.value||'').replace(/[^0-9]/g,''),10);
-    var s=parseInt((oSize.value||'').replace(/[^0-9]/g,''),10);
-    var el=document.getElementById('costLine');
-    if(!p||!s||p<1||p>99){ el.innerHTML='Enter Yes price (1–99¢) &amp; size'; return; }
-    var per = oDir==='yes' ? p : (100-p);
-    el.innerHTML = 'Pay'+' <b>'+per+'¢</b> × '+comma(s)+' = <b>'+usd(per*s/100)+
-      '</b> · wins <b>'+usd(s)+'</b> if '+oDir.toUpperCase();
-  }
-  function placeOrder(){
-    var p=parseInt((oPrice.value||'').replace(/[^0-9]/g,''),10);
-    var s=parseInt((oSize.value||'').replace(/[^0-9]/g,''),10);
-    if(!p||p<1||p>99){ alert('Enter a Yes price between 1 and 99¢.'); return; }
-    if(!s||s<1){ alert('Enter a size (number of $1 units).'); return; }
-    var t=TMAP[oTicker.value], d=DMAP[oDate.value], per=oDir==='yes'?p:(100-p);
-    var msg='Place order\n\n'+t.s+' over $'+oStrike.value+' by '+d.short+'\nSide: '+oDir.toUpperCase()+
-            '\n'+(oDir==='yes'?'Bid':'Offer')+' '+p+'¢ · '+comma(s)+' units'+
-            '\n'+'Pay'+' '+usd(per*s/100)+' · wins '+usd(s)+' if '+oDir.toUpperCase()+'\n\nSubmit to the market?';
-    if(confirm(msg)){ alert('Order submitted to the market. (Mockup — no funds moved.)'); oPrice.value=''; oSize.value=''; costLine(); }
+  function renderMode(){ document.querySelectorAll('#predMode .lp-btn').forEach(function(b){ b.classList.toggle('active', b.dataset.mode===curMode); }); }
+  function renderExp(){
+    var el=document.getElementById('expPills'); if(!el) return;
+    el.innerHTML=EXP.map(function(e){return '<button class="exp-pill'+(e.id===curExp?' active':'')+'" data-id="'+e.id+'">'+e.label+'</button>';}).join('');
+    el.querySelectorAll('.exp-pill').forEach(function(b){ b.addEventListener('click', function(){ curExp=b.dataset.id; closeSheet(); renderExp(); renderLadder(); }); });
   }
 
-  renderPositions(); renderTickers(); renderDateSeg(); renderBook();
+  function bookFor(S,K,t){ var y=fairAt(S,K,t),bb=Math.min(96,Math.max(2,y-1)),ba=Math.min(98,Math.max(bb+2,y+2));
+    return {y:y,bb:bb,ba:ba,asks:[{p:ba+3,s:depthSz(K,1)},{p:ba+1,s:depthSz(K,2)},{p:ba,s:depthSz(K,3)}],bids:[{p:bb,s:depthSz(K,4)},{p:bb-1,s:depthSz(K,5)},{p:bb-3,s:depthSz(K,6)}]}; }
+  function renderLadder(){
+    var S=TMAP[curSym].px,e=EMAP[curExp],t=e.t;
+    setText('mktCtx', curSym+' · '+TMAP[curSym].n+' · $'+S.toFixed(2)+' now');
+    setText('expFull', 'by '+e.full);
+    var head=document.getElementById('ladderHead'),lad=document.getElementById('ladder');
+    if(curMode==='lite'){
+      head.innerHTML='<span style="width:78px">Price target</span><span style="flex:1"></span><span>Chance · tap to bet</span>';
+      lad.innerHTML=strikesFor(S).map(function(K){
+        var yes=fairAt(S,K,t),no=100-yes,here=(K===spotK(S));
+        return '<div class="lad-row'+(here?' lad-spot':'')+'"><div class="lad-left"><div class="lad-k">$'+K+'</div>'+
+          (here?'<div class="lad-sub" style="color:var(--pp-inf-t)">spot $'+Math.round(S)+'</div>':'<div class="lad-sub">'+yes+'% chance</div>')+'</div>'+
+          '<div class="lad-bar"><span style="width:'+yes+'%"></span></div>'+
+          '<div class="lad-btns">'+
+            '<button class="lad-q suc" data-bet="yes" data-k="'+K+'" data-c="'+yes+'"><span class="lq-s">Yes</span><span class="lq-p">'+yes+'¢</span></button>'+
+            '<button class="lad-q dan" data-bet="no" data-k="'+K+'" data-c="'+no+'"><span class="lq-s">No</span><span class="lq-p">'+no+'¢</span></button>'+
+          '</div></div>';
+      }).join('');
+      setText('predNote','Cents = the chance. Tap a green Yes or red No to place a bet.');
+      lad.querySelectorAll('[data-bet]').forEach(function(b){ b.addEventListener('click', function(){ openSlip(+b.dataset.k, b.dataset.bet==='yes', +b.dataset.c); }); });
+    } else {
+      head.innerHTML='<span style="width:64px">Target</span><span style="flex:1;text-align:center">Bid · buy yes</span><span style="flex:1;text-align:center">Ask · sell yes</span>';
+      lad.innerHTML=strikesFor(S).map(function(K){
+        var b=bookFor(S,K,t),here=(K===spotK(S));
+        return '<div class="lad-row'+(here?' lad-spot':'')+'"><div class="lad-left" style="width:64px"><div class="lad-k">$'+K+'</div><div class="lad-sub">'+b.y+'% chance</div></div>'+
+          '<button class="lad-q2 suc" data-quote data-k="'+K+'" data-act="sellYes"><span class="lq-p">'+b.bb+'¢</span><span class="lq-s">'+b.bids[0].s+' left</span></button>'+
+          '<button class="lad-q2 dan" data-quote data-k="'+K+'" data-act="buyYes"><span class="lq-p">'+b.ba+'¢</span><span class="lq-s">'+b.asks[2].s+' left</span></button></div>';
+      }).join('');
+      setText('predNote','Tap a bid to sell yes (hit) or an ask to buy yes (lift). The ticket shows maker vs taker.');
+      lad.querySelectorAll('[data-quote]').forEach(function(b){ b.addEventListener('click', function(){ openTicket(+b.dataset.k, b.dataset.act); }); });
+    }
+  }
+  document.querySelectorAll('#predMode .lp-btn').forEach(function(b){ b.addEventListener('click', function(){ curMode=b.dataset.mode; closeSheet(); renderMode(); renderLadder(); }); });
+
+  /* bottom sheet */
+  function openSheet(){ document.getElementById('predSheet').classList.add('active'); }
+  function closeSheet(){ document.getElementById('predSheet').classList.remove('active'); pSel=null; slipCtx=null; }
+  function wireSheetX(){ var x=document.getElementById('sheetX'); if(x) x.onclick=closeSheet; }
+  document.getElementById('predSheet').addEventListener('click', function(ev){ if(ev.target===this) closeSheet(); });
+
+  /* Lite bet slip */
+  var slipCtx=null, slipQty=25;
+  function statTile(l,v){ return '<div class="stat-tile"><div class="st-l">'+l+'</div><div class="st-v">'+v+'</div></div>'; }
+  function openSlip(K,isYes,cents){ slipCtx={K:K,isYes:isYes,cents:cents}; slipQty=25; renderSlip(); openSheet(); }
+  /* available cash + margin (buying power) for the order ticket */
+  function buyingPower(){ return { cash:FIN.usdCash, margin:0.5*(FIN.ylds+FIN.fgrs+FIN.btc) }; }
+  function availLine(cost){
+    var bp=buyingPower(), note = cost<=bp.cash ? 'Paid from cash' : ('Uses '+usd(Math.min(cost-bp.cash, bp.margin))+' margin');
+    return '<div class="bp-line"><span>Available · Cash <b>'+money(bp.cash)+'</b> · Margin <b>'+money(bp.margin)+'</b></span><span class="bp-note">'+note+'</span></div>';
+  }
+  function renderSlip(){
+    if(!slipCtx) return; var e=EMAP[curExp],side=slipCtx.isYes?'Yes':'No',cls=slipCtx.isYes?'suc':'dan';
+    var cost=slipQty*slipCtx.cents/100,payout=slipQty,profit=payout-cost,ret=Math.round(profit/cost*100);
+    document.getElementById('predSheetCard').innerHTML=
+      '<div class="sheet-head"><div><div class="sheet-title">'+curSym+' above $'+slipCtx.K+'</div><div class="sheet-sub">by '+e.full+'</div></div><span class="sheet-x" id="sheetX">✕</span></div>'+
+      '<div class="sheet-pill '+cls+'">'+side+' · '+slipCtx.cents+'¢ per contract</div>'+
+      '<div class="stepper-row"><span>Contracts</span><div class="stepper"><button id="slipDn">−</button><span>'+slipQty+'</span><button id="slipUp">+</button></div></div>'+
+      '<div class="stat-row">'+statTile('Cost now',usd(cost))+statTile('Max payout',usd(payout))+statTile('Profit if right',usd(profit)+' · '+ret+'%')+'</div>'+
+      availLine(cost)+
+      '<button class="sheet-cta '+cls+'" id="slipPlace">Buy '+side+' · '+usd(cost)+'</button>';
+    wireSheetX();
+    document.getElementById('slipDn').onclick=function(){ slipQty=Math.max(1,slipQty-5); renderSlip(); };
+    document.getElementById('slipUp').onclick=function(){ slipQty+=5; renderSlip(); };
+    document.getElementById('slipPlace').onclick=function(){
+      document.getElementById('predSheetCard').innerHTML='<div class="sheet-done"><div class="sheet-done-ic suc">✓</div><div class="sheet-done-t">Order placed</div><div class="sheet-done-s">'+side+' · '+curSym+' above $'+slipCtx.K+' by '+e.full+'</div></div>';
+      setTimeout(closeSheet,1500);
+    };
+  }
+
+  /* Pro order ticket */
+  var pSel=null, pSide='buyYes', pLimit=0, pQty=25;
+  function openTicket(K,act){ pSel=K; pSide=act; var b=bookFor(TMAP[curSym].px,K,EMAP[curExp].t); pLimit=(act==='buyYes')?b.ba:b.bb; pQty=25; renderProTicket(); openSheet(); }
+  function classify(b){
+    if(pSide==='buyYes'){
+      if(pLimit>=b.ba)return{tag:'Lift the ask',kind:'Taker · fills now',cls:'dan',fill:Math.min(pLimit,b.ba),qpos:null};
+      if(pLimit===b.bb)return{tag:'Join the bid',kind:'Maker · rests in queue',cls:'suc',fill:null,qpos:b.bids[0].s};
+      if(pLimit>b.bb)return{tag:'Post a new best bid',kind:'Maker · rests in queue',cls:'suc',fill:null,qpos:0};
+      return{tag:'Rest a bid below market',kind:'Maker · rests in queue',cls:'suc',fill:null,qpos:0};
+    } else {
+      if(pLimit<=b.bb)return{tag:'Hit the bid',kind:'Taker · fills now',cls:'suc',fill:Math.max(pLimit,b.bb),qpos:null};
+      if(pLimit===b.ba)return{tag:'Join the ask',kind:'Maker · rests in queue',cls:'dan',fill:null,qpos:b.asks[2].s};
+      if(pLimit<b.ba)return{tag:'Post a new best offer',kind:'Maker · rests in queue',cls:'dan',fill:null,qpos:0};
+      return{tag:'Rest an offer above market',kind:'Maker · rests in queue',cls:'dan',fill:null,qpos:0};
+    }
+  }
+  function lvl(p,s,cls,mine){ return '<div class="depth-lvl'+(mine?' mine '+cls:'')+'"><span class="dl-p '+cls+'">'+p+'¢</span><span class="dl-bar '+cls+'"><span style="width:'+Math.min(100,s/2)+'%"></span></span><span class="dl-s">'+s+(mine?' +'+pQty:'')+'</span></div>'; }
+  function sideBtn(v,label){ var on=pSide===v,cls=v==='buyYes'?'dan':'suc'; return '<button data-side="'+v+'" class="side-btn'+(on?' on '+cls:'')+'">'+label+'</button>'; }
+  function stepperBox(label,id,val){ return '<div class="stp"><div class="stp-l">'+label+'</div><div class="stp-box"><button id="'+id+'-dn">−</button><span>'+val+'</span><button id="'+id+'-up">+</button></div></div>'; }
+  function renderProTicket(){
+    if(pSel==null) return; var S=TMAP[curSym].px,e=EMAP[curExp],b=bookFor(S,pSel,e.t),c=classify(b),noEq=100-pLimit;
+    var rows=''; b.asks.forEach(function(l){ rows+=lvl(l.p,l.s,'dan',(pSide==='buyYes'&&pLimit===l.p)); });
+    rows+='<div class="depth-spread">'+(b.ba-b.bb)+'¢ spread</div>';
+    b.bids.forEach(function(l){ rows+=lvl(l.p,l.s,'suc',(pSide==='sellYes'&&pLimit===l.p)); });
+    var verb=pSide==='buyYes'?'Buy':'Sell',cost=pQty*pLimit/100;
+    document.getElementById('predSheetCard').innerHTML=
+      '<div class="sheet-head"><div><div class="sheet-title">'+curSym+' above $'+pSel+'</div><div class="sheet-sub">by '+e.full+'</div></div><span class="sheet-x" id="sheetX">✕</span></div>'+
+      '<div class="depth">'+rows+'</div>'+
+      '<div class="side-toggle">'+sideBtn('buyYes','Buy yes')+sideBtn('sellYes','Sell yes')+'</div>'+
+      '<div class="sell-eq">sell yes = buy no at '+noEq+'¢</div>'+
+      '<div class="stepper-pair">'+stepperBox('Limit price','lp',pLimit+'¢')+stepperBox('Contracts','q',pQty)+'</div>'+
+      '<div class="status '+c.cls+'"><div class="status-t">'+c.tag+'</div><div class="status-s">'+c.kind+(c.qpos!==null&&c.qpos>0?(' · behind '+c.qpos+' contracts'):'')+(c.fill!==null?(' at '+c.fill+'¢'):'')+'</div></div>'+
+      availLine(cost)+
+      '<button class="sheet-cta '+c.cls+'" id="proPlace">'+c.tag+' · '+verb+' '+pQty+' @ '+pLimit+'¢ · '+usd(cost)+'</button>';
+    wireSheetX();
+    document.querySelectorAll('#predSheetCard [data-side]').forEach(function(x){ x.onclick=function(){ pSide=x.dataset.side; var bb=bookFor(S,pSel,e.t); pLimit=(pSide==='buyYes')?bb.ba:bb.bb; renderProTicket(); }; });
+    document.getElementById('lp-dn').onclick=function(){ pLimit=Math.max(1,pLimit-1); renderProTicket(); };
+    document.getElementById('lp-up').onclick=function(){ pLimit=Math.min(99,pLimit+1); renderProTicket(); };
+    document.getElementById('q-dn').onclick=function(){ pQty=Math.max(1,pQty-5); renderProTicket(); };
+    document.getElementById('q-up').onclick=function(){ pQty+=5; renderProTicket(); };
+    document.getElementById('proPlace').onclick=function(){
+      var taker=c.kind.indexOf('Taker')>=0;
+      document.getElementById('predSheetCard').innerHTML='<div class="sheet-done"><div class="sheet-done-ic '+c.cls+'">'+(taker?'✓':'◷')+'</div><div class="sheet-done-t">'+(taker?'Filled':'Order resting')+'</div><div class="sheet-done-s">'+c.tag+' · '+verb+' '+pQty+' yes @ '+pLimit+'¢</div></div>';
+      setTimeout(closeSheet,1600);
+    };
+  }
+
+  renderPositions(); renderTickers(); renderMode(); renderExp(); renderLadder();
+
   renderFinances();
 </script>
 </body>
