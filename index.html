@@ -739,6 +739,12 @@
   .suc { background:var(--pp-suc-bg); border:1px solid var(--pp-suc-bd); color:var(--pp-suc-t); }
   .dan { background:var(--pp-dan-bg); border:1px solid var(--pp-dan-bd); color:var(--pp-dan-t); }
 
+  .lad-chev { font-size:9px; color:var(--pp-t3); display:inline-block; transition:transform .2s; }
+  .lad-chev.open { transform:rotate(180deg); }
+  .lad-depth { margin:0 0 8px; }
+  .lad-depth .depth { margin-bottom:0; }
+  .depth-hd { display:flex; justify-content:space-between; font-size:9.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--pp-t3); padding:1px 0 3px; }
+
   /* prediction bottom sheet (slip + pro ticket) */
   .psheet { position:absolute; inset:0; z-index:65; display:none; background:rgba(6,12,20,0.6); }
   .psheet.active { display:block; }
@@ -2705,7 +2711,7 @@
   function comma(n){return n.toLocaleString('en-US');}
   function usd(n){return '$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-  var curSym='FIGR', curExp='q4', curMode='lite';
+  var curSym='FIGR', curExp='q4', curMode='lite', proExpanded=null;
 
   /* positions */
   var POS=[
@@ -2742,6 +2748,14 @@
 
   function bookFor(S,K,t){ var y=fairAt(S,K,t),bb=Math.min(96,Math.max(2,y-1)),ba=Math.min(98,Math.max(bb+2,y+2));
     return {y:y,bb:bb,ba:ba,asks:[{p:ba+3,s:depthSz(K,1)},{p:ba+1,s:depthSz(K,2)},{p:ba,s:depthSz(K,3)}],bids:[{p:bb,s:depthSz(K,4)},{p:bb-1,s:depthSz(K,5)},{p:bb-3,s:depthSz(K,6)}]}; }
+  function depthPanel(S,K,t){
+    var b=bookFor(S,K,t),rows='<div class="depth-hd"><span>Ask · sell yes</span><span>Size</span></div>';
+    b.asks.forEach(function(l){ rows+=lvl(l.p,l.s,'dan',false); });
+    rows+='<div class="depth-spread">'+(b.ba-b.bb)+'¢ spread</div>';
+    rows+='<div class="depth-hd"><span>Bid · buy yes</span><span>Size</span></div>';
+    b.bids.forEach(function(l){ rows+=lvl(l.p,l.s,'suc',false); });
+    return '<div class="lad-depth"><div class="depth">'+rows+'</div></div>';
+  }
   function renderLadder(){
     var S=TMAP[curSym].px,e=EMAP[curExp],t=e.t;
     setText('mktCtx', curSym+' · '+TMAP[curSym].n+' · $'+S.toFixed(2)+' now');
@@ -2765,19 +2779,21 @@
       head.innerHTML='<span style="width:64px">Target</span><span style="flex:1;text-align:center">Bid · buy yes</span><span style="flex:1;text-align:center">Ask · sell yes</span>';
       lad.innerHTML=strikesFor(S).map(function(K){
         var b=bookFor(S,K,t),here=(K===spotK(S));
-        return '<div class="lad-row'+(here?' lad-spot':'')+'"><div class="lad-left" style="width:64px"><div class="lad-k">$'+K+'</div><div class="lad-sub">'+b.y+'% chance</div></div>'+
+        return '<div class="lad-row'+(here?' lad-spot':'')+'"><div class="lad-left lad-exp" data-expand="'+K+'" style="width:64px;cursor:pointer"><div class="lad-k">$'+K+' <span class="lad-chev'+(K===proExpanded?' open':'')+'">⌄</span></div><div class="lad-sub">'+b.y+'% chance</div></div>'+
           '<button class="lad-q2 suc" data-quote data-k="'+K+'" data-act="sellYes"><span class="lq-p">'+b.bb+'¢</span><span class="lq-s">'+b.bids[0].s+' left</span></button>'+
-          '<button class="lad-q2 dan" data-quote data-k="'+K+'" data-act="buyYes"><span class="lq-p">'+b.ba+'¢</span><span class="lq-s">'+b.asks[2].s+' left</span></button></div>';
+          '<button class="lad-q2 dan" data-quote data-k="'+K+'" data-act="buyYes"><span class="lq-p">'+b.ba+'¢</span><span class="lq-s">'+b.asks[2].s+' left</span></button></div>'+
+          (K===proExpanded ? depthPanel(S,K,t) : '');
       }).join('');
-      setText('predNote','Tap a bid to sell yes (hit) or an ask to buy yes (lift). The ticket shows maker vs taker.');
+      setText('predNote','Tap a strike to see its order book. Tap a bid to sell yes (hit) or an ask to buy yes (lift).');
       lad.querySelectorAll('[data-quote]').forEach(function(b){ b.addEventListener('click', function(){ openTicket(+b.dataset.k, b.dataset.act); }); });
+      lad.querySelectorAll('[data-expand]').forEach(function(x){ x.addEventListener('click', function(){ var k=+x.dataset.expand; proExpanded=(proExpanded===k?null:k); renderLadder(); }); });
     }
   }
   document.querySelectorAll('#predMode .lp-btn').forEach(function(b){ b.addEventListener('click', function(){ curMode=b.dataset.mode; closeSheet(); renderMode(); renderLadder(); }); });
 
   /* bottom sheet */
   function openSheet(){ document.getElementById('predSheet').classList.add('active'); }
-  function closeSheet(){ document.getElementById('predSheet').classList.remove('active'); pSel=null; slipCtx=null; }
+  function closeSheet(){ document.getElementById('predSheet').classList.remove('active'); pSel=null; slipCtx=null; proExpanded=null; }
   function wireSheetX(){ var x=document.getElementById('sheetX'); if(x) x.onclick=closeSheet; }
   document.getElementById('predSheet').addEventListener('click', function(ev){ if(ev.target===this) closeSheet(); });
 
