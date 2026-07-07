@@ -1,11 +1,4 @@
 <!DOCTYPE html>
-<script type="application/json" id="cowork-artifact-meta">
-{
-  "name": "Wallet Co Mockup",
-  "schemaVersion": 1,
-  "description": "Clickable mobile mockup of the Wallet Co retail fintech app. Dark theme from the pitch deck, simplicity-first: one always-earning cash balance as the hero, with Borrow, Trade, and Agent tabs. Balance accrues yield live. Built to react to and iterate on."
-}
-</script>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -126,6 +119,38 @@
   }
   .earning-text .rate-hl { color: #34d399; font-weight: 680; }
   .earning-text .amt-hl { color: #e8eef6; font-weight: 600; }
+
+  /* expandable "where you're earning" drawer */
+  .earn-toggle {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 12px; padding: 10px 13px; cursor: pointer;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; font-size: 13px; color: #cdd6e3; font-weight: 500;
+    transition: background .2s;
+  }
+  .earn-toggle:hover { background: rgba(255,255,255,0.07); }
+  .earn-toggle b { color: #34d399; font-weight: 680; }
+  .earn-toggle .chev { color: #8a97ab; font-size: 12px; transition: transform .25s; }
+  .earn-toggle.open .chev { transform: rotate(180deg); }
+  .earn-detail { max-height: 0; overflow: hidden; transition: max-height .32s ease; }
+  .earn-detail.open { max-height: 260px; }
+  .earn-detail-inner { padding: 4px 4px 0; }
+  .ed-row {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; color: #cdd6e3; padding: 9px 2px; border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .ed-row .r { color: #6ee7b7; font-weight: 600; }
+  .ed-row .v { color: #e8eef6; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .ed-total { display: flex; justify-content: space-between; font-size: 12.5px; color: #8a97ab; padding: 10px 2px 2px; }
+  .ed-total .v { color: #e8eef6; font-weight: 650; }
+  .ed-ai {
+    display: flex; align-items: center; gap: 9px; margin-top: 12px; padding: 12px 13px;
+    border-radius: 12px; cursor: pointer;
+    background: rgba(34,211,238,0.10); border: 1px solid rgba(34,211,238,0.22);
+    color: #67e8f9; font-size: 13px; font-weight: 600;
+  }
+  .ed-ai:hover { background: rgba(34,211,238,0.16); }
+  .ed-ai .arr { margin-left: auto; }
 
   /* referral banner */
   .refer {
@@ -832,16 +857,70 @@
   .tour-row { display:flex; align-items:center; gap:10px; margin-top:14px; }
   .tour-step { font-size:12px; color:#8a97ab; margin-right:auto; }
   .tour-exit { background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.16); color:#cdd6e3; font-family:inherit; font-size:12.5px; font-weight:600; padding:8px 14px; border-radius:10px; cursor:pointer; }
+
+  /* ===================== ONBOARDING ===================== */
+  .screen.onboarding .nav, .screen.onboarding .home-ind { display:none; }
+  .ob { padding: 4px 2px 24px; color:#e8eef6; }
+  .ob-top { display:flex; align-items:center; gap:12px; min-height:34px; margin:8px 0 16px; }
+  .ob-back { width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#cdd6e3;cursor:pointer;font-size:17px;flex:0 0 auto; }
+  .ob-prog { flex:1; height:4px; border-radius:3px; background:rgba(255,255,255,0.08); overflow:hidden; }
+  .ob-prog > i { display:block; height:100%; background:#34d399; border-radius:3px; transition:width .4s ease; }
+  .ob-logo { font-weight:800; letter-spacing:3px; font-size:15px; color:#fff; }
+  .ob-step { font-size:11px; color:#6b7891; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:7px; }
+  .ob-h { font-size:23px; font-weight:700; letter-spacing:-0.02em; line-height:1.18; color:#fff; }
+  .ob-sub { font-size:13.5px; color:#8a97ab; line-height:1.55; margin-top:9px; }
+  .ob-field { margin-top:16px; }
+  .ob-field > label { display:block; font-size:12px; color:#8a97ab; font-weight:600; margin-bottom:6px; }
+  .ob-input, .ob-select { width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:13px; padding:13px 14px; color:#e8eef6; font-size:15px; font-family:inherit; outline:none; }
+  .ob-input::placeholder { color:#5a6a82; }
+  .ob-input:focus, .ob-select:focus { border-color:rgba(52,211,153,0.5); background:rgba(52,211,153,0.06); }
+  .ob-select { appearance:none; -webkit-appearance:none; background-image:none; }
+  .ob-select option { background:#14213a; color:#e8eef6; }
+  .ob-row2 { display:flex; gap:10px; } .ob-row2 > * { flex:1; }
+  .ob-pills { display:flex; gap:10px; }
+  .ob-pill { flex:1; text-align:center; padding:13px; border-radius:13px; border:1px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04); color:#cdd6e3; font-size:14px; font-weight:600; cursor:pointer; transition:.15s; }
+  .ob-pill.sel { border-color:#34d399; background:rgba(52,211,153,0.12); color:#6ee7b7; }
+  .ob-foot { margin-top:22px; }
+  .ob-btn { width:100%; background:#34d399; color:#06121f; font-weight:700; font-size:15.5px; font-family:inherit; border:none; border-radius:14px; padding:15px; cursor:pointer; transition:transform .05s; }
+  .ob-btn:active { transform:translateY(1px); }
+  .ob-btn.ghost { background:rgba(255,255,255,0.06); color:#cdd6e3; border:1px solid rgba(255,255,255,0.14); margin-top:10px; }
+  .ob-link { display:block; text-align:center; margin-top:15px; color:#8a97ab; font-size:13px; cursor:pointer; }
+  .ob-link.alt { color:#67e8f9; font-weight:600; }
+  .ob-note { display:flex; gap:9px; align-items:flex-start; margin-top:16px; font-size:12px; color:#9fb0c4; line-height:1.5; background:rgba(34,211,238,0.07); border:1px solid rgba(34,211,238,0.16); border-radius:12px; padding:11px 12px; }
+  .ob-note .ni { color:#67e8f9; flex:0 0 auto; }
+  .ob-card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.10); border-radius:16px; padding:2px 16px; margin-top:18px; }
+  .ob-sr { display:flex; justify-content:space-between; gap:12px; padding:13px 0; border-bottom:1px solid rgba(255,255,255,0.07); font-size:13.5px; }
+  .ob-sr:last-child { border-bottom:none; }
+  .ob-sr .k { color:#8a97ab; } .ob-sr .v { color:#e8eef6; font-weight:600; text-align:right; }
+  .ob-up { display:flex; flex-direction:column; gap:12px; margin-top:18px; }
+  .ob-tile { display:flex; align-items:center; gap:13px; background:rgba(255,255,255,0.04); border:1px dashed rgba(255,255,255,0.20); border-radius:14px; padding:15px; cursor:pointer; }
+  .ob-tile .ti { width:40px;height:40px;border-radius:11px;background:rgba(34,211,238,0.12);display:flex;align-items:center;justify-content:center;color:#67e8f9;font-size:18px;flex:0 0 auto; }
+  .ob-tile .tt { font-size:14px;font-weight:600;color:#e8eef6; } .ob-tile .ts { font-size:11.5px;color:#8a97ab;margin-top:2px; }
+  .ob-tile .chk { display:none; }
+  .ob-tile.done { border-style:solid; border-color:rgba(52,211,153,0.4); }
+  .ob-tile.done .ti { background:rgba(52,211,153,0.14); color:#6ee7b7; }
+  .ob-tile.done .chk { margin-left:auto; color:#6ee7b7; font-size:18px; }
+  .ob-status { text-align:center; padding:40px 8px 8px; }
+  .ob-badge { width:96px;height:96px;border-radius:50%;margin:0 auto 22px;display:flex;align-items:center;justify-content:center;font-size:46px; }
+  .ob-badge.ok { background:rgba(52,211,153,0.14); color:#6ee7b7; }
+  .ob-badge.rev { background:rgba(245,200,80,0.14); color:#f5c850; }
+  .ob-badge.no { background:rgba(248,113,113,0.14); color:#fca5a5; }
+  .ob-spinner { width:58px;height:58px;border-radius:50%;border:5px solid rgba(34,211,238,0.18);border-top-color:#67e8f9;animation:obspin .9s linear infinite;margin:8px auto 0; }
+  @keyframes obspin { to { transform:rotate(360deg);} }
+  .ob-status h2 { font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.01em; }
+  .ob-status p { font-size:14px;color:#8a97ab;line-height:1.55;margin-top:10px; }
+  .ob-pillrow { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .ob-chip { padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; background:rgba(52,211,153,0.12); color:#6ee7b7; border:1px solid rgba(52,211,153,0.3); }
 </style>
 </head>
 <body>
   <div class="intro">
     <h1>Wallet Co — first cut</h1>
-    <p>Tap the bottom tabs. The balance is live — idle cash earns by the second. This is a clickable mockup to react to, not final design.</p>
+    <p>Starts with account onboarding — tap through sign-up, then it flows into the live app. The balance is live; idle cash earns by the second. A clickable mockup to react to, not final design.</p>
   </div>
 
   <div class="phone">
-    <div class="screen">
+    <div class="screen onboarding">
       <div class="notch"></div>
       <div class="statusbar">
         <span id="clock">9:41</span>
@@ -850,8 +929,221 @@
 
       <div class="content">
 
+        <!-- ===================== ONBOARDING ===================== -->
+        <section class="pane active" id="ob-welcome">
+          <div class="ob">
+            <div class="ob-top"><div class="ob-logo">WALLET CO</div></div>
+            <div class="ob-status" style="padding-top:50px;">
+              <div class="ob-badge" style="background:rgba(34,211,238,0.12);color:#67e8f9;font-size:42px;">◆</div>
+              <h2>Open your account<br>in minutes</h2>
+              <p>One simple sign-up. Your money starts earning the moment you fund it.</p>
+            </div>
+            <div class="ob-foot">
+              <button class="ob-btn" onclick="showPane('ob-contact')">Create account</button>
+              <button class="ob-btn ghost" onclick="finishOnboarding()">I already have an account</button>
+            </div>
+            <div class="ob-note"><span class="ni">🔒</span><span>Your account is secured with a passkey and encrypted cloud backup — no password to forget.</span></div>
+          </div>
+        </section>
+
+        <section class="pane" id="ob-contact">
+          <div class="ob">
+            <div class="ob-top"><span class="ob-back" onclick="showPane('ob-welcome')">‹</span><div class="ob-prog"><i style="width:16%"></i></div></div>
+            <div class="ob-step">Step 1 of 6</div>
+            <div class="ob-h">How do we reach you?</div>
+            <div class="ob-sub">We’ll use these to secure your account and send confirmations.</div>
+            <div class="ob-field"><label>Email</label><input class="ob-input" type="email" value="mcagney@gmail.com"></div>
+            <div class="ob-field"><label>Mobile number</label><input class="ob-input" type="tel" value="(702) 867-5409"></div>
+            <div class="ob-field"><label>Country of residence</label>
+              <div class="ob-pills">
+                <div class="ob-pill sel" id="ctyUS" onclick="obCountry('us')">United States</div>
+                <div class="ob-pill" id="ctyOther" onclick="obCountry('other')">Outside the US</div>
+              </div>
+            </div>
+            <div class="ob-foot"><button class="ob-btn" onclick="obContinueContact()">Continue</button></div>
+          </div>
+        </section>
+
+        <section class="pane" id="ob-ssn4">
+          <div class="ob">
+            <div class="ob-top"><span class="ob-back" onclick="showPane('ob-contact')">‹</span><div class="ob-prog"><i style="width:33%"></i></div></div>
+            <div class="ob-step">Step 2 of 6 · United States</div>
+            <div class="ob-h">Verify your identity</div>
+            <div class="ob-sub">Enter the last 4 digits of your Social Security number — we’ll confirm the rest instantly, no documents needed.</div>
+            <div class="ob-field"><label>Last 4 of SSN</label><input class="ob-input" inputmode="numeric" maxlength="4" placeholder="• • • •"></div>
+            <div class="ob-note"><span class="ni">⚡</span><span>We use a soft check via TransUnion to verify you. This won’t affect your credit score.</span></div>
+            <div class="ob-foot"><button class="ob-btn" onclick="goVerify()">Verify instantly</button></div>
+            <span class="ob-link alt" onclick="showPane('ob-name')">Can’t verify this way? Enter details manually ›</span>
+          </div>
+        </section>
+
+        <section class="pane" id="ob-verify">
+          <div class="ob">
+            <div class="ob-status">
+              <div class="ob-spinner"></div>
+              <h2 style="margin-top:26px;">Verifying your identity…</h2>
+              <p>Securely confirming your details with TransUnion. This takes a few seconds.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="pane" id="ob-name">
+          <div class="ob">
+            <div class="ob-top"><span class="ob-back" onclick="showPane('ob-contact')">‹</span><div class="ob-prog"><i style="width:33%"></i></div></div>
+            <div class="ob-step">Step 2 of 6</div>
+            <div class="ob-h">What’s your legal name?</div>
+            <div class="ob-sub">Use your name exactly as it appears on your government ID.</div>
+            <div class="ob-field"><label>First name</label><input class="ob-input" value="Mike"></div>
+            <div class="ob-field"><label>Last name</label><input class="ob-input" value="Cagney"></div>
+            <div class="ob-foot"><button class="ob-btn" onclick="showPane('ob-address')">Continue</button></div>
+          </div>
+        </section>
+
+        <section class="pane" id="ob-address">
+          <div class="ob">
+            <div class="ob-top"><span class="ob-back" onclick="showPane('ob-name')">‹</span><div class="ob-prog"><i style="width:50%"></i></div></div>
+            <div class="ob-step">Step 3 of 6</div>
+            <div class="ob-h">Where do you live?</div>
+            <div class="ob-sub">Your residential address — no PO boxes.</div>
+            <div class="ob-field"><label>Street address</label><input class="ob-input" value="10911 Discovery Peak Ct"></div>
+            <div class="ob-row2">
+              <div class="ob-field"><label>City</label><input class="ob-input" value="Las Vegas"></div>
+              <div class="ob-field"><label>State</label><input class="ob-input" value="NV"></div>
+            </div>
+            <div class="ob-field"><label>ZIP code</label><input class="ob-input" inputmode="numeric" value="89135"></div>
+            <div class="ob-foot"><button class="ob-btn" onclick="showPane('ob-dob')">Continue</button></div>
+          </div>
+        </section>
+
+        <section class="pane" id="ob-dob">
+          <div class="ob">
+            <div class="ob-top"><span class="ob-back" onclick="showPane('ob-address')">‹</span><div class="ob-prog"><i style="width:66%"></i></div></div>
+            <div class="ob-step">Step 4 of 6</div>
+            <div class="ob-h">Date of birth & SSN</div>
+            <div class="ob-sub">Required by federal law to verify your identity.</div>
+            <div class="ob-field"><label>Date of birth</label><input class="ob-input" placeholder="MM / DD / YYYY"></div>
+            <div class="ob-field"><label>Social Security number</label><input class="ob-input" inputmode="numeric" placeholder="•••  ••  ••••"></div>
+            <div class="ob-note"><span class="ni">🔒</span><span>Your SSN is encrypted and used only for identity verification.</span></div>
+            <div class="ob-foot"><button class="ob-btn" onclick="showPane('ob-confirm')">Continue</button></div>
+          </div>
+        </section>
+
+        <section class="pane" id="ob-confirm">
+          <div class="ob">
+            <div class="ob-top"><span class="ob-back" onclick="showPane('ob-contact')">‹</span><div class="ob-prog"><i style="width:83%"></i></div></div>
+            <div class="ob-step">Step 5 of 6</div>
+            <div class="ob-h">Confirm your info</div>
+            <div class="ob-sub">Make sure everything looks right before we continue.</div>
+            <div class="ob-card">
+              <div class="ob-sr"><span class="k">Name</span><span class="v">Mike Cagney</span></div>
+              <div class="ob-sr"><span class="k">Date of birth</span><span class="v">•• / •• / 1971</span></div>
+              <div class="ob-sr"><span class="k">Address</span><span class="v">10911 Discovery Peak Ct,<br>Las Vegas, NV 89135</span></div>
+              <div class="ob-sr"><span class="k">Email</span><span class="v">mcagney@gmail.com</span></div>
+              <div class="ob-sr"><span class="k">Mobile</span><span class="v">(702) 867-5409</span></div>
+            </div>
+            <div class="ob-foot">
+              <button class="ob-btn" onclick="showPane('ob-funds')">Looks good</button>
+              <button class="ob-btn ghost" onclick="showPane('ob-contact')">Edit details</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="pane" id="ob-funds">
+          <div class="ob">
+            <div class="ob-top"><span class="ob-back" onclick="showPane('ob-confirm')">‹</span><div class="ob-prog"><i style="width:100%"></i></div></div>
+            <div class="ob-step">Step 6 of 6</div>
+            <div class="ob-h">A few financial details</div>
+            <div class="ob-sub">Regulations require us to ask how you’ll fund and use your account.</div>
+            <div class="ob-field"><label>Employment status</label>
+              <select class="ob-select"><option>Employed</option><option>Self-employed</option><option>Retired</option><option>Student</option><option>Not employed</option></select></div>
+            <div class="ob-field"><label>Industry</label>
+              <select class="ob-select"><option>Financial services</option><option>Technology</option><option>Healthcare</option><option>Real estate</option><option>Other</option></select></div>
+            <div class="ob-field"><label>Primary source of funds</label>
+              <select class="ob-select"><option>Employment income</option><option>Business income</option><option>Investments</option><option>Inheritance / gift</option><option>Retirement / savings</option></select></div>
+            <div class="ob-foot"><button class="ob-btn" onclick="goEkyc()">Submit application</button></div>
+          </div>
+        </section>
+
+        <section class="pane" id="ob-ekyc">
+          <div class="ob">
+            <div class="ob-status">
+              <div class="ob-spinner"></div>
+              <h2 style="margin-top:26px;">Reviewing your application…</h2>
+              <p>Running identity and compliance checks. Hang tight for a moment.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="pane" id="ob-decision">
+          <div class="ob">
+            <div class="ob-status">
+              <div class="ob-badge ok">✓</div>
+              <h2>Identity verified</h2>
+              <p>You passed our automated checks. You’re ready to finish setting up.</p>
+              <div class="ob-pillrow" style="justify-content:center;"><span class="ob-chip">eKYC · Low risk</span></div>
+            </div>
+            <div class="ob-foot"><button class="ob-btn" onclick="showPane('ob-approved')">Continue</button></div>
+            <span class="ob-link alt" onclick="showPane('ob-idupload')">See the additional-verification path (flagged accounts) ›</span>
+          </div>
+        </section>
+
+        <section class="pane" id="ob-idupload">
+          <div class="ob">
+            <div class="ob-top"><span class="ob-back" onclick="showPane('ob-decision')">‹</span><div class="ob-prog"><i style="width:100%"></i></div></div>
+            <div class="ob-step">Additional verification</div>
+            <div class="ob-h">Verify with a photo ID</div>
+            <div class="ob-sub">Your application was flagged for an extra check. Upload your ID and a quick selfie to continue.</div>
+            <div class="ob-up">
+              <div class="ob-tile" onclick="this.classList.add('done')"><div class="ti">▢</div><div><div class="tt">Front of ID</div><div class="ts">Driver’s license or passport</div></div><span class="chk">✓</span></div>
+              <div class="ob-tile" onclick="this.classList.add('done')"><div class="ti">▢</div><div><div class="tt">Back of ID</div><div class="ts">Driver’s license</div></div><span class="chk">✓</span></div>
+              <div class="ob-tile" onclick="this.classList.add('done')"><div class="ti">☺</div><div><div class="tt">Selfie</div><div class="ts">A quick photo to match your ID</div></div><span class="chk">✓</span></div>
+            </div>
+            <div class="ob-foot"><button class="ob-btn" onclick="showPane('ob-review')">Submit for review</button></div>
+          </div>
+        </section>
+
+        <section class="pane" id="ob-review">
+          <div class="ob">
+            <div class="ob-status">
+              <div class="ob-badge rev">◷</div>
+              <h2>Your application is in review</h2>
+              <p>Thanks — our team is taking a closer look. Most reviews finish within one business day, and we’ll notify you by email and text.</p>
+              <div class="ob-pillrow" style="justify-content:center;"><span class="ob-chip" style="background:rgba(245,200,80,0.14);color:#f5c850;border-color:rgba(245,200,80,0.3);">Manual review</span></div>
+            </div>
+            <div class="ob-foot"><button class="ob-btn" onclick="finishOnboarding()">Explore the app while you wait</button></div>
+            <span class="ob-link alt" onclick="showPane('ob-declined')">See the declined outcome ›</span>
+          </div>
+        </section>
+
+        <section class="pane" id="ob-approved">
+          <div class="ob">
+            <div class="ob-status">
+              <div class="ob-badge ok">✓</div>
+              <h2>You’re all set, Mike!</h2>
+              <p>Your account is open and ready. Add funds and start earning right away.</p>
+              <div class="ob-pillrow" style="justify-content:center;"><span class="ob-chip">Account open</span></div>
+            </div>
+            <div class="ob-foot"><button class="ob-btn" onclick="finishOnboarding()">Enter Wallet Co</button></div>
+          </div>
+        </section>
+
+        <section class="pane" id="ob-declined">
+          <div class="ob">
+            <div class="ob-status">
+              <div class="ob-badge no">✕</div>
+              <h2>We can’t open your account right now</h2>
+              <p>Unfortunately we’re unable to approve your application at this time. If you think this is a mistake, our team can help.</p>
+            </div>
+            <div class="ob-foot">
+              <button class="ob-btn" onclick="alert('Support: 1-800-867-5309 (mockup)')">Contact support</button>
+              <button class="ob-btn ghost" onclick="showPane('ob-welcome')">Start over</button>
+            </div>
+          </div>
+        </section>
+        <!-- =================== END ONBOARDING =================== -->
+
         <!-- BANK / HOME -->
-        <section class="pane active" id="home">
+        <section class="pane" id="home">
 
           <div class="topbar">
             <div class="greet">Good afternoon, Mike</div>
@@ -874,13 +1166,24 @@
                 </select>
               </span>
             </div>
-            <div class="earning-text">Earning <span class="rate-hl" id="earnRateHl">5.26%</span> on <span class="amt-hl" id="earnAmtHl">$90,700</span> in $YLDS &amp; Prime</div>
+            <div class="earn-toggle" id="earnToggle">
+              <span>Where you’re earning · <b id="earnRateHl">5.26%</b> blended</span>
+              <span class="chev">⌄</span>
+            </div>
+            <div class="earn-detail" id="earnDetail">
+              <div class="earn-detail-inner">
+                <div class="ed-row"><span>$YLDS · <span class="r">3.68%</span></span><span class="v">$57,500</span></div>
+                <div class="ed-row"><span>Democratized Prime · <span class="r">8.00%</span></span><span class="v">$33,200</span></div>
+                <div class="ed-total"><span>Total earning</span><span class="v" id="earnAmtHl">$90,700</span></div>
+                <div class="ed-ai" id="edBoost"><span>✦</span><span>Ask the Agent to boost your yield</span><span class="arr">→</span></div>
+              </div>
+            </div>
           </div>
 
           <div class="actions">
-            <div class="action" id="sendAction"><div class="ic">↑</div><div class="t">Send</div></div>
             <div class="action" id="addAction"><div class="ic">↓</div><div class="t">Deposit</div></div>
             <div class="action" id="earnAction"><div class="ic">↗</div><div class="t">Earn</div></div>
+            <div class="action" id="sendAction"><div class="ic">↑</div><div class="t">Send</div></div>
           </div>
 
           <div class="refer" id="referBanner">
@@ -924,6 +1227,10 @@
           </div>
 
           <div class="subpane" id="sub-alerts">
+            <div class="ask-box" id="newAlertBox" style="margin:2px 0 14px;">
+              <input class="ask-input" placeholder="Enter Alert">
+              <span class="ask-send">↑</span>
+            </div>
             <div class="list" id="alertList">
               <div class="alert-row"><div class="alert-body"><div class="alert-txt">Your $FGRS prediction has been partially filled</div><div class="alert-date">6/16/2026</div></div><span class="alert-del">×</span></div>
               <div class="alert-row"><div class="alert-body"><div class="alert-txt">Your Democratized Prime yield has fallen below 8%</div><div class="alert-date">6/3/2026</div></div><span class="alert-del">×</span></div>
@@ -958,14 +1265,14 @@
 
           <div class="sec">My Loans</div>
           <div class="loan-card">
-            <div class="loan-name">Figure HELOC</div>
+            <div class="loan-name">Figure HELOC/Card</div>
             <div class="loan-summary"><span class="rate">8%</span> · <b id="helocBalTxt">$35,000</b> <span class="loan-avail">(<span id="helocAvailTxt">$15,000</span> available)</span> · <span class="pay-now" id="drawMore">Draw more</span></div>
             <div class="loan-next">Next payment <b>$3,500</b> · 7/1 · <span class="pay-now" id="payLoan">Pay now</span></div>
           </div>
 
           <div class="sec">Borrow more</div>
           <div class="pcard" id="borrowBalanceEntry">
-            <div class="ph"><div class="nm">Against your balance</div><span class="arrow">→</span></div>
+            <div class="ph"><div class="nm">Against your assets</div><span class="arrow">→</span></div>
             <div class="ds">Continuous borrowing via Democratized Prime — draw anytime, repay anytime.</div>
             <div class="big" style="margin-top:14px">Up to $64,250</div>
           </div>
@@ -977,21 +1284,13 @@
             <div class="ph"><div class="nm">Crypto-backed loan</div><span class="arrow">→</span></div>
             <div class="ds">Term borrowing against your crypto positions.</div>
           </div>
-          <div class="pcard" data-info="Borrow $FGRS — borrow shares to lend out for income or to sell short. Settles on Provenance.">
-            <div class="ph"><div class="nm">Borrow $FGRS</div><span class="arrow">→</span></div>
-            <div class="ds">Borrow $FGRS to loan or sell short.</div>
-          </div>
-          <div class="pcard" id="cardEntry">
-            <div class="ph"><div class="nm">Wallet Co Card</div><span class="arrow">→</span></div>
-            <div class="ds">Backed by a Figure HELOC</div>
-          </div>
         </section>
 
         <!-- BORROW AGAINST YOUR BALANCE -->
         <section class="pane" id="borrowBalance">
           <div class="help-top">
             <span class="back-btn" id="bbBack">←</span>
-            <span class="help-title">Borrow against your balance</span>
+            <span class="help-title">Borrow against your assets</span>
           </div>
           <div class="psub" style="margin:0 2px 16px;">Borrow against your assets and repay anytime, in real time. Funded through Democratized Prime.</div>
 
@@ -1111,7 +1410,7 @@
             </label>
             <label class="set-field">
               <span class="fl">Phone</span>
-              <input class="fi" type="tel" value="415-308-8055">
+              <input class="fi" type="tel" value="702-867-5409">
             </label>
             <label class="set-field">
               <span class="fl">Street address</span>
@@ -1148,7 +1447,7 @@
 
           <div class="sec" id="alertPrefs">Alert notifications</div>
           <div class="set-group">
-            <div class="set-toggle"><div><div class="tg-t">Push to SMS</div><div class="tg-s">415-308-8055</div></div><span class="switch on"></span></div>
+            <div class="set-toggle"><div><div class="tg-t">Push to SMS</div><div class="tg-s">702-867-5409</div></div><span class="switch on"></span></div>
             <div class="set-toggle"><div><div class="tg-t">Push to email</div><div class="tg-s">mcagney@gmail.com</div></div><span class="switch on"></span></div>
             <div class="set-toggle"><div><div class="tg-t">Push to phone</div><div class="tg-s">App push notifications</div></div><span class="switch"></span></div>
           </div>
@@ -1215,10 +1514,6 @@
             <div class="ph"><div class="nm">Send an ACH</div><span class="arrow">→</span></div>
             <div class="ds">Bank transfer · free · 1–3 business days</div>
           </div>
-          <div class="pcard" id="sendBill">
-            <div class="ph"><div class="nm">Bill payment</div><span class="arrow">→</span></div>
-            <div class="ds">Pay billers or people · one-time or recurring</div>
-          </div>
         </section>
 
         <!-- ADD -->
@@ -1261,16 +1556,6 @@
             <div class="ds">Snap a photo · free · 1–2 business days</div>
           </div>
 
-          <div class="sec">Crypto</div>
-          <div class="pcard" data-deposit="stablecoins">
-            <div class="ph"><div class="nm">Transfer stablecoins</div><span class="arrow">→</span></div>
-            <div class="ds">On-chain from another wallet · minutes</div>
-          </div>
-          <div class="pcard" data-deposit="crypto">
-            <div class="ph"><div class="nm">Deposit crypto</div><span class="arrow">→</span></div>
-            <div class="ds">Across approved L1s · network fee applies</div>
-          </div>
-
           <div class="sec">Automate</div>
           <div class="pcard" id="addDD">
             <div class="ph"><div class="nm">Set up direct deposit</div><span class="arrow">→</span></div>
@@ -1281,10 +1566,6 @@
           <div class="pcard" data-info="Request money — share a payment link or QR with anyone.">
             <div class="ph"><div class="nm">Request money</div><span class="arrow">→</span></div>
             <div class="ds">Ask someone to pay you · fiat, stablecoin or crypto</div>
-          </div>
-          <div class="pcard" data-info="Transfer investments in — connect another brokerage to move positions (ACATS).">
-            <div class="ph"><div class="nm">Transfer investments in</div><span class="arrow">→</span></div>
-            <div class="ds">Move stocks &amp; assets from another brokerage</div>
           </div>
         </section>
 
@@ -2572,10 +2853,38 @@
   document.querySelectorAll('#alertList .alert-del').forEach(function(x){
     x.addEventListener('click', function(){ var row=x.closest('.alert-row'); if(row) row.remove(); });
   });
+  function addNewAlert(text){
+    var listEl=document.getElementById('alertList'); if(!listEl) return;
+    var d=new Date();
+    var date=(d.getMonth()+1)+'/'+d.getDate()+'/'+d.getFullYear();
+    var row=document.createElement('div');
+    row.className='alert-row';
+    row.innerHTML='<div class="alert-body"><div class="alert-txt"></div><div class="alert-date">'+date+'</div></div><span class="alert-del">×</span>';
+    row.querySelector('.alert-txt').textContent=text;
+    listEl.insertBefore(row, listEl.firstChild);
+    row.querySelector('.alert-del').addEventListener('click', function(){ row.remove(); });
+  }
+  var naInput=document.querySelector('#newAlertBox .ask-input');
+  if(naInput) naInput.addEventListener('keydown', function(e){
+    if(e.key==='Enter'){ var v=naInput.value.trim(); if(v){ addNewAlert(v); naInput.value=''; } }
+  });
   var manageAlerts=document.getElementById('manageAlerts');
   if(manageAlerts) manageAlerts.addEventListener('click', function(){
     showPane('settings');
     var p=document.getElementById('alertPrefs'); if(p) p.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  /* ===== Home: expandable earnings drawer ===== */
+  var earnToggle=document.getElementById('earnToggle');
+  var earnDetail=document.getElementById('earnDetail');
+  if(earnToggle && earnDetail) earnToggle.addEventListener('click', function(){
+    var open=earnToggle.classList.toggle('open');
+    earnDetail.classList.toggle('open', open);
+  });
+  var edBoost=document.getElementById('edBoost');
+  if(edBoost) edBoost.addEventListener('click', function(){
+    showPane('agent');
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.toggle('active', t.dataset.pane==='agent'); });
   });
 
   /* ===== Card, Rails, Skills Market, Agent ===== */
@@ -2637,6 +2946,7 @@
       var box = btn.closest('.ask-box'); var input = box ? box.querySelector('.ask-input') : null;
       var v = input ? input.value.trim() : '';
       if(!v){ if(input) input.focus(); return; }
+      if(box && box.id==='newAlertBox'){ addNewAlert(v); input.value=''; return; }
       var req = v.replace(/[.!?]+$/,'');
       var reply = req + '. I’m working on it.';
       agentSpeak(reply);
@@ -2876,6 +3186,26 @@
   renderPositions(); renderTickers(); renderMode(); renderExp(); renderLadder();
 
   renderFinances();
+
+  // ===================== ONBOARDING FLOW =====================
+  window.obCty = 'us';
+  function obCountry(v){
+    window.obCty = v;
+    var us=document.getElementById('ctyUS'), ot=document.getElementById('ctyOther');
+    if(us) us.classList.toggle('sel', v==='us');
+    if(ot) ot.classList.toggle('sel', v==='other');
+  }
+  function obContinueContact(){ showPane(window.obCty==='us' ? 'ob-ssn4' : 'ob-name'); }
+  function goVerify(){ showPane('ob-verify'); setTimeout(function(){ showPane('ob-confirm'); }, 1700); }
+  function goEkyc(){ showPane('ob-ekyc'); setTimeout(function(){ showPane('ob-decision'); }, 1900); }
+  function finishOnboarding(){
+    var sc = document.querySelector('.screen');
+    if (sc) sc.classList.remove('onboarding');
+    document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+    var ht = document.querySelector('.tab[data-pane="home"]');
+    if (ht) ht.classList.add('active');
+    showPane('home');
+  }
 </script>
 </body>
 </html>
