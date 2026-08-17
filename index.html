@@ -197,10 +197,33 @@
   .hrow .mid .nm { font-size: 14.5px; font-weight: 600; }
   .hrow .mid .mt { font-size: 12px; color: #8a97ab; margin-top: 2px; }
   .hrow .amt { font-size: 14.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .hrow .amt.neg { color: #fca5a5; }
+  .hrow .amt.neg { color: #e8eef6; }  /* liabilities render in neutral ink — debt isn't an error state */
 
   /* hero balance */
   .hero { padding: 22px 2px 8px; }
+  /* --- adaptive hero: composition states --- */
+  .demo-sw { margin:2px 0 4px auto; width:max-content; font-size:9.5px; color:#6b7891; border:1px dashed rgba(255,255,255,0.18);
+    border-radius:999px; padding:3px 9px; cursor:pointer; letter-spacing:.04em; user-select:none; }
+  .demo-sw:hover { color:#8a97ab; }
+  .hseg { display:flex; gap:6px; margin:0 0 12px; }
+  .hseg button { border:1px solid rgba(255,255,255,0.10); background:rgba(255,255,255,0.04); color:#8a97ab;
+    font-size:11.5px; font-weight:600; font-family:inherit; padding:5px 12px; border-radius:999px; cursor:pointer; transition:all .15s; }
+  .hseg button.active { color:#67e8f9; border-color:rgba(34,211,238,0.45); background:rgba(34,211,238,0.10); }
+  .net-rows { margin-top:12px; border-top:1px solid rgba(255,255,255,0.06); padding-top:10px; }
+  .net-row { display:flex; justify-content:space-between; font-size:13px; color:#8a97ab; padding:3px 0; font-weight:500; }
+  .net-row .v { color:#e8eef6; font-weight:600; font-variant-numeric:tabular-nums; }
+  .bh-sub { margin-top:10px; font-size:13px; color:#8a97ab; line-height:1.7; }
+  .bh-sub b { color:#e8eef6; font-weight:600; }
+  .bh-equity { display:inline-flex; align-items:center; gap:7px; margin-top:12px; background:rgba(52,211,153,0.10);
+    border:1px solid rgba(52,211,153,0.22); padding:6px 12px; border-radius:999px; font-size:12px; color:#6ee7b7; font-weight:550; }
+  .earn-cta { background:linear-gradient(135deg, rgba(34,211,238,0.12), rgba(52,211,153,0.08)); border:1px solid rgba(34,211,238,0.22);
+    border-radius:18px; padding:15px 16px; margin-top:14px; cursor:pointer; display:flex; align-items:center; gap:12px; }
+  .earn-cta .ec1 { font-size:14px; font-weight:650; }
+  .earn-cta .ec2 { font-size:12px; color:#8a97ab; margin-top:2px; }
+  .earn-cta .arr { margin-left:auto; color:#67e8f9; font-size:16px; }
+  .hold-empty { border:1px dashed rgba(255,255,255,0.12); border-radius:16px; padding:16px; font-size:12.5px; color:#8a97ab;
+    text-align:center; margin-top:4px; cursor:pointer; line-height:1.6; }
+  .hold-empty b { color:#6ee7b7; }
   .hero .label { font-size: 13px; color: #8a97ab; letter-spacing: .01em; font-weight: 500; }
   .hero .bal {
     font-size: 52px; font-weight: 680; letter-spacing: -0.03em; margin-top: 8px;
@@ -1047,7 +1070,7 @@
             <div class="ob-step">Step 3 of 7</div>
             <div class="ob-h">Where do you live?</div>
             <div class="ob-sub">Your residential address — no PO boxes.</div>
-            <div class="ob-field"><label>Street address</label><input class="ob-input" value="10911 Discovery Peak Ct"></div>
+            <div class="ob-field"><label>Street address</label><input class="ob-input" value="888 Luck Be a Lady"></div>
             <div class="ob-row2">
               <div class="ob-field"><label>City</label><input class="ob-input" value="Las Vegas"></div>
               <div class="ob-field"><label>State</label><input class="ob-input" value="NV"></div>
@@ -1079,7 +1102,7 @@
             <div class="ob-card">
               <div class="ob-sr"><span class="k">Name</span><span class="v">Mike Cagney</span></div>
               <div class="ob-sr"><span class="k">Date of birth</span><span class="v">•• / •• / 1971</span></div>
-              <div class="ob-sr"><span class="k">Address</span><span class="v">10911 Discovery Peak Ct,<br>Las Vegas, NV 89135</span></div>
+              <div class="ob-sr"><span class="k">Address</span><span class="v">888 Luck Be a Lady,<br>Las Vegas, NV 89135</span></div>
               <div class="ob-sr"><span class="k">Email</span><span class="v">mcagney@gmail.com</span></div>
               <div class="ob-sr"><span class="k">Mobile</span><span class="v">(702) 867-5409</span></div>
             </div>
@@ -1194,7 +1217,7 @@
               <p>Unfortunately we’re unable to approve your application at this time. If you think this is a mistake, our team can help.</p>
             </div>
             <div class="ob-foot">
-              <button class="ob-btn" onclick="alert('Support: 1-800-867-5309 (mockup)')">Contact support</button>
+              <button class="ob-btn" onclick="alert('Support: 702-867-5309 (mockup)')">Contact support</button>
               <button class="ob-btn ghost" onclick="showPane('ob-welcome')">Start over</button>
             </div>
           </div>
@@ -1204,7 +1227,7 @@
         <!-- BANK / HOME -->
         <section class="pane" id="home">
 
-          <div class="topbar">
+          <div class="topbar" style="position:relative;">
             <div class="greet">Good afternoon, Mike</div>
             <div class="tb-icons">
               <span class="tb-ic" id="trustBtn" title="How you're protected">🛡</span>
@@ -1212,38 +1235,85 @@
               <span class="tb-ic" id="helpBtn" title="Help">?</span>
             </div>
           </div>
+          <div class="demo-sw" id="demoSw" title="Demo: cycle account composition">demo · assets + loan</div>
 
           <div class="hero">
-            <div class="label">Account value · Always earning</div>
-            <div class="bal">$<span id="dollars">93,790</span><span class="cents">.<span id="cents">00</span></span></div>
-            <div class="earned-line">
-              You earned <span class="earned-amt" id="earnedAmt">+$13.07</span> in the last
-              <span class="dd-wrap">
-                <select class="dd" id="periodDd">
-                  <option value="24h">24 hours</option>
-                  <option value="7d">7 days</option>
-                  <option value="month">month</option>
-                </select>
-              </span>
+            <div class="hseg" id="heroSeg" style="display:none;">
+              <button class="active" data-seg="assets">Assets</button>
+              <button data-seg="borrowing">Borrowing</button>
+              <button data-seg="net">Net</button>
             </div>
-            <div class="earn-toggle" id="earnToggle">
-              <span>Where you’re earning · <b id="earnRateHl">5.26%</b> blended</span>
-              <span class="chev">⌄</span>
+
+            <!-- assets / earning view (earn-only mode + mixed·Assets segment) -->
+            <div id="heroEarnView">
+              <div class="label" id="heroLabel">Assets · Always earning</div>
+              <div class="bal">$<span id="dollars">128,790</span><span class="cents">.<span id="cents">00</span></span></div>
+              <div class="earned-line">
+                You earned <span class="earned-amt" id="earnedAmt">+$12.63</span> in the last
+                <span class="dd-wrap">
+                  <select class="dd" id="periodDd">
+                    <option value="24h">24 hours</option>
+                    <option value="7d">7 days</option>
+                    <option value="month">month</option>
+                  </select>
+                </span>
+              </div>
+              <div class="earn-toggle" id="earnToggle">
+                <span>Where you’re earning · <b id="earnRateHl">5.08%</b> blended</span>
+                <span class="chev">⌄</span>
+              </div>
+              <div class="earn-detail" id="earnDetail">
+                <div class="earn-detail-inner">
+                  <div class="ed-row"><span>$YLDS · <span class="r">3.40%</span></span><span class="v">$57,500</span></div>
+                  <div class="ed-row"><span>Democratized Prime · <span class="r">8.00%</span></span><span class="v">$33,200</span></div>
+                  <div class="ed-total"><span>Total earning</span><span class="v" id="earnAmtHl">$90,700</span></div>
+                  <div class="ed-ai" id="edBoost"><span>✦</span><span>Ask the Agent to boost your yield</span><span class="arr">→</span></div>
+                </div>
+              </div>
+              <div class="net-rows" id="heroNetRows" style="display:none;">
+                <div class="net-row"><span>You owe</span><span class="v" id="nrOwe">$35,000.00</span></div>
+                <div class="net-row"><span>Net position</span><span class="v" id="nrNet">$93,790.00</span></div>
+              </div>
             </div>
-            <div class="earn-detail" id="earnDetail">
-              <div class="earn-detail-inner">
-                <div class="ed-row"><span>$YLDS · <span class="r">3.68%</span></span><span class="v">$57,500</span></div>
-                <div class="ed-row"><span>Democratized Prime · <span class="r">8.00%</span></span><span class="v">$33,200</span></div>
-                <div class="ed-total"><span>Total earning</span><span class="v" id="earnAmtHl">$90,700</span></div>
-                <div class="ed-ai" id="edBoost"><span>✦</span><span>Ask the Agent to boost your yield</span><span class="arr">→</span></div>
+
+            <!-- borrowing view (borrow-only mode + mixed·Borrowing segment) -->
+            <div id="heroBorrowView" style="display:none;">
+              <div class="label">Loan balance · Figure HELOC · 8.0% APR</div>
+              <div class="bal">$<span id="bDollars">35,000</span><span class="cents">.<span id="bCents">00</span></span></div>
+              <div class="bh-sub">
+                Available to draw <b id="bhAvail">$15,000.00</b> · <span class="pay-now" id="bhDraw">Draw more</span><br>
+                Next payment <b>$3,500</b> · Jul 1 · <span class="pay-now" id="bhPay">Pay now</span>
+              </div>
+              <div class="bh-equity">▲ Equity built · <b>$2,850</b> principal paid</div>
+              <div class="earn-cta" id="bhEarnCta">
+                <div>
+                  <div class="ec1">Put your cash to work</div>
+                  <div class="ec2">Deposits earn 3.40% APY from day one — spendable anytime</div>
+                </div>
+                <span class="arr">→</span>
+              </div>
+            </div>
+
+            <!-- net view (mixed·Net segment) -->
+            <div id="heroNetView" style="display:none;">
+              <div class="label">Net position</div>
+              <div class="bal">$<span id="nDollars">93,790</span><span class="cents">.<span id="nCents">00</span></span></div>
+              <div class="net-rows">
+                <div class="net-row"><span>Assets</span><span class="v" id="nvAssets">$128,790.00</span></div>
+                <div class="net-row"><span>You owe</span><span class="v" id="nvOwe">$35,000.00</span></div>
               </div>
             </div>
           </div>
 
-          <div class="actions">
+          <div class="actions" id="actionsEarn">
             <div class="action" id="addAction"><div class="ic">↓</div><div class="t">Deposit</div></div>
             <div class="action" id="earnAction"><div class="ic">↗</div><div class="t">Earn</div></div>
             <div class="action" id="sendAction"><div class="ic">↑</div><div class="t">Send</div></div>
+          </div>
+          <div class="actions" id="actionsBorrow" style="display:none;">
+            <div class="action" id="bDrawAction"><div class="ic">↧</div><div class="t">Draw funds</div></div>
+            <div class="action" id="bPayAction"><div class="ic">✓</div><div class="t">Pay loan</div></div>
+            <div class="action" id="bDepAction"><div class="ic">↓</div><div class="t">Deposit</div></div>
           </div>
 
           <div class="refer" id="referBanner">
@@ -1273,17 +1343,25 @@
           </div>
 
           <div class="subpane active" id="sub-holdings">
-            <div class="hdr">Assets</div>
-            <div class="list">
-              <div class="hrow"><div class="avatar">💵</div><div class="mid"><div class="nm">USD Cash</div><div class="mt">Sweeping to $YLDS</div></div><div class="amt" id="hUsdAmt">$12,840.00</div></div>
-              <div class="hrow tap" id="hYlds"><div class="avatar">🟢</div><div class="mid"><div class="nm">$YLDS</div><div class="mt">3.68% APY</div></div><div class="amt" id="hYldsAmt">$57,500.00</div></div>
-              <div class="hrow tap" id="hPrime"><div class="avatar">🔷</div><div class="mid"><div class="nm">Democratized Prime</div><div class="mt">8.00% APY</div></div><div class="amt" id="hPrimeAmt">$33,200.00</div></div>
-              <div class="hrow"><div class="avatar">⬡</div><div class="mid"><div class="nm">$FGRS</div><div class="mt">300.0 shares · $30.00</div></div><div class="amt">$9,000.00</div></div>
-              <div class="hrow"><div class="avatar">₿</div><div class="mid"><div class="nm">BTC</div><div class="mt">0.25 coins · $65,000</div></div><div class="amt" id="hBtcAmt">$16,250.00</div></div>
+            <div id="holdAssets">
+              <div class="hdr">Assets</div>
+              <div class="list">
+                <div class="hrow"><div class="avatar">💵</div><div class="mid"><div class="nm">USD Cash</div><div class="mt">Sweeping to $YLDS</div></div><div class="amt" id="hUsdAmt">$12,840.00</div></div>
+                <div class="hrow tap" id="hYlds"><div class="avatar">🟢</div><div class="mid"><div class="nm">$YLDS</div><div class="mt">3.40% APY</div></div><div class="amt" id="hYldsAmt">$57,500.00</div></div>
+                <div class="hrow tap" id="hPrime"><div class="avatar">🔷</div><div class="mid"><div class="nm">Democratized Prime</div><div class="mt">8.00% APY</div></div><div class="amt" id="hPrimeAmt">$33,200.00</div></div>
+                <div class="hrow"><div class="avatar">⬡</div><div class="mid"><div class="nm">$FGRS</div><div class="mt">300.0 shares · $30.00</div></div><div class="amt">$9,000.00</div></div>
+                <div class="hrow"><div class="avatar">₿</div><div class="mid"><div class="nm">BTC</div><div class="mt">0.25 coins · $65,000</div></div><div class="amt" id="hBtcAmt">$16,250.00</div></div>
+              </div>
             </div>
-            <div class="hdr">Loans</div>
-            <div class="list">
-              <div class="hrow tap" id="hHeloc"><div class="avatar">🏠</div><div class="mid"><div class="nm">Figure HELOC</div><div class="mt">8.7% APR</div></div><div class="amt neg" id="hHelocAmt">$35,000.00</div></div>
+            <div id="holdAssetsEmpty" style="display:none;">
+              <div class="hdr">Assets</div>
+              <div class="hold-empty" id="holdEmptyCta">No assets yet — deposits earn <b>3.40% APY</b> from day one.<br>Start earning →</div>
+            </div>
+            <div id="holdLoans">
+              <div class="hdr">Loans</div>
+              <div class="list">
+                <div class="hrow tap" id="hHeloc"><div class="avatar">🏠</div><div class="mid"><div class="nm">Figure HELOC</div><div class="mt">8.0% APR · $15,000 available</div></div><div class="amt neg" id="hHelocAmt">$35,000.00</div></div>
+              </div>
             </div>
           </div>
 
@@ -1440,7 +1518,7 @@
           <div class="sec">Contact Us</div>
           <a class="contact" href="sms:+18008675309"><span class="ci">💬</span><div class="mid"><div class="nm">Text us</div><div class="mt">SMS</div></div><span class="arrow">→</span></a>
           <a class="contact" href="https://t.me/walletco"><span class="ci">✈️</span><div class="mid"><div class="nm">Telegram</div><div class="mt">@walletco</div></div><span class="arrow">→</span></a>
-          <a class="contact" href="tel:+18008675309"><span class="ci">📞</span><div class="mid"><div class="nm">Call us</div><div class="mt">1-800-867-5309</div></div><span class="arrow">→</span></a>
+          <a class="contact" href="tel:+17028675309"><span class="ci">📞</span><div class="mid"><div class="nm">Call us</div><div class="mt">702-867-5309</div></div><span class="arrow">→</span></a>
         </section>
 
         <!-- SETTINGS -->
@@ -1468,11 +1546,11 @@
             </label>
             <label class="set-field">
               <span class="fl">Phone</span>
-              <input class="fi" type="tel" value="702-867-5409">
+              <input class="fi" type="tel" value="702-867-5309">
             </label>
             <label class="set-field">
               <span class="fl">Street address</span>
-              <input class="fi" type="text" value="10911 Discovery Peak Ct">
+              <input class="fi" type="text" value="888 Luck Be a Lady">
             </label>
             <div class="set-row3">
               <label class="set-field"><span class="fl">City</span><input class="fi" type="text" value="Las Vegas"></label>
@@ -1519,7 +1597,7 @@
 
           <div class="sec" id="alertPrefs">Alert notifications</div>
           <div class="set-group">
-            <div class="set-toggle"><div><div class="tg-t">Push to SMS</div><div class="tg-s">702-867-5409</div></div><span class="switch on"></span></div>
+            <div class="set-toggle"><div><div class="tg-t">Push to SMS</div><div class="tg-s">702-867-5309</div></div><span class="switch on"></span></div>
             <div class="set-toggle"><div><div class="tg-t">Push to email</div><div class="tg-s">mcagney@gmail.com</div></div><span class="switch on"></span></div>
             <div class="set-toggle"><div><div class="tg-t">Push to phone</div><div class="tg-s">App push notifications</div></div><span class="switch"></span></div>
           </div>
@@ -1579,16 +1657,16 @@
           </div>
 
           <div class="sec">Custody</div>
-          <div class="trust-card">
-            <div class="tc-t">Self-custody by default</div>
-            <div class="tc-p">Your assets live in your own MPC wallet on-chain. Wallet Co never takes possession of your money — only you can authorize a transaction.</div>
+          <div class="trust-card" style="border-color:rgba(34,211,238,0.35);">
+            <div class="tc-t">Self-custody that satisfies qualified custody <span class="pill">Only at Wallet Co</span></div>
+            <div class="tc-p">Your assets live in your own MPC wallet — you hold a key. A regulated qualified custodian holds a second key as a <b>policy agent</b>: it co-signs only transactions that match rules you set, and can never move your money on its own. You keep self-custody control; your account meets qualified-custody standards. Not one or the other — both at once.</div>
           </div>
           <div class="set-group" style="margin-bottom:10px;">
             <div class="set-field set-static"><div style="min-width:0;flex:1"><span class="fl">Your wallet address</span><div class="fi-static wallet-addr">0x7A3f…9C21</div></div><button class="mini-btn" data-copy="0x7A3f4E8b2D1c9A0f6B5e3D8c7A2f1E0d4C5b9C21">Copy</button></div>
           </div>
           <div class="trust-card">
-            <div class="tc-t">Qualified custody, if you want it <span class="pill">Institutions</span></div>
-            <div class="tc-p">Hold through a qualified custodian — with the roles, permissions and audit trail your compliance team requires — without giving up choice of venue.</div>
+            <div class="tc-t">Or choose your model</div>
+            <div class="tc-p">Prefer pure self-custody — your keys only? Or full qualified custody with roles, permissions and the audit trail your compliance team requires? Both are available. The hybrid above is simply the default, because it's the only model that doesn't make you choose.</div>
           </div>
 
           <div class="sec">Keys</div>
@@ -1753,7 +1831,7 @@
             <button class="applepay-btn" id="applePayBtn"><svg viewBox="0 0 384 512" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg><span>Pay</span></button>
             <button class="gpay-btn" id="gpayBtn"><svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true"><path fill="#4285F4" d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path fill="#34A853" d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path fill="#FBBC05" d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/><path fill="#EA4335" d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg><span>Pay</span></button>
           </div>
-          <div class="disclosure">Idle cash auto-earns 3.68% APY in $YLDS the moment it lands.</div>
+          <div class="disclosure">Idle cash auto-earns 3.40% APY in $YLDS the moment it lands.</div>
         </section>
 
         <!-- HELOC DRAW -->
@@ -1907,7 +1985,7 @@
           <div class="sec">Your earning positions</div>
           <div class="epos">
             <div class="epos-top">
-              <div><div class="epos-name">$YLDS</div><div class="epos-sub">3.68% current yield</div></div>
+              <div><div class="epos-name">$YLDS</div><div class="epos-sub">3.40% current yield</div></div>
               <div class="epos-right"><div class="epos-val" id="eposYldsVal">$57,500.00</div><span class="pay-now" id="yldsRedeem">Redeem to cash</span></div>
             </div>
             <div class="epos-row">
@@ -1924,7 +2002,7 @@
           <div class="sec">Start a new position</div>
           <div class="pcard" id="buyYldsCard">
             <div class="ph"><div class="nm">Buy $YLDS<span class="vet" title="How you're protected">✓ Vetted</span></div><span class="arrow">→</span></div>
-            <div class="big">3.68%</div>
+            <div class="big">3.40%</div>
             <div class="ds">Treasury-backed public security · SOFR − 35 bps · 24×7 liquidity</div>
           </div>
 
@@ -2054,7 +2132,7 @@
           <div class="ycard" style="margin-bottom:6px;">
             <div class="row">
               <div>
-                <div class="rate">3.68% APY</div>
+                <div class="rate">3.40% APY</div>
                 <div class="sub">SOFR − 35 bps · backed by U.S. Treasuries &amp; bank deposits · 24×7 liquidity</div>
               </div>
               <span class="pill">$YLDS</span>
@@ -2081,7 +2159,7 @@
 
           <div class="proj">
             <div class="proj-row"><span>Estimated yield (1 yr)</span><span class="proj-amt" id="projYear">$0.00</span></div>
-            <div class="proj-row"><span>Rate</span><span>3.68% APY · SOFR − 35 bps</span></div>
+            <div class="proj-row"><span>Rate</span><span>3.40% APY · SOFR − 35 bps</span></div>
             <div class="proj-row"><span>Settlement</span><span>Instant · earns immediately</span></div>
             <div class="proj-row"><span>Liquidity</span><span>24×7 · no lockup</span></div>
           </div>
@@ -2195,7 +2273,7 @@
 
           <button class="save-btn" id="ddAuto">Connect employer automatically</button>
           <button class="signout-btn" id="ddForm" style="border-color:rgba(255,255,255,0.12);color:#cdd6e3;margin-top:10px;">Email me a pre-filled form</button>
-          <div class="disclosure">Direct deposits often arrive 1–2 days faster than a paper check, and idle cash earns 3.68% APY in $YLDS automatically.</div>
+          <div class="disclosure">Direct deposits often arrive 1–2 days faster than a paper check, and idle cash earns 3.40% APY in $YLDS automatically.</div>
         </section>
 
         <!-- BILL PAY -->
@@ -2371,7 +2449,7 @@
     setText('eposYldsVal', money2(FIN.ylds));
     setText('eposPrimeVal', money2(FIN.prime));
     var assets = FIN.ylds + FIN.prime;
-    var blended = assets>0 ? (FIN.ylds*0.0368 + FIN.prime*0.08)/assets*100 : 0;
+    var blended = assets>0 ? (FIN.ylds*0.0340 + FIN.prime*0.08)/assets*100 : 0;
     setText('earnRateHl', blended.toFixed(2)+'%');
     setText('earnAmtHl', money(assets));
     setText('helocBalTxt', money(FIN.helocBal));
@@ -2381,18 +2459,32 @@
     if (typeof syncAsset === 'function') syncAsset();
   }
 
-  // live account value = net worth: cash + $YLDS + Prime + $FGRS + BTC − HELOC
-  var base = 93790.00;
-  var perTick = 0.0009;      // gentle, slow accrual
-  var earnedBase = { '24h': 13.07, '7d': 91.51, 'month': 397.67 };
+  // ---- adaptive hero: account composition states ----
+  // Rule: the hero number is never negative and never $0. Assets tick (always
+  // earning); net ticks with them; a borrower's hero is their available credit.
+  var COMP = 'mixed';                       // 'borrow' | 'mixed' | 'earn'
+  var SEG = 'assets';                       // mixed-mode segment
+  var assetsBase = 128790.00;               // cash + $YLDS + Prime + $FGRS + BTC
+  var perTick = 0.0009;                     // gentle, slow accrual
+  var earnedBase = { '24h': 12.63, '7d': 88.42, 'month': 384.25 };
   var earnedVal = earnedBase['24h'];
+  function paintNum(dId, cId, v){
+    var d = Math.floor(v), c = Math.floor((v - d) * 100);
+    setText(dId, d.toLocaleString('en-US'));
+    setText(cId, String(c).padStart(2,'0'));
+  }
   function updateAccountDisplay(){
-    var d = Math.floor(base), c = Math.floor((base - d) * 100);
-    setText('dollars', d.toLocaleString('en-US'));
-    setText('cents', String(c).padStart(2,'0'));
+    paintNum('dollars', 'cents', assetsBase);
+    paintNum('nDollars', 'nCents', assetsBase - FIN.helocBal);
+    paintNum('bDollars', 'bCents', FIN.helocBal);
+    setText('nrOwe', money2(FIN.helocBal));
+    setText('nrNet', money2(assetsBase - FIN.helocBal));
+    setText('nvAssets', money2(assetsBase));
+    setText('nvOwe', money2(FIN.helocBal));
+    setText('bhAvail', money2(FIN.helocAvail));
   }
   function render(){
-    base += perTick;
+    assetsBase += perTick;
     earnedVal += perTick;    // earned moves with the balance
     updateAccountDisplay();
     setText('earnedAmt', '+$' + earnedVal.toFixed(2));
@@ -2400,8 +2492,48 @@
   updateAccountDisplay();   // paint immediately so the hero never flashes a stale number
   setInterval(render, 1200);
 
+  function show(id, on){ var e=document.getElementById(id); if(e) e.style.display = on ? '' : 'none'; }
+  function renderHero(){
+    var borrowView = (COMP==='borrow') || (COMP==='mixed' && SEG==='borrowing');
+    var netView    = (COMP==='mixed' && SEG==='net');
+    var earnView   = !borrowView && !netView;
+    show('heroEarnView', earnView);
+    show('heroBorrowView', borrowView);
+    show('heroNetView', netView);
+    show('heroSeg', COMP==='mixed');
+    show('heroNetRows', COMP==='mixed' && SEG==='assets');
+    show('bhEarnCta', COMP==='borrow');            // cross-sell only for the loan-only cohort
+    show('actionsEarn', COMP!=='borrow');
+    show('actionsBorrow', COMP==='borrow');
+    show('holdAssets', COMP!=='borrow');
+    show('holdAssetsEmpty', COMP==='borrow');
+    show('holdLoans', COMP!=='earn');
+    setText('heroLabel', COMP==='earn' ? 'Account value · Always earning' : 'Assets · Always earning');
+    var sw = document.getElementById('demoSw');
+    if (sw) sw.textContent = 'demo · ' + (COMP==='borrow' ? 'loan-only (day 1)' : COMP==='mixed' ? 'assets + loan' : 'assets only');
+    document.querySelectorAll('#heroSeg button').forEach(function(b){ b.classList.toggle('active', b.dataset.seg===SEG); });
+    updateAccountDisplay();
+  }
+  document.getElementById('demoSw').addEventListener('click', function(){
+    COMP = COMP==='mixed' ? 'borrow' : COMP==='borrow' ? 'earn' : 'mixed';
+    SEG = 'assets';
+    renderHero();
+  });
+  document.querySelectorAll('#heroSeg button').forEach(function(b){
+    b.addEventListener('click', function(){ SEG = b.dataset.seg; renderHero(); });
+  });
+  function goEarnPane(){ showPane('earn'); }
+  document.getElementById('bhEarnCta').addEventListener('click', goEarnPane);
+  document.getElementById('holdEmptyCta').addEventListener('click', goEarnPane);
+  document.getElementById('bDepAction').addEventListener('click', function(){ document.getElementById('addAction').click(); });
+  document.getElementById('bDrawAction').addEventListener('click', function(){ var e=document.getElementById('drawMore'); if(e) e.click(); });
+  document.getElementById('bPayAction').addEventListener('click', function(){ var e=document.getElementById('payLoan'); if(e) e.click(); });
+  document.getElementById('bhPay').addEventListener('click', function(){ var e=document.getElementById('payLoan'); if(e) e.click(); });
+  document.getElementById('bhDraw').addEventListener('click', function(){ var e=document.getElementById('drawMore'); if(e) e.click(); });
+  renderHero();
+
   // earned-in-period selector
-  // blended: $57,500 @ 3.68% + $33,200 @ 8.00% = $4,772/yr ≈ $13.07/day
+  // blended: $57,500 @ 3.40% + $33,200 @ 8.00% = $4,772/yr ≈ $12.63/day
   document.getElementById('periodDd').addEventListener('change', function(){
     earnedVal = earnedBase[this.value];
     document.getElementById('earnedAmt').textContent = '+$' + earnedVal.toFixed(2);
@@ -2518,7 +2650,7 @@
   });
 
   // Add money: each method routes to its own detail screen
-  function creditBalance(amt){ base += amt; FIN.usdCash += amt; updateAccountDisplay(); renderFinances(); }
+  function creditBalance(amt){ assetsBase += amt; FIN.usdCash += amt; updateAccountDisplay(); renderFinances(); }
   function readAmt(id){ return parseFloat((document.getElementById(id).value||'').replace(/[^0-9.]/g,'')) || 0; }
   document.querySelectorAll('.add-card').forEach(function(c){
     c.addEventListener('click', function(){
@@ -2705,7 +2837,7 @@
   if (buyBack) buyBack.addEventListener('click', function(){ showPane('earn'); });
 
   var buyAmt = document.getElementById('buyAmt');
-  var YLDS_RATE = 0.0368;   // single source of truth: SOFR − 35 bps, shown everywhere as 3.68% APY
+  var YLDS_RATE = 0.0340;   // single source of truth: SOFR − 35 bps, shown everywhere as 3.40% APY
   function syncProj(){
     var v = parseFloat((buyAmt.value || '').replace(/[^0-9.]/g, '')) || 0;
     document.getElementById('projYear').textContent =
@@ -2723,8 +2855,8 @@
     var yr = (v * YLDS_RATE).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
     var amt = v.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
     var fromBank = document.getElementById('buySource').selectedIndex === 1;
-    if (confirm('Confirm purchase\n\nBuy $' + amt + ' of $YLDS\nEst. yield (1 yr): $' + yr + ' at 3.68% APY\nPay from: ' + (fromBank ? 'Linked bank · Chase ••1234' : 'USD cash') + '\n\nProceed?')) {
-      if (fromBank) { base += v; } else { FIN.usdCash -= v; }
+    if (confirm('Confirm purchase\n\nBuy $' + amt + ' of $YLDS\nEst. yield (1 yr): $' + yr + ' at 3.40% APY\nPay from: ' + (fromBank ? 'Linked bank · Chase ••1234' : 'USD cash') + '\n\nProceed?')) {
+      if (fromBank) { assetsBase += v; } else { FIN.usdCash -= v; }
       FIN.ylds += v; updateAccountDisplay(); renderFinances();
       alert('Purchase complete. Your $YLDS holding grew and is now earning. (Mockup)');
       buyAmt.value = ''; syncProj(); showPane('earn');
@@ -2763,10 +2895,10 @@
     if (v > lim.max) { alert('Amount exceeds available ('+lim.label+').'); return; }
     var disp = (sendAsset.value==='usd' ? '$'+amt : amt+' '+assetLabel);
     if (confirm('Review transfer\n\nSend: '+disp+'\nTo: '+to+'\n\nSend now?')) {
-      if (sendAsset.value==='usd') { FIN.usdCash -= v; base -= v; }
-      else if (sendAsset.value==='ylds') { FIN.ylds -= v; base -= v; }
-      else if (sendAsset.value==='btc') { var usdV = v*65000; FIN.btc = Math.max(0, FIN.btc - usdV); base -= usdV; }
-      else if (sendAsset.value==='fgrs') { var usdF = v*30; FIN.fgrs = Math.max(0, FIN.fgrs - usdF); base -= usdF; }
+      if (sendAsset.value==='usd') { FIN.usdCash -= v; assetsBase -= v; }
+      else if (sendAsset.value==='ylds') { FIN.ylds -= v; assetsBase -= v; }
+      else if (sendAsset.value==='btc') { var usdV = v*65000; FIN.btc = Math.max(0, FIN.btc - usdV); assetsBase -= usdV; }
+      else if (sendAsset.value==='fgrs') { var usdF = v*30; FIN.fgrs = Math.max(0, FIN.fgrs - usdF); assetsBase -= usdF; }
       updateAccountDisplay(); renderFinances();
       alert('Sent. (Mockup)');
       document.getElementById('sendAmt').value=''; document.getElementById('sendTo').value='';
