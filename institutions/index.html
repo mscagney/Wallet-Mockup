@@ -1,1 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wallet Co · Institutional Console</title>
+<style>
+  :root{
+    --bg:#0D1B2E; --bg2:#0A1626; --card:#17263F; --card2:#132135; --line:#2A3B5C;
+    --cyan:#22D3EE; --cyan2:#67E8F9; --green:#34D399; --green2:#6EE7B7;
+    --ink:#E8EEF6; --mute:#8A97AB; --faint:#6B7891; --red:#FCA5A5; --amber:#FCD34D;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;min-height:100vh;}
+  ::selection{background:rgba(34,211,238,.25);}
 
+  .shell{display:flex;min-height:100vh;}
+  /* ---------- sidebar ---------- */
+  .side{width:232px;background:var(--bg2);border-right:1px solid rgba(255,255,255,.06);padding:22px 14px;display:flex;flex-direction:column;gap:2px;flex-shrink:0;}
+  .brand{display:flex;align-items:center;gap:10px;padding:2px 10px 18px;}
+  .brand .bmark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--cyan),var(--green));display:flex;align-items:center;justify-content:center;color:#06121f;font-weight:800;font-size:15px;}
+  .brand .bt{font-weight:700;letter-spacing:.02em;font-size:14.5px;}
+  .brand .bs{font-size:10.5px;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;}
+  .org{margin:0 6px 16px;padding:10px 12px;background:var(--card2);border:1px solid rgba(255,255,255,.07);border-radius:12px;}
+  .org .on{font-size:13px;font-weight:650;}
+  .org .os{font-size:11px;color:var(--faint);margin-top:1px;}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;color:var(--mute);cursor:pointer;font-weight:550;font-size:13.5px;border:1px solid transparent;}
+  .nav-item:hover{color:var(--ink);background:rgba(255,255,255,.03);}
+  .nav-item.active{color:var(--cyan2);background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.18);}
+  .nav-item .ic{width:18px;text-align:center;opacity:.9;}
+  .nav-item .badge{margin-left:auto;background:rgba(252,211,77,.15);color:var(--amber);font-size:10.5px;font-weight:700;padding:1px 7px;border-radius:999px;}
+  .side .foot{margin-top:auto;padding:12px 10px 0;border-top:1px solid rgba(255,255,255,.06);font-size:11px;color:var(--faint);line-height:1.6;}
+  .side .foot b{color:var(--mute);}
+
+  /* ---------- main ---------- */
+  .main{flex:1;padding:26px 34px 60px;max-width:1220px;}
+  .topline{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+  .topline h1{font-size:21px;font-weight:700;letter-spacing:-.01em;}
+  .topline .sub{color:var(--mute);font-size:13px;margin-top:2px;}
+  .topline .right{margin-left:auto;display:flex;gap:10px;align-items:center;}
+  .me{display:flex;align-items:center;gap:9px;background:var(--card2);border:1px solid rgba(255,255,255,.07);padding:6px 12px 6px 7px;border-radius:999px;font-size:12.5px;}
+  .me .av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#22d3ee);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#06121f;}
+  .me .role{color:var(--faint);font-size:11px;}
+
+  .pane{display:none;}
+  .pane.active{display:block;}
+
+  .btn{border:1px solid rgba(34,211,238,.4);background:rgba(34,211,238,.10);color:var(--cyan2);font:inherit;font-size:13px;font-weight:650;padding:8px 16px;border-radius:10px;cursor:pointer;transition:all .15s;}
+  .btn:hover{background:rgba(34,211,238,.18);}
+  .btn.solid{background:linear-gradient(135deg,var(--cyan),var(--green));color:#06121f;border:none;}
+  .btn.ghost{border-color:rgba(255,255,255,.14);background:transparent;color:var(--mute);}
+  .btn.ghost:hover{color:var(--ink);}
+  .btn.danger{border-color:rgba(252,165,165,.35);background:rgba(252,165,165,.08);color:var(--red);}
+  .btn.sm{padding:5px 11px;font-size:12px;border-radius:8px;}
+
+  .grid{display:grid;gap:14px;}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g2{grid-template-columns:repeat(2,1fr);}
+
+  .card{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:18px 20px;}
+  .card .ct{font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.07em;font-weight:650;margin-bottom:8px;}
+  .stat{font-size:26px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums;}
+  .stat .up{font-size:12.5px;color:var(--green2);font-weight:600;margin-left:8px;}
+  .card .cs{font-size:12px;color:var(--mute);margin-top:4px;}
+
+  .sec{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin:26px 2px 10px;font-weight:650;}
+
+  table{width:100%;border-collapse:collapse;}
+  th{font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.08);font-weight:650;}
+  td{padding:12px;border-bottom:1px solid rgba(255,255,255,.045);font-size:13px;vertical-align:middle;}
+  tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:rgba(255,255,255,.02);}
+  .tbl{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:16px;overflow:hidden;}
+  .num{font-variant-numeric:tabular-nums;}
+
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:650;padding:3px 10px;border-radius:999px;white-space:nowrap;}
+  .chip.admin{background:rgba(167,139,250,.14);color:#c4b5fd;}
+  .chip.approver{background:rgba(252,211,77,.13);color:var(--amber);}
+  .chip.trader{background:rgba(34,211,238,.13);color:var(--cyan2);}
+  .chip.mover{background:rgba(52,211,153,.13);color:var(--green2);}
+  .chip.viewer{background:rgba(255,255,255,.08);color:var(--mute);}
+  .chip.ok{background:rgba(52,211,153,.13);color:var(--green2);}
+  .chip.pend{background:rgba(252,211,77,.13);color:var(--amber);}
+  .chip.susp{background:rgba(252,165,165,.12);color:var(--red);}
+  .dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+
+  .uav{width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#06121f;margin-right:10px;flex-shrink:0;}
+  .ucell{display:flex;align-items:center;}
+  .ucell .un{font-weight:650;}
+  .ucell .ue{font-size:11.5px;color:var(--faint);}
+
+  select,input[type=text],input[type=email]{background:var(--card2);border:1px solid rgba(255,255,255,.12);color:var(--ink);font:inherit;font-size:12.5px;padding:7px 10px;border-radius:9px;outline:none;}
+  select:focus,input:focus{border-color:rgba(34,211,238,.5);}
+
+  /* permission matrix */
+  .matrix td,.matrix th{text-align:center;}
+  .matrix td:first-child,.matrix th:first-child{text-align:left;}
+  .yes{color:var(--green2);font-weight:700;}
+  .no{color:rgba(255,255,255,.14);}
+  .cond{color:var(--amber);font-size:11px;font-weight:650;}
+
+  /* approvals */
+  .appr{display:flex;align-items:center;gap:16px;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.05);}
+  .appr:last-child{border-bottom:none;}
+  .appr .ai{width:38px;height:38px;border-radius:12px;background:rgba(252,211,77,.12);display:flex;align-items:center;justify-content:center;font-size:16px;}
+  .appr .am{flex:1;}
+  .appr .at{font-weight:650;font-size:13.5px;}
+  .appr .as{font-size:12px;color:var(--mute);margin-top:2px;}
+  .appr .why{font-size:11px;color:var(--amber);margin-top:3px;}
+
+  /* audit */
+  .filters{display:flex;gap:8px;margin:0 0 12px;flex-wrap:wrap;align-items:center;}
+  .fchip{border:1px solid rgba(255,255,255,.12);background:transparent;color:var(--mute);font:inherit;font-size:12px;font-weight:600;padding:5px 13px;border-radius:999px;cursor:pointer;}
+  .fchip.active{color:var(--cyan2);border-color:rgba(34,211,238,.5);background:rgba(34,211,238,.08);}
+  .acat{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;}
+  .hash{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--faint);}
+  .audit-note{display:flex;gap:10px;align-items:flex-start;background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.18);border-radius:12px;padding:12px 16px;font-size:12.5px;color:var(--mute);margin-bottom:14px;}
+  .audit-note b{color:var(--green2);}
+
+  /* policies */
+  .pol{display:flex;align-items:flex-start;gap:14px;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.05);}
+  .pol:last-child{border-bottom:none;}
+  .pol .pi{width:36px;height:36px;border-radius:11px;background:rgba(34,211,238,.10);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+  .pol .pm{flex:1;}
+  .pol .pt{font-weight:650;font-size:13.5px;}
+  .pol .ps{font-size:12.5px;color:var(--mute);margin-top:3px;line-height:1.55;}
+  .pol .ps b{color:var(--ink);}
+  .enforce{background:linear-gradient(135deg,rgba(34,211,238,.09),rgba(52,211,153,.06));border:1px solid rgba(34,211,238,.22);border-radius:14px;padding:15px 18px;margin-bottom:16px;font-size:13px;color:var(--mute);line-height:1.6;}
+  .enforce b{color:var(--cyan2);}
+  .toggle{position:relative;width:36px;height:20px;border-radius:999px;background:rgba(255,255,255,.12);cursor:pointer;transition:background .2s;flex-shrink:0;margin-top:3px;}
+  .toggle.on{background:rgba(52,211,153,.5);}
+  .toggle::after{content:'';position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .2s;}
+  .toggle.on::after{left:18px;}
+
+  /* invite inline form */
+  .invite{display:none;background:var(--card2);border:1px solid rgba(34,211,238,.25);border-radius:14px;padding:16px 18px;margin-bottom:14px;}
+  .invite.open{display:block;}
+  .invite .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .invite label{font-size:11px;color:var(--faint);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em;}
+
+  .toast{position:fixed;bottom:24px;right:24px;background:#0f2438;border:1px solid rgba(52,211,153,.4);color:var(--green2);padding:12px 18px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none;z-index:50;}
+  .toast.show{opacity:1;transform:none;}
+  .muted-sm{font-size:11.5px;color:var(--faint);}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="side">
+    <div class="brand">
+      <div class="bmark">W</div>
+      <div><div class="bt">WALLET CO</div><div class="bs">Institutional</div></div>
+    </div>
+    <div class="org">
+      <div class="on">Meridian Capital LP</div>
+      <div class="os">3 wallets · 7 users · QC policy agent active</div>
+    </div>
+    <div class="nav-item active" data-pane="overview"><span class="ic">◫</span>Overview</div>
+    <div class="nav-item" data-pane="wallets"><span class="ic">▣</span>Wallets</div>
+    <div class="nav-item" data-pane="users"><span class="ic">◉</span>Users &amp; roles</div>
+    <div class="nav-item" data-pane="policies"><span class="ic">⛨</span>Policies</div>
+    <div class="nav-item" data-pane="approvals"><span class="ic">✓</span>Approvals<span class="badge" id="apprBadge">2</span></div>
+    <div class="nav-item" data-pane="audit"><span class="ic">≡</span>Audit trail</div>
+    <div class="foot">Custody: <b>self-custody · QC policy agent</b><br>Settlement: Provenance · Ethereum<br><span class="muted-sm">All actions cryptographically logged</span></div>
+  </aside>
+
+  <!-- ========== MAIN ========== -->
+  <main class="main">
+    <div class="topline">
+      <div><h1 id="paneTitle">Overview</h1><div class="sub" id="paneSub">Meridian Capital LP · Treasury &amp; Trading</div></div>
+      <div class="right">
+        <button class="btn ghost sm" onclick="toast('Docs & API keys — mockup')">API</button>
+        <div class="me"><div class="av">SR</div><div><div>Sarah Rodriguez</div><div class="role">Admin · MFA ✓</div></div></div>
+      </div>
+    </div>
+
+    <!-- ===== OVERVIEW ===== -->
+    <section class="pane active" id="overview">
+      <div class="grid g3">
+        <div class="card"><div class="ct">Total balances</div><div class="stat">$4,283,410<span class="up">+$1,209 today</span></div><div class="cs">Across 3 wallets · earning 4.12% blended</div></div>
+        <div class="card"><div class="ct">Pending approvals</div><div class="stat" id="ovAppr">2</div><div class="cs">1 transfer · 1 role change awaiting sign-off</div></div>
+        <div class="card"><div class="ct">Policy checks · 30d</div><div class="stat">1,847<span class="up">100% enforced</span></div><div class="cs">0 transactions signed outside policy</div></div>
+      </div>
+      <div class="sec">Wallets</div>
+      <div class="tbl"><table>
+        <thead><tr><th>Wallet</th><th>Balance</th><th>Earning</th><th>Users</th><th>Policy set</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><b>Treasury Operating</b><div class="muted-sm">0x7A3f…9C21</div></td><td class="num">$2,148,200</td><td>$YLDS · 3.40%</td><td>7</td><td>Dual approval · allow-list</td><td><button class="btn sm ghost" onclick="go('wallets')">Manage</button></td></tr>
+          <tr><td><b>Trading</b><div class="muted-sm">0x91bE…44D0</div></td><td class="num">$1,610,330</td><td>—</td><td>3</td><td>Venue-restricted · $250k/day</td><td><button class="btn sm ghost" onclick="go('wallets')">Manage</button></td></tr>
+          <tr><td><b>Yield Reserve</b><div class="muted-sm">0x33aC…E7F2</div></td><td class="num">$524,880</td><td>Prime · 8.00%</td><td>2</td><td>Withdraw-locked · 2-of-3</td><td><button class="btn sm ghost" onclick="go('wallets')">Manage</button></td></tr>
+        </tbody>
+      </table></div>
+      <div class="sec">Recent activity</div>
+      <div class="tbl"><table id="ovAudit"><tbody></tbody></table></div>
+    </section>
+
+    <!-- ===== WALLETS ===== -->
+    <section class="pane" id="wallets">
+      <div class="grid g3">
+        <div class="card"><div class="ct">Treasury Operating</div><div class="stat">$2,148,200</div><div class="cs">$YLDS · earning 3.40% APY · 7 users assigned</div><div style="margin-top:12px;display:flex;gap:8px;"><button class="btn sm">Assign users</button><button class="btn sm ghost">Policies</button></div></div>
+        <div class="card"><div class="ct">Trading</div><div class="stat">$1,610,330</div><div class="cs">Securities predictions + tokenized equities · 3 users</div><div style="margin-top:12px;display:flex;gap:8px;"><button class="btn sm">Assign users</button><button class="btn sm ghost">Policies</button></div></div>
+        <div class="card"><div class="ct">Yield Reserve</div><div class="stat">$524,880</div><div class="cs">Democratized Prime · 8.00% · withdraw-locked · 2 users</div><div style="margin-top:12px;display:flex;gap:8px;"><button class="btn sm">Assign users</button><button class="btn sm ghost">Policies</button></div></div>
+      </div>
+      <div class="sec">Shared-wallet model</div>
+      <div class="enforce">One wallet, many operators. The org holds the wallet; <b>people hold roles, not keys</b>. Each user authenticates individually (passkey + MFA), acts within their role's permissions, and every action is attributed to the person — not the shared account. Keys never leave the MPC quorum: user share, org share, and the <b>qualified custodian policy agent</b>, which co-signs only inside policy.</div>
+    </section>
+
+    <!-- ===== USERS & ROLES ===== -->
+    <section class="pane" id="users">
+      <div style="display:flex;gap:10px;margin-bottom:14px;">
+        <button class="btn solid" id="inviteBtn">+ Invite user</button>
+        <span style="flex:1"></span>
+        <input type="text" id="userSearch" placeholder="Search users…" style="width:220px;">
+      </div>
+      <div class="invite" id="inviteForm">
+        <div class="row">
+          <div><label>Name</label><input type="text" id="invName" placeholder="Full name" style="width:180px;"></div>
+          <div><label>Email</label><input type="email" id="invEmail" placeholder="name@meridian.com" style="width:220px;"></div>
+          <div><label>Role</label><select id="invRole"><option>Viewer</option><option>Trader</option><option>Mover</option><option>Approver</option><option>Admin</option></select></div>
+          <div><label>Wallets</label><select id="invWallet"><option>All wallets</option><option>Treasury Operating</option><option>Trading</option><option>Yield Reserve</option></select></div>
+          <div style="align-self:flex-end;display:flex;gap:8px;"><button class="btn" id="invSend">Send invite</button><button class="btn ghost" id="invCancel">Cancel</button></div>
+        </div>
+        <div class="muted-sm" style="margin-top:10px;">Admin invites require a second admin's approval before activation — enforced by policy.</div>
+      </div>
+      <div class="tbl"><table id="userTbl">
+        <thead><tr><th>User</th><th>Role</th><th>Wallets</th><th>Status</th><th>Last active</th><th style="text-align:right;">Actions</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+
+      <div class="sec">Role permissions</div>
+      <div class="tbl matrix"><table>
+        <thead><tr><th>Permission</th><th>Viewer</th><th>Trader</th><th>Mover</th><th>Approver</th><th>Admin</th></tr></thead>
+        <tbody>
+          <tr><td>View balances &amp; history</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+          <tr><td>Trade within approved venues</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Initiate transfers</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Approve transfers &gt; limits</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="cond">✓ not own</td></tr>
+          <tr><td>Manage users &amp; roles</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td></tr>
+          <tr><td>Edit policies</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="cond">✓ dual-admin</td></tr>
+          <tr><td>Export audit trail</td><td class="no">—</td><td class="no">—</td><td class="no">—</td><td class="yes">✓</td><td class="yes">✓</td></tr>
+        </tbody>
+      </table></div>
+      <div class="muted-sm" style="margin-top:10px;">Separation of duties is enforced at the key layer: an initiator can never approve their own transaction, and no single admin can change policy alone.</div>
+    </section>
+
+    <!-- ===== POLICIES ===== -->
+    <section class="pane" id="policies">
+      <div class="enforce"><b>Enforced by keys, not by UI.</b> Every rule below is embedded in the signing policy held by the qualified custodian policy agent. A transaction outside policy doesn't get "blocked by the app" — it simply <b>cannot be co-signed</b>. Compliance isn't a setting; it's cryptography.</div>
+      <div class="tbl">
+        <div class="pol"><div class="pi">💸</div><div class="pm"><div class="pt">Dual approval over limit</div><div class="ps">Transfers above <b>$50,000</b> require sign-off from <b>1 Approver</b> in addition to the initiator. Above <b>$250,000</b>: 2 Approvers.</div></div><div class="toggle on" onclick="polToggle(this,'Dual approval over limit')"></div></div>
+        <div class="pol"><div class="pi">📇</div><div class="pm"><div class="pt">Counterparty allow-list</div><div class="ps">External transfers only to <b>14 pre-approved addresses</b>. New counterparties require Admin + Approver and a 24-hour activation delay.</div></div><div class="toggle on" onclick="polToggle(this,'Counterparty allow-list')"></div></div>
+        <div class="pol"><div class="pi">📉</div><div class="pm"><div class="pt">Per-role daily limits</div><div class="ps">Traders: <b>$250,000/day</b> across venues. Movers: <b>$100,000/day</b> external. Resets 00:00 UTC.</div></div><div class="toggle on" onclick="polToggle(this,'Per-role daily limits')"></div></div>
+        <div class="pol"><div class="pi">🏛</div><div class="pm"><div class="pt">Venue restrictions</div><div class="ps">Trading wallet may only interact with <b>Figure Markets, Hastra, and the predictions venue</b>. All venues carry a Figure Risk Grade.</div></div><div class="toggle on" onclick="polToggle(this,'Venue restrictions')"></div></div>
+        <div class="pol"><div class="pi">🔒</div><div class="pm"><div class="pt">Yield Reserve withdraw-lock</div><div class="ps">Withdrawals from Yield Reserve require <b>2-of-3</b>: Admin, Approver, and a 48-hour timelock. Deposits unrestricted.</div></div><div class="toggle on" onclick="polToggle(this,'Yield Reserve withdraw-lock')"></div></div>
+        <div class="pol"><div class="pi">🕑</div><div class="pm"><div class="pt">Trading hours window</div><div class="ps">Trades execute 06:00–20:00 ET weekdays. Outside the window, orders queue for review.</div></div><div class="toggle" onclick="polToggle(this,'Trading hours window')"></div></div>
+      </div>
+      <div class="muted-sm" style="margin-top:12px;">Policy edits require dual-admin approval and take effect after a 24-hour delay. Every change is written to the audit trail.</div>
+    </section>
+
+    <!-- ===== APPROVALS ===== -->
+    <section class="pane" id="approvals">
+      <div class="tbl" id="apprList">
+        <div class="appr" id="appr1">
+          <div class="ai">💸</div>
+          <div class="am">
+            <div class="at">External transfer · $180,000.00 USDC</div>
+            <div class="as">Treasury Operating → Northern Trust (allow-listed) · initiated by <b>James Wu</b> (Mover) · today 09:42 ET</div>
+            <div class="why">Requires 1 Approver — over the $50,000 dual-approval limit</div>
+          </div>
+          <button class="btn sm danger" onclick="resolveAppr('appr1','rejected','External transfer $180,000 USDC')">Reject</button>
+          <button class="btn sm solid" onclick="resolveAppr('appr1','approved','External transfer $180,000 USDC')">Approve &amp; co-sign</button>
+        </div>
+        <div class="appr" id="appr2">
+          <div class="ai">◉</div>
+          <div class="am">
+            <div class="at">Role change · Priya Sharma → Mover</div>
+            <div class="as">Currently Trader · requested by <b>Sarah Rodriguez</b> (Admin) · yesterday 16:03 ET</div>
+            <div class="why">Role elevation requires a second Admin</div>
+          </div>
+          <button class="btn sm danger" onclick="resolveAppr('appr2','rejected','Role change: Priya Sharma → Mover')">Reject</button>
+          <button class="btn sm solid" onclick="resolveAppr('appr2','approved','Role change: Priya Sharma → Mover')">Approve</button>
+        </div>
+      </div>
+      <div class="muted-sm" style="margin-top:12px;">Approving co-signs with your key share. The policy agent adds its signature only when the approval set satisfies policy.</div>
+    </section>
+
+    <!-- ===== AUDIT ===== -->
+    <section class="pane" id="audit">
+      <div class="audit-note"><span style="font-size:15px;">⛓</span><div><b>Tamper-evident by construction.</b> Each entry is hash-chained to the previous one and anchored on-chain hourly. An auditor can verify the log independently of Wallet Co — export includes proofs.</div></div>
+      <div class="filters">
+        <button class="fchip active" data-f="all">All</button>
+        <button class="fchip" data-f="transfer">Transfers</button>
+        <button class="fchip" data-f="trade">Trades</button>
+        <button class="fchip" data-f="user">Users &amp; roles</button>
+        <button class="fchip" data-f="policy">Policy</button>
+        <button class="fchip" data-f="auth">Sign-ins</button>
+        <span style="flex:1"></span>
+        <button class="btn sm ghost" onclick="toast('Audit log exported with hash-chain proofs (CSV) — mockup')">⤓ Export with proofs</button>
+      </div>
+      <div class="tbl"><table id="auditTbl">
+        <thead><tr><th>Time</th><th>Actor</th><th>Action</th><th>Wallet</th><th>Entry hash</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+    </section>
+
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+  // ---------- data ----------
+  var USERS = [
+    {n:'Sarah Rodriguez', e:'sarah@meridian.com', role:'Admin',    w:'All wallets',        st:'Active',  la:'Now',        c:'#3b82f6'},
+    {n:'David Chen',      e:'dchen@meridian.com', role:'Approver', w:'All wallets',        st:'Active',  la:'12 min ago', c:'#a78bfa'},
+    {n:'James Wu',        e:'jwu@meridian.com',   role:'Mover',    w:'Treasury Operating', st:'Active',  la:'1 hr ago',   c:'#34d399'},
+    {n:'Priya Sharma',    e:'priya@meridian.com', role:'Trader',   w:'Trading',            st:'Active',  la:'3 hrs ago',  c:'#22d3ee'},
+    {n:'Marcus Webb',     e:'mwebb@meridian.com', role:'Trader',   w:'Trading',            st:'Active',  la:'Yesterday',  c:'#f472b6'},
+    {n:'Elena Volkov',    e:'elena@meridian.com', role:'Viewer',   w:'All wallets',        st:'Active',  la:'2 days ago', c:'#fbbf24'},
+    {n:'Tom Okafor',      e:'tom@meridian.com',   role:'Viewer',   w:'Yield Reserve',      st:'Invited', la:'—',          c:'#94a3b8'}
+  ];
+  var AUDIT = [
+    {t:'Today 10:14', a:'Priya Sharma',   x:'Filled prediction order · FIGR &gt; $30 Fri · $12,500', w:'Trading', cat:'trade'},
+    {t:'Today 09:42', a:'James Wu',       x:'Initiated external transfer · $180,000 USDC → Northern Trust <span class="chip pend" style="margin-left:6px;">awaiting approval</span>', w:'Treasury Operating', cat:'transfer'},
+    {t:'Today 09:40', a:'James Wu',       x:'Signed in · passkey + MFA · New York, US', w:'—', cat:'auth'},
+    {t:'Today 08:55', a:'System',         x:'Yield accrued · +$201.44 $YLDS · +$114.91 Prime', w:'Treasury · Reserve', cat:'transfer'},
+    {t:'Yesterday 16:03', a:'Sarah Rodriguez', x:'Requested role change · Priya Sharma: Trader → Mover', w:'—', cat:'user'},
+    {t:'Yesterday 14:22', a:'David Chen', x:'Approved &amp; co-signed transfer · $64,000 USDC → Prime Brokerage', w:'Treasury Operating', cat:'transfer'},
+    {t:'Yesterday 14:20', a:'James Wu',   x:'Initiated transfer · $64,000 USDC → Prime Brokerage (allow-listed)', w:'Treasury Operating', cat:'transfer'},
+    {t:'Yesterday 11:05', a:'Marcus Webb', x:'Trade blocked by policy · venue not in allow-set <span class="chip susp" style="margin-left:6px;">not co-signed</span>', w:'Trading', cat:'policy'},
+    {t:'Mon 15:40', a:'Sarah Rodriguez + David Chen', x:'Policy edit (dual-admin) · Trader daily limit $200k → $250k · 24h delay', w:'Trading', cat:'policy'},
+    {t:'Mon 09:12', a:'Elena Volkov',    x:'Exported monthly statement · June 2026', w:'All', cat:'auth'}
+  ];
+
+  // ---------- helpers ----------
+  function initials(n){ return n.split(' ').map(function(p){return p[0];}).join('').slice(0,2).toUpperCase(); }
+  function roleChip(r){ return '<span class="chip '+r.toLowerCase()+'">'+r+'</span>'; }
+  function stChip(s){ var c=s==='Active'?'ok':(s==='Invited'?'pend':'susp'); return '<span class="chip '+c+'"><span class="dot"></span>'+s+'</span>'; }
+  function hash(){ var h='0x'; var c='0123456789abcdef'; for(var i=0;i<8;i++) h+=c[Math.floor(Math.random()*16)]; return h+'…'; }
+  function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(function(){t.classList.remove('show');},2600); }
+  var CATC={transfer:'#34d399',trade:'#22d3ee',user:'#a78bfa',policy:'#fcd34d',auth:'#6b7891'};
+
+  // ---------- render users ----------
+  function renderUsers(filter){
+    var tb=document.querySelector('#userTbl tbody'); tb.innerHTML='';
+    USERS.forEach(function(u,i){
+      if(filter && (u.n+u.e+u.role).toLowerCase().indexOf(filter.toLowerCase())<0) return;
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td><div class="ucell"><span class="uav" style="background:'+u.c+'">'+initials(u.n)+'</span><div><div class="un">'+u.n+'</div><div class="ue">'+u.e+'</div></div></div></td>'
+        +'<td>'+roleChip(u.role)+'</td><td>'+u.w+'</td><td>'+stChip(u.st)+'</td><td class="muted-sm">'+u.la+'</td>'
+        +'<td style="text-align:right;white-space:nowrap;">'
+        +'<select data-i="'+i+'" class="roleSel" style="margin-right:8px;">'+['Viewer','Trader','Mover','Approver','Admin'].map(function(r){return '<option'+(r===u.role?' selected':'')+'>'+r+'</option>';}).join('')+'</select>'
+        +(u.st==='Suspended'
+          ? '<button class="btn sm ghost" onclick="unsuspend('+i+')">Reinstate</button>'
+          : '<button class="btn sm danger" onclick="suspend('+i+')">Suspend</button>')
+        +'</td>';
+      tb.appendChild(tr);
+    });
+    document.querySelectorAll('.roleSel').forEach(function(s){
+      s.addEventListener('change', function(){
+        var u=USERS[+this.dataset.i], to=this.value;
+        addAudit('Sarah Rodriguez','Requested role change · '+u.n+': '+u.role+' → '+to+' <span class="chip pend" style="margin-left:6px;">awaiting 2nd admin</span>','—','user');
+        toast('Role change for '+u.n+' sent for dual-admin approval');
+        this.value=u.role; // stays until approved — separation of duties
+      });
+    });
+  }
+  function suspend(i){ USERS[i].st='Suspended'; USERS[i].la='—'; renderUsers(document.getElementById('userSearch').value); addAudit('Sarah Rodriguez','Suspended user · '+USERS[i].n+' · sessions revoked, key share frozen','All','user'); toast(USERS[i].n+' suspended — key share frozen'); }
+  function unsuspend(i){ USERS[i].st='Active'; renderUsers(document.getElementById('userSearch').value); addAudit('Sarah Rodriguez','Reinstated user · '+USERS[i].n,'All','user'); toast(USERS[i].n+' reinstated'); }
+
+  // ---------- audit ----------
+  var curF='all';
+  function renderAudit(){
+    var tb=document.querySelector('#auditTbl tbody'); tb.innerHTML='';
+    AUDIT.forEach(function(a){
+      if(curF!=='all' && a.cat!==curF) return;
+      var tr=document.createElement('tr');
+      tr.innerHTML='<td class="muted-sm" style="white-space:nowrap;">'+a.t+'</td><td style="white-space:nowrap;"><span class="acat" style="background:'+CATC[a.cat]+'"></span>'+a.a+'</td><td>'+a.x+'</td><td class="muted-sm">'+a.w+'</td><td class="hash">'+(a.h||hash())+'</td>';
+      tb.appendChild(tr);
+    });
+    var ov=document.querySelector('#ovAudit tbody');
+    if(ov){ ov.innerHTML=''; AUDIT.slice(0,4).forEach(function(a){ var tr=document.createElement('tr'); tr.innerHTML='<td class="muted-sm" style="white-space:nowrap;">'+a.t+'</td><td style="white-space:nowrap;"><span class="acat" style="background:'+CATC[a.cat]+'"></span>'+a.a+'</td><td>'+a.x+'</td>'; ov.appendChild(tr); }); }
+  }
+  function addAudit(actor,action,wallet,cat){ AUDIT.unshift({t:'Just now',a:actor,x:action,w:wallet,cat:cat,h:hash()}); renderAudit(); }
+  document.querySelectorAll('.fchip').forEach(function(f){ f.addEventListener('click',function(){ document.querySelectorAll('.fchip').forEach(function(x){x.classList.remove('active');}); this.classList.add('active'); curF=this.dataset.f; renderAudit(); }); });
+
+  // ---------- approvals ----------
+  var apprCount=2;
+  function resolveAppr(id,verdict,label){
+    var el=document.getElementById(id); if(!el) return;
+    el.style.opacity=.35; el.querySelectorAll('button').forEach(function(b){b.disabled=true;b.style.visibility='hidden';});
+    apprCount--; setBadge();
+    if(id==='appr2' && verdict==='approved'){ USERS[3].role='Mover'; renderUsers(''); }
+    addAudit('Sarah Rodriguez', (verdict==='approved'?'Approved &amp; co-signed · ':'Rejected · ')+label + (verdict==='approved'?' <span class="chip ok" style="margin-left:6px;">policy satisfied</span>':''), id==='appr1'?'Treasury Operating':'—', id==='appr1'?'transfer':'user');
+    toast(verdict==='approved' ? 'Approved — policy agent co-signed' : 'Rejected — initiator notified');
+  }
+  function setBadge(){ var b=document.getElementById('apprBadge'); b.textContent=apprCount; b.style.display=apprCount?'':'none'; var o=document.getElementById('ovAppr'); if(o) o.textContent=apprCount; }
+
+  // ---------- policies ----------
+  function polToggle(el,name){ el.classList.toggle('on'); var on=el.classList.contains('on');
+    addAudit('Sarah Rodriguez','Policy '+(on?'enable':'disable')+' requested · '+name+' <span class="chip pend" style="margin-left:6px;">dual-admin + 24h delay</span>','All','policy');
+    toast('Policy change requested — needs 2nd admin, effective in 24h'); }
+
+  // ---------- invite ----------
+  document.getElementById('inviteBtn').addEventListener('click',function(){ document.getElementById('inviteForm').classList.toggle('open'); });
+  document.getElementById('invCancel').addEventListener('click',function(){ document.getElementById('inviteForm').classList.remove('open'); });
+  document.getElementById('invSend').addEventListener('click',function(){
+    var n=document.getElementById('invName').value.trim(), e=document.getElementById('invEmail').value.trim();
+    var r=document.getElementById('invRole').value, w=document.getElementById('invWallet').value;
+    if(!n||!e){ toast('Name and email required'); return; }
+    USERS.push({n:n,e:e,role:r,w:w,st:'Invited',la:'—',c:'#94a3b8'});
+    renderUsers(''); document.getElementById('inviteForm').classList.remove('open');
+    document.getElementById('invName').value=''; document.getElementById('invEmail').value='';
+    addAudit('Sarah Rodriguez','Invited user · '+n+' ('+r+' · '+w+')'+(r==='Admin'?' <span class="chip pend" style="margin-left:6px;">needs 2nd admin</span>':''),'—','user');
+    toast('Invite sent to '+e);
+  });
+  document.getElementById('userSearch').addEventListener('input',function(){ renderUsers(this.value); });
+
+  // ---------- nav ----------
+  var TITLES={overview:['Overview','Meridian Capital LP · Treasury & Trading'],wallets:['Wallets','3 org wallets · shared by role, attributed by person'],users:['Users & roles','7 users · roles define what each person can do'],policies:['Policies','Rules enforced at the key layer by the QC policy agent'],approvals:['Approvals','Items awaiting your sign-off'],audit:['Audit trail','Every action, every actor — hash-chained and exportable']};
+  function go(id){
+    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.toggle('active', n.dataset.pane===id); });
+    document.querySelectorAll('.pane').forEach(function(p){ p.classList.toggle('active', p.id===id); });
+    document.getElementById('paneTitle').textContent=TITLES[id][0];
+    document.getElementById('paneSub').innerHTML=TITLES[id][1];
+    window.scrollTo(0,0);
+  }
+  document.querySelectorAll('.nav-item').forEach(function(n){ n.addEventListener('click',function(){ go(this.dataset.pane); }); });
+
+  renderUsers(''); renderAudit(); setBadge();
+</script>
+</body>
+</html>
