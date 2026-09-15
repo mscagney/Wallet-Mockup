@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wallet Co · Institutional Console</title>
+<title>NAVRA · Institutional Console</title>
 <style>
   :root{
     --bg:#0D1B2E; --bg2:#0A1626; --card:#17263F; --card2:#132135; --line:#2A3B5C;
@@ -142,6 +142,20 @@
   .toast{position:fixed;bottom:24px;right:24px;background:#0f2438;border:1px solid rgba(52,211,153,.4);color:var(--green2);padding:12px 18px;border-radius:12px;font-size:13px;font-weight:600;opacity:0;transform:translateY(8px);transition:all .25s;pointer-events:none;z-index:50;}
   .toast.show{opacity:1;transform:none;}
   .muted-sm{font-size:11.5px;color:var(--faint);}
+  .bal-link{cursor:pointer;}
+  .bal-link:hover{color:var(--cyan2);}
+  .chg-up{color:var(--green2);font-weight:600;}
+  .chg-dn{color:var(--red);font-weight:600;}
+  .back{color:var(--cyan2);cursor:pointer;font-size:12.5px;font-weight:600;margin-bottom:14px;display:inline-block;}
+  .agent-log{display:flex;flex-direction:column;gap:10px;margin:14px 0;}
+  .amsg{max-width:76%;padding:11px 14px;border-radius:14px;font-size:13px;line-height:1.55;}
+  .amsg.user{align-self:flex-end;background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.25);}
+  .amsg.bot{align-self:flex-start;background:var(--card);border:1px solid rgba(255,255,255,.08);}
+  .amsg.bot .step{display:flex;gap:8px;margin-top:6px;color:var(--mute);}
+  .amsg.bot .step .sic{color:var(--green2);}
+  .achips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px;}
+  .agent-in{display:flex;gap:10px;margin-top:12px;}
+  .agent-in input{flex:1;}
 </style>
 </head>
 <body>
@@ -150,18 +164,19 @@
   <!-- ========== SIDEBAR ========== -->
   <aside class="side">
     <div class="brand">
-      <div class="bmark">W</div>
-      <div><div class="bt">WALLET CO</div><div class="bs">Institutional</div></div>
+      <div class="bmark">N</div>
+      <div><div class="bt">NAVRA</div><div class="bs">Institutional</div></div>
     </div>
     <div class="org">
       <div class="on">Meridian Capital LP</div>
-      <div class="os">3 wallets · 7 users · QC policy agent active</div>
+      <div class="os">3 wallets · 7 users</div>
     </div>
     <div class="nav-item active" data-pane="overview"><span class="ic">◫</span>Overview</div>
     <div class="nav-item" data-pane="wallets"><span class="ic">▣</span>Wallets</div>
     <div class="nav-item" data-pane="users"><span class="ic">◉</span>Users &amp; roles</div>
     <div class="nav-item" data-pane="policies"><span class="ic">⛨</span>Policies</div>
     <div class="nav-item" data-pane="approvals"><span class="ic">✓</span>Approvals<span class="badge" id="apprBadge">2</span></div>
+    <div class="nav-item" data-pane="agent"><span class="ic">✦</span>Agent</div>
     <div class="nav-item" data-pane="audit"><span class="ic">≡</span>Audit trail</div>
     <div class="foot">Custody: <b>self-custody · QC policy agent</b><br>Settlement: Provenance · Ethereum<br><span class="muted-sm">All actions cryptographically logged</span></div>
   </aside>
@@ -179,18 +194,14 @@
     <!-- ===== OVERVIEW ===== -->
     <section class="pane active" id="overview">
       <div class="grid g3">
-        <div class="card"><div class="ct">Total balances</div><div class="stat">$4,283,410<span class="up">+$1,209 today</span></div><div class="cs">Across 3 wallets · earning 4.12% blended</div></div>
+        <div class="card"><div class="ct">Total balances</div><div class="stat">$4,283,410<span class="up">+$1,209 today</span></div><div class="cs">Across 3 wallets</div></div>
         <div class="card"><div class="ct">Pending approvals</div><div class="stat" id="ovAppr">2</div><div class="cs">1 transfer · 1 role change awaiting sign-off</div></div>
         <div class="card"><div class="ct">Policy checks · 30d</div><div class="stat">1,847<span class="up">100% enforced</span></div><div class="cs">0 transactions signed outside policy</div></div>
       </div>
       <div class="sec">Wallets</div>
-      <div class="tbl"><table>
-        <thead><tr><th>Wallet</th><th>Balance</th><th>Earning</th><th>Users</th><th>Policy set</th><th></th></tr></thead>
-        <tbody>
-          <tr><td><b>Treasury Operating</b><div class="muted-sm">0x7A3f…9C21</div></td><td class="num">$2,148,200</td><td>$YLDS · 3.40%</td><td>7</td><td>Dual approval · allow-list</td><td><button class="btn sm ghost" onclick="go('wallets')">Manage</button></td></tr>
-          <tr><td><b>Trading</b><div class="muted-sm">0x91bE…44D0</div></td><td class="num">$1,610,330</td><td>—</td><td>3</td><td>Venue-restricted · $250k/day</td><td><button class="btn sm ghost" onclick="go('wallets')">Manage</button></td></tr>
-          <tr><td><b>Yield Reserve</b><div class="muted-sm">0x33aC…E7F2</div></td><td class="num">$524,880</td><td>Prime · 8.00%</td><td>2</td><td>Withdraw-locked · 2-of-3</td><td><button class="btn sm ghost" onclick="go('wallets')">Manage</button></td></tr>
-        </tbody>
+      <div class="tbl"><table id="ovWallets">
+        <thead><tr><th>Wallet</th><th>Balance</th><th><select id="chgSel" onchange="renderOvWallets()" style="padding:3px 6px;font-size:11px;"><option value="w1">1 Week</option><option value="mtd">MTD</option><option value="ytd">YTD</option></select> Change</th><th>Users</th><th>Policy set</th><th></th></tr></thead>
+        <tbody></tbody>
       </table></div>
       <div class="sec">Recent activity</div>
       <div class="tbl"><table id="ovAudit"><tbody></tbody></table></div>
@@ -199,9 +210,9 @@
     <!-- ===== WALLETS ===== -->
     <section class="pane" id="wallets">
       <div class="grid g3">
-        <div class="card"><div class="ct">Treasury Operating</div><div class="stat">$2,148,200</div><div class="cs">$YLDS · earning 3.40% APY · 7 users assigned</div><div style="margin-top:12px;display:flex;gap:8px;"><button class="btn sm">Assign users</button><button class="btn sm ghost">Policies</button></div></div>
-        <div class="card"><div class="ct">Trading</div><div class="stat">$1,610,330</div><div class="cs">Securities predictions + tokenized equities · 3 users</div><div style="margin-top:12px;display:flex;gap:8px;"><button class="btn sm">Assign users</button><button class="btn sm ghost">Policies</button></div></div>
-        <div class="card"><div class="ct">Yield Reserve</div><div class="stat">$524,880</div><div class="cs">Democratized Prime · 8.00% · withdraw-locked · 2 users</div><div style="margin-top:12px;display:flex;gap:8px;"><button class="btn sm">Assign users</button><button class="btn sm ghost">Policies</button></div></div>
+        <div class="card"><div class="ct">Treasury Operating</div><div class="stat bal-link" onclick="openWallet('treasury')">$2,148,200</div><div style="margin-top:12px;display:flex;gap:8px;"><button class="btn sm">Assign users</button><button class="btn sm ghost">Policies</button></div></div>
+        <div class="card"><div class="ct">Trading</div><div class="stat bal-link" onclick="openWallet('trading')">$1,610,330</div><div style="margin-top:12px;display:flex;gap:8px;"><button class="btn sm">Assign users</button><button class="btn sm ghost">Policies</button></div></div>
+        <div class="card"><div class="ct">Yield Reserve</div><div class="stat bal-link" onclick="openWallet('reserve')">$524,880</div><div style="margin-top:12px;display:flex;gap:8px;"><button class="btn sm">Assign users</button><button class="btn sm ghost">Policies</button></div></div>
       </div>
       <div class="sec">Shared-wallet model</div>
       <div class="enforce">One wallet, many operators. The org holds the wallet; <b>people hold roles, not keys</b>. Each user authenticates individually (passkey + MFA), acts within their role's permissions, and every action is attributed to the person — not the shared account. Keys never leave the MPC quorum: user share, org share, and the <b>qualified custodian policy agent</b>, which co-signs only inside policy.</div>
@@ -286,9 +297,42 @@
       <div class="muted-sm" style="margin-top:12px;">Approving co-signs with your key share. The policy agent adds its signature only when the approval set satisfies policy.</div>
     </section>
 
+    <!-- ===== WALLET DETAIL ===== -->
+    <section class="pane" id="walletDetail">
+      <span class="back" onclick="go('wallets')">‹ All wallets</span>
+      <div class="grid g3">
+        <div class="card"><div class="ct" id="wdName">—</div><div class="stat" id="wdBal">—</div><div class="cs" id="wdAddr">—</div></div>
+        <div class="card"><div class="ct">Change</div><div class="stat" id="wdChg">—</div><div class="cs">1W · MTD · YTD: <span id="wdChgs">—</span></div></div>
+        <div class="card"><div class="ct">Downloads</div><div style="display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;"><button class="btn sm" onclick="dlBalances()">⤓ Balances CSV</button><button class="btn sm" onclick="dlTxns()">⤓ Transactions CSV</button></div><div class="cs" style="margin-top:8px;">Formatted for fund admin and portfolio accounting</div></div>
+      </div>
+      <div class="sec">Holdings</div>
+      <div class="tbl"><table id="wdHold"><thead><tr><th>Asset</th><th>Quantity</th><th>Value</th><th>% of wallet</th></tr></thead><tbody></tbody></table></div>
+      <div class="sec">Transactions</div>
+      <div class="tbl"><table id="wdTx"><thead><tr><th>Date</th><th>Type</th><th>Detail</th><th style="text-align:right;">Amount</th><th>Status</th></tr></thead><tbody></tbody></table></div>
+      <div class="sec">Users with access</div>
+      <div class="tbl"><table id="wdUsers"><thead><tr><th>User</th><th>Role</th><th>Last active</th></tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <!-- ===== AGENT ===== -->
+    <section class="pane" id="agent">
+      <div class="enforce"><b>The NAVRA agent executes multi-step tasks inside your policies.</b> It can never move value on its own: anything crossing a policy threshold routes to Approvals for human sign-off, and every step it takes is written to the audit trail.</div>
+      <div class="achips">
+        <button class="fchip" onclick="runAgent('Sweep any Treasury Operating cash above a $2M float into Yield Reserve')">Sweep excess Treasury cash</button>
+        <button class="fchip" onclick="runAgent('Build the month-end package for the fund admin')">Month-end fund admin package</button>
+        <button class="fchip" onclick="runAgent('Watch all wallets and alert me on daily moves over 2%')">Monitor for outsized moves</button>
+      </div>
+      <div class="agent-log" id="agentLog">
+        <div class="amsg bot">I can rebalance across wallets, stage transfers, build reporting packages, and monitor balances and venues — all inside policy. What do you need?</div>
+      </div>
+      <div class="agent-in">
+        <input type="text" id="agentInput" placeholder="Ask the agent to do something…" onkeydown="if(event.key==='Enter')agentGo()">
+        <button class="btn solid" onclick="agentGo()">Run</button>
+      </div>
+    </section>
+
     <!-- ===== AUDIT ===== -->
     <section class="pane" id="audit">
-      <div class="audit-note"><span style="font-size:15px;">⛓</span><div><b>Tamper-evident by construction.</b> Each entry is hash-chained to the previous one and anchored on-chain hourly. An auditor can verify the log independently of Wallet Co — export includes proofs.</div></div>
+      <div class="audit-note"><span style="font-size:15px;">⛓</span><div><b>Tamper-evident by construction.</b> Each entry is hash-chained to the previous one and anchored on-chain hourly. An auditor can verify the log independently of NAVRA — export includes proofs.</div></div>
       <div class="filters">
         <button class="fchip active" data-f="all">All</button>
         <button class="fchip" data-f="transfer">Transfers</button>
@@ -332,6 +376,162 @@
     {t:'Mon 15:40', a:'Sarah Rodriguez + David Chen', x:'Policy edit (dual-admin) · Trader daily limit $200k → $250k · 24h delay', w:'Trading', cat:'policy'},
     {t:'Mon 09:12', a:'Elena Volkov',    x:'Exported monthly statement · June 2026', w:'All', cat:'auth'}
   ];
+
+
+  // ---------- wallet data ----------
+  var WALLETS = {
+    treasury: { name:'Treasury Operating', addr:'0x7A3f\u20269C21', bal:2148200,
+      chg:{w1:4120, mtd:9830, ytd:61240},
+      hold:[['$YLDS','2,000,000','$2,000,000','93.1%'],['USD Cash','148,200','$148,200','6.9%']],
+      tx:[['Sep 12','Yield accrued','$YLDS interest','+$201.44','Settled'],
+          ['Sep 12','Transfer out','$180,000 USDC \u2192 Northern Trust','\u2212$180,000.00','Pending approval'],
+          ['Sep 11','Transfer out','$64,000 USDC \u2192 Prime Brokerage','\u2212$64,000.00','Settled'],
+          ['Sep 09','Deposit','Wire in \u00b7 Meridian LP','+$500,000.00','Settled'],
+          ['Sep 05','Sweep','USD \u2192 $YLDS','$250,000.00','Settled']],
+      users:[['Sarah Rodriguez','Admin','Now'],['David Chen','Approver','12 min ago'],['James Wu','Mover','1 hr ago'],['Elena Volkov','Viewer','2 days ago']] },
+    trading: { name:'Trading', addr:'0x91bE\u202644D0', bal:1610330,
+      chg:{w1:-12400, mtd:38210, ytd:142900},
+      hold:[['Tokenized equities \u00b7 OPEN','\u2014','$685,000','42.5%'],['Prediction contracts','\u2014','$515,000','32.0%'],['USDC','410,330','$410,330','25.5%']],
+      tx:[['Sep 14','Trade','Filled prediction order \u00b7 FIGR > $30 Fri','\u2212$12,500.00','Settled'],
+          ['Sep 13','Trade','Bought tokenized NVDA \u00b7 OPEN','\u2212$85,000.00','Settled'],
+          ['Sep 11','Trade blocked','Venue not in allow-set','\u2014','Not co-signed'],
+          ['Sep 08','Transfer in','From Treasury Operating','+$200,000.00','Settled']],
+      users:[['Sarah Rodriguez','Admin','Now'],['Priya Sharma','Trader','3 hrs ago'],['Marcus Webb','Trader','Yesterday']] },
+    reserve: { name:'Yield Reserve', addr:'0x33aC\u2026E7F2', bal:524880,
+      chg:{w1:806, mtd:3420, ytd:28150},
+      hold:[['Democratized Prime','\u2014','$524,880','100%']],
+      tx:[['Sep 12','Yield accrued','Democratized Prime','+$114.91','Settled'],
+          ['Aug 30','Deposit','From Treasury Operating','+$100,000.00','Settled'],
+          ['Aug 15','Yield accrued','Democratized Prime','+$3,208.77','Settled']],
+      users:[['Sarah Rodriguez','Admin','Now'],['David Chen','Approver','12 min ago']] },
+  };
+  var WPOLICY = { treasury:['7','Dual approval \u00b7 allow-list'], trading:['3','Venue-restricted \u00b7 $250k/day'], reserve:['2','Withdraw-locked \u00b7 2-of-3'] };
+  function money(n){ return (n<0?'\u2212$':'$')+Math.abs(n).toLocaleString('en-US'); }
+  function chgCell(n){ return '<span class="'+(n<0?'chg-dn':'chg-up')+'">'+(n<0?'\u2212':'+')+'$'+Math.abs(n).toLocaleString('en-US')+'</span>'; }
+
+  function renderOvWallets(){
+    var per = document.getElementById('chgSel').value;
+    var tb = document.querySelector('#ovWallets tbody'); tb.innerHTML='';
+    Object.keys(WALLETS).forEach(function(k){
+      var w = WALLETS[k], pol = WPOLICY[k];
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td><b>'+w.name+'</b><div class="muted-sm">'+w.addr+'</div></td>'
+        +'<td class="num bal-link" onclick="openWallet(\''+k+'\')">'+money(w.bal)+'</td>'
+        +'<td class="num">'+chgCell(w.chg[per])+'</td>'
+        +'<td>'+pol[0]+'</td><td>'+pol[1]+'</td>'
+        +'<td><button class="btn sm ghost" onclick="openWallet(\''+k+'\')">Manage</button></td>';
+      tb.appendChild(tr);
+    });
+  }
+
+  // ---------- wallet detail ----------
+  var curWallet = 'treasury';
+  function openWallet(k){
+    curWallet = k; var w = WALLETS[k];
+    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.toggle('active', n.dataset.pane==='wallets'); });
+    document.querySelectorAll('.pane').forEach(function(p){ p.classList.toggle('active', p.id==='walletDetail'); });
+    document.getElementById('paneTitle').textContent = w.name;
+    document.getElementById('paneSub').textContent = 'Wallet detail \u00b7 holdings, transactions and access';
+    document.getElementById('wdName').textContent = w.name;
+    document.getElementById('wdBal').textContent = money(w.bal);
+    document.getElementById('wdAddr').textContent = w.addr;
+    document.getElementById('wdChg').innerHTML = chgCell(w.chg.mtd) + ' <span class="muted-sm">MTD</span>';
+    document.getElementById('wdChgs').innerHTML = chgCell(w.chg.w1)+' \u00b7 '+chgCell(w.chg.mtd)+' \u00b7 '+chgCell(w.chg.ytd);
+    var h = document.querySelector('#wdHold tbody'); h.innerHTML='';
+    w.hold.forEach(function(r){ var tr=document.createElement('tr'); tr.innerHTML='<td><b>'+r[0]+'</b></td><td class="num">'+r[1]+'</td><td class="num">'+r[2]+'</td><td class="num">'+r[3]+'</td>'; h.appendChild(tr); });
+    var t = document.querySelector('#wdTx tbody'); t.innerHTML='';
+    w.tx.forEach(function(r){ var st = r[4]==='Settled'?'ok':(r[4]==='Pending approval'?'pend':'susp');
+      var tr=document.createElement('tr'); tr.innerHTML='<td class="muted-sm">'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td class="num" style="text-align:right;">'+r[3]+'</td><td><span class="chip '+st+'">'+r[4]+'</span></td>'; t.appendChild(tr); });
+    var u = document.querySelector('#wdUsers tbody'); u.innerHTML='';
+    w.users.forEach(function(r){ var tr=document.createElement('tr'); tr.innerHTML='<td><b>'+r[0]+'</b></td><td>'+roleChip(r[1])+'</td><td class="muted-sm">'+r[2]+'</td>'; u.appendChild(tr); });
+    window.scrollTo(0,0);
+  }
+
+  // ---------- CSV downloads ----------
+  function dlCSV(name, header, rows){
+    var csv = [header].concat(rows).map(function(r){ return r.map(function(c){ return '"'+String(c).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+    a.download = name; document.body.appendChild(a); a.click(); a.remove();
+  }
+  function dlBalances(){ var w=WALLETS[curWallet];
+    dlCSV('NAVRA_'+w.name.replace(/ /g,'_')+'_balances.csv', ['Asset','Quantity','Value','Pct of wallet'], w.hold);
+    addAudit('Sarah Rodriguez','Exported balances CSV \u00b7 '+w.name, w.name, 'auth'); toast('Balances CSV downloaded'); }
+  function dlTxns(){ var w=WALLETS[curWallet];
+    dlCSV('NAVRA_'+w.name.replace(/ /g,'_')+'_transactions.csv', ['Date','Type','Detail','Amount','Status'], w.tx);
+    addAudit('Sarah Rodriguez','Exported transactions CSV \u00b7 '+w.name, w.name, 'auth'); toast('Transactions CSV downloaded'); }
+
+  // ---------- approvals: dynamic add ----------
+  var apprSeq = 2;
+  function addApproval(icon, title, sub, why){
+    apprSeq++; var id = 'appr'+apprSeq;
+    var d = document.createElement('div'); d.className='appr'; d.id=id;
+    d.innerHTML = '<div class="ai">'+icon+'</div><div class="am"><div class="at">'+title+'</div><div class="as">'+sub+'</div><div class="why">'+why+'</div></div>'
+      +'<button class="btn sm danger" onclick="resolveAppr(\''+id+'\',\'rejected\',\''+title+'\')">Reject</button>'
+      +'<button class="btn sm solid" onclick="resolveAppr(\''+id+'\',\'approved\',\''+title+'\')">Approve &amp; co-sign</button>';
+    document.getElementById('apprList').appendChild(d);
+    apprCount++; setBadge();
+  }
+
+  // ---------- agent ----------
+  function agentSay(html){ var d=document.createElement('div'); d.className='amsg bot'; d.innerHTML=html; document.getElementById('agentLog').appendChild(d); d.scrollIntoView({behavior:'smooth',block:'end'}); }
+  function agentUser(text){ var d=document.createElement('div'); d.className='amsg user'; d.textContent=text; document.getElementById('agentLog').appendChild(d); }
+  function steps(list){ return list.map(function(x){ return '<div class="step"><span class="sic">\u2713</span><span>'+x+'</span></div>'; }).join(''); }
+  function agentGo(){ var i=document.getElementById('agentInput'); if(i.value.trim()){ runAgent(i.value.trim()); i.value=''; } }
+  function runAgent(text){
+    agentUser(text);
+    var t = text.toLowerCase();
+    setTimeout(function(){
+      if(/sweep|excess|rebalanc|float/.test(t)){
+        agentSay('<b>Sweeping excess Treasury cash to Yield Reserve.</b>'+steps([
+          'Read Treasury Operating: $2,148,200 \u00b7 target float $2,000,000',
+          'Excess identified: $148,200',
+          'Policy check: Yield Reserve deposits unrestricted \u2713 \u00b7 transfer &gt; $50,000 requires 1 Approver',
+          'Transfer staged and routed to Approvals \u00b7 David Chen notified'])
+          +'<div class="step"><span class="sic">\u23f8</span><span><b>Waiting on approval</b> \u2014 I cannot co-sign; policy requires a human Approver.</span></div>');
+        addApproval('\u2726','Agent transfer \u00b7 $148,200 \u00b7 Treasury \u2192 Yield Reserve',
+          'Staged by NAVRA agent for <b>Sarah Rodriguez</b> (Admin) \u00b7 just now',
+          'Requires 1 Approver \u2014 over the $50,000 dual-approval limit');
+        addAudit('NAVRA agent','Staged transfer \u00b7 $148,200 Treasury \u2192 Yield Reserve <span class="chip pend" style="margin-left:6px;">awaiting approval</span>','Treasury Operating','transfer');
+        toast('Agent staged transfer \u2014 pending approval');
+      } else if(/month|reconcil|package|fund admin|report/.test(t)){
+        agentSay('<b>Building the month-end package.</b>'+steps([
+          'Compiled balances across 3 wallets \u00b7 $4,283,410 total',
+          'Collected '+ (WALLETS.treasury.tx.length+WALLETS.trading.tx.length+WALLETS.reserve.tx.length) +' transactions with hash-chain proofs',
+          'Generated Treasury Operating balances + transactions CSVs (downloading now)',
+          'Package logged to audit trail \u00b7 ready to send to fund admin via API']));
+        dlCSV('NAVRA_month_end_balances.csv', ['Wallet','Asset','Quantity','Value','Pct'],
+          [].concat.apply([], Object.keys(WALLETS).map(function(k){ return WALLETS[k].hold.map(function(h){ return [WALLETS[k].name].concat(h); }); })));
+        dlCSV('NAVRA_month_end_transactions.csv', ['Wallet','Date','Type','Detail','Amount','Status'],
+          [].concat.apply([], Object.keys(WALLETS).map(function(k){ return WALLETS[k].tx.map(function(x){ return [WALLETS[k].name].concat(x); }); })));
+        addAudit('NAVRA agent','Generated month-end package \u00b7 balances + transactions, all wallets','All','auth');
+        toast('Month-end package downloaded');
+      } else if(/watch|alert|monitor/.test(t)){
+        agentSay('<b>Monitoring armed.</b>'+steps([
+          'Watching all 3 wallets \u00b7 daily change threshold 2%',
+          'Alert channels: email + SMS to Sarah Rodriguez',
+          'Will include venue and policy context with every alert']));
+        addAudit('NAVRA agent','Armed balance monitor \u00b7 2% daily change threshold, all wallets','All','policy');
+        toast('Monitor armed');
+      } else {
+        var m = text.match(/\$?([\d,]+(?:\.\d+)?)\s*(k|m)?/i);
+        if(m && /move|transfer|send|wire/.test(t)){
+          var amt = parseFloat(m[1].replace(/,/g,'')) * (m[2]&&m[2].toLowerCase()==='k'?1e3:(m[2]&&m[2].toLowerCase()==='m'?1e6:1));
+          var lbl = money(amt);
+          agentSay('<b>Staging that transfer.</b>'+steps([
+            'Parsed instruction \u00b7 amount '+lbl,
+            'Policy check: '+(amt>50000?'over the $50,000 limit \u2014 requires 1 Approver':'inside limits \u2014 no additional approval required'),
+            amt>50000?'Routed to Approvals \u00b7 David Chen notified':'Executed and co-signed \u00b7 settled on chain']));
+          if(amt>50000){ addApproval('\u2726','Agent transfer \u00b7 '+lbl, 'Staged by NAVRA agent \u00b7 just now', 'Requires 1 Approver \u2014 over the $50,000 dual-approval limit');
+            addAudit('NAVRA agent','Staged transfer \u00b7 '+lbl+' <span class="chip pend" style="margin-left:6px;">awaiting approval</span>','\u2014','transfer'); }
+          else { addAudit('NAVRA agent','Executed transfer \u00b7 '+lbl+' <span class="chip ok" style="margin-left:6px;">policy satisfied</span>','\u2014','transfer'); }
+          toast(amt>50000?'Agent staged transfer \u2014 pending approval':'Agent executed transfer');
+        } else {
+          agentSay('I can rebalance across wallets, stage transfers, build reporting packages for your fund admin, and monitor balances and venues \u2014 all inside policy, with anything above threshold routed to Approvals. Try one of the suggestions above, or tell me an amount and a destination.');
+        }
+      }
+    }, 450);
+  }
 
   // ---------- helpers ----------
   function initials(n){ return n.split(' ').map(function(p){return p[0];}).join('').slice(0,2).toUpperCase(); }
@@ -418,7 +618,7 @@
   document.getElementById('userSearch').addEventListener('input',function(){ renderUsers(this.value); });
 
   // ---------- nav ----------
-  var TITLES={overview:['Overview','Meridian Capital LP · Treasury & Trading'],wallets:['Wallets','3 org wallets · shared by role, attributed by person'],users:['Users & roles','7 users · roles define what each person can do'],policies:['Policies','Rules enforced at the key layer by the QC policy agent'],approvals:['Approvals','Items awaiting your sign-off'],audit:['Audit trail','Every action, every actor — hash-chained and exportable']};
+  var TITLES={agent:['Agent','Multi-step tasks, executed inside your policies'],overview:['Overview','Meridian Capital LP · Treasury & Trading'],wallets:['Wallets','3 org wallets · shared by role, attributed by person'],users:['Users & roles','7 users · roles define what each person can do'],policies:['Policies','Rules enforced at the key layer by the QC policy agent'],approvals:['Approvals','Items awaiting your sign-off'],audit:['Audit trail','Every action, every actor — hash-chained and exportable']};
   function go(id){
     document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.toggle('active', n.dataset.pane===id); });
     document.querySelectorAll('.pane').forEach(function(p){ p.classList.toggle('active', p.id===id); });
@@ -428,7 +628,7 @@
   }
   document.querySelectorAll('.nav-item').forEach(function(n){ n.addEventListener('click',function(){ go(this.dataset.pane); }); });
 
-  renderUsers(''); renderAudit(); setBadge();
+  renderUsers(''); renderAudit(); setBadge(); renderOvWallets();
 </script>
 </body>
 </html>
